@@ -1,5 +1,5 @@
-import ROOT as R
 R.gROOT.SetStyle("ATLAS")
+
 
 def reweight1D(plot, varTeX, fileName):
     c = R.TCanvas("c", "", 900, 900)
@@ -22,11 +22,13 @@ def reweight1D(plot, varTeX, fileName):
     ratio.GetYaxis().SetTitleSize(0.045)
     expr = "[0]+exp([1]+[2]*x)"
     #expr = "-1*[0]*(TMath::Log10(x+[1]))+[2]"
-    f = R.TF1("Rw1DFunc", expr, ratio.GetXaxis().GetXmin(), ratio.GetXaxis().GetXmax(), 4)
-    rtf = R.TFile("/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func.root", "recreate")
+    f = R.TF1("Rw1DFunc", expr, ratio.GetXaxis().GetXmin(),
+              ratio.GetXaxis().GetXmax(), 4)
+    rtf = R.TFile(
+        "/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func.root", "recreate")
     ratio.Fit(f)
     f.SetLineColor(R.kRed - 2)
-    
+
     ratio.Draw("E1")
     f.Draw("SAME")
 
@@ -46,7 +48,8 @@ def reweight1D(plot, varTeX, fileName):
     text.SetTextSize(0.040)
     text.DrawLatex(0.51, 0.80, "#sqrt{s} = 13 TeV, 139 fb^{-1}")
     text.SetTextSize(0.035)
-    fit_result = "#Chi^{2} / NDF = " + "{:.3f} / {}".format(f.GetChisquare(), (ratio.GetNbinsX() - 1))
+    fit_result = "#Chi^{2} / NDF = " + \
+        "{:.3f} / {}".format(f.GetChisquare(), (ratio.GetNbinsX() - 1))
     text.DrawLatex(0.51, 0.74, fit_result)
 
     c.Update()
@@ -69,7 +72,7 @@ def drawStack(plot, varTeX, regionTeX, fileName):
     ratio.Draw()
 
     pad.cd()
-    
+
     # Always have data
     data = plot.data
     ttbar = plot.ttbar
@@ -97,14 +100,14 @@ def drawStack(plot, varTeX, regionTeX, fileName):
     # bkg.SetMarkerSize(0)
     # bkg.SetName("Unc.")
     # bkg.Draw("E4 SAME")
-    
+
     # Draw data
     data.SetMarkerStyle(20)
     data.SetMarkerSize(1.2)
     data.SetLineWidth(2)
     data.SetLineColor(R.kBlack)
     data.Draw("E1 SAME")
-    
+
     # Add legend
     legend = R.TLegend(0.70, 0.65, 0.92, 0.92)
     legend.SetTextFont(42)
@@ -112,11 +115,11 @@ def drawStack(plot, varTeX, regionTeX, fileName):
     legend.SetBorderSize(0)
     legend.SetTextSize(0.04)
     legend.SetTextAlign(32)
-    legend.AddEntry(data, "Data" ,"lep")
+    legend.AddEntry(data, "Data", "lep")
     legend.AddEntry(ttbar, "ttbar", "f")
     legend.AddEntry(others, "others", "f")
     legend.Draw("SAME")
-    
+
     # Add ATLAS label
     text = R.TLatex()
     text.SetNDC()
@@ -156,7 +159,7 @@ def drawStack(plot, varTeX, regionTeX, fileName):
     rat.Divide(bkg)
     rat.SetTitle("ratio")
     rat.Draw("E1 SAME")
-    
+
     # Save the plot
     c.Update()
     c.SaveAs(fileName)

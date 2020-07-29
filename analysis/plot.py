@@ -1,4 +1,3 @@
-import ROOT as R
 
 # TODO: inheritence
 
@@ -6,6 +5,7 @@ class TTbarInclPlot(object):
     """
     return data, ttbar and others
     """
+
     def __init__(self, ana, varnm, wtnm, th1bin, rebin=None):
         super().__init__()
         self._ana = ana
@@ -19,25 +19,31 @@ class TTbarInclPlot(object):
         self.ttbar = self._merge_histos("ttbar")
         self.others = self._merge_histos("others")
         self._rebin()
-    
+
     def _merge_histos(self, label):
         h = None
         for i, p in enumerate(self._ana.samples[label]):
             t = self._histos[p].GetValue()
-            if i == 0: h = t.Clone()
-            else: h.Add(t)
+            if i == 0:
+                h = t.Clone()
+            else:
+                h.Add(t)
         h.SetNameTitle(label, label)
         return h
-        
+
     def _init_histos(self):
         for p in self._ana.processes:
-            self._histos[p] = self._ana.current_df()[p].Histo1D(R.RDF.TH1DModel(p, self._variableName, *self._th1binning), self._variableName, self._weightName)
+            self._histos[p] = self._ana.current_df()[p].Histo1D(R.RDF.TH1DModel(
+                p, self._variableName, *self._th1binning), self._variableName, self._weightName)
 
     def _rebin(self):
         if self._rebinning:
-            self.data = self.data.Rebin(len(self._rebinning) - 1, "data_rebin", self._rebinning)
-            self.ttbar = self.ttbar.Rebin(len(self._rebinning) - 1, "ttbar_rebin", self._rebinning)
-            self.others = self.others.Rebin(len(self._rebinning) - 1, "others_rebin", self._rebinning)
+            self.data = self.data.Rebin(
+                len(self._rebinning) - 1, "data_rebin", self._rebinning)
+            self.ttbar = self.ttbar.Rebin(
+                len(self._rebinning) - 1, "ttbar_rebin", self._rebinning)
+            self.others = self.others.Rebin(
+                len(self._rebinning) - 1, "others_rebin", self._rebinning)
 
     def checkYields(self):
         print(f"n_data    |   {self.data.Integral()}")
@@ -55,6 +61,7 @@ class TTbarTrueFakePlot(object):
     """
     return data, ttbarTrue, ttbarFake and others
     """
+
     def __init__(self, ana, varnm, wtnm, th1bin, rebin):
         super().__init__()
         self._ana = ana
@@ -69,26 +76,33 @@ class TTbarTrueFakePlot(object):
         self.ttbarFake = self._merge_histos("ttbarFake")
         self.others = self._merge_histos("others")
         self._rebin()
-    
+
     def _merge_histos(self, label):
         h = None
         for i, p in enumerate(self._ana.samples[label]):
             t = self._histos[p].GetValue()
-            if i == 0: h = t.Clone()
-            else: h.Add(t)
+            if i == 0:
+                h = t.Clone()
+            else:
+                h.Add(t)
         h.SetNameTitle(label, label)
         return h
-        
+
     def _init_histos(self):
         for p in self._ana.processes:
-            self._histos[p] = self._ana.current_df()[p].Histo1D(R.RDF.TH1DModel(p, self._variableName, *self._th1binning), self._variableName, self._weightName)
+            self._histos[p] = self._ana.current_df()[p].Histo1D(R.RDF.TH1DModel(
+                p, self._variableName, *self._th1binning), self._variableName, self._weightName)
 
     def _rebin(self):
         if self._rebinning:
-            self.data = self.data.Rebin(len(self._rebinning) - 1, "data_rebin", self._rebinning)
-            self.ttbarTrue = self.ttbarTrue.Rebin(len(self._rebinning) - 1, "ttbarTrue_rebin", self._rebinning)
-            self.ttbarFake = self.ttbarFake.Rebin(len(self._rebinning) - 1, "ttbarFake_rebin", self._rebinning)
-            self.others = self.others.Rebin(len(self._rebinning) - 1, "others_rebin", self._rebinning)
+            self.data = self.data.Rebin(
+                len(self._rebinning) - 1, "data_rebin", self._rebinning)
+            self.ttbarTrue = self.ttbarTrue.Rebin(
+                len(self._rebinning) - 1, "ttbarTrue_rebin", self._rebinning)
+            self.ttbarFake = self.ttbarFake.Rebin(
+                len(self._rebinning) - 1, "ttbarFake_rebin", self._rebinning)
+            self.others = self.others.Rebin(
+                len(self._rebinning) - 1, "others_rebin", self._rebinning)
 
     def checkYields(self):
         print(f"n_data        |   {self.data.Integral()}")

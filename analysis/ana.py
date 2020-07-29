@@ -1,4 +1,3 @@
-import ROOT as R
 import os
 
 # lambda helper
@@ -59,7 +58,8 @@ class AnaBase(object):
         rwt1d is (varName, header_path)
         """
         if rwt1d:
-            rtf = R.TFile("/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func.root")
+            rtf = R.TFile(
+                "/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func.root")
             R.gInterpreter.ProcessLine("auto myfunc = Rw1DFunc;")
             R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
             ttbarWeight = f"(float)eval_reweighter1d({rwt1d[0]})"
@@ -78,14 +78,16 @@ class AnaBase(object):
                         self.df[p] = self.df[p].Define(
                             "weight_new", f"weight * tauSF * {ttbarWeight}")
                     else:
-                        self.df[p] = self.df[p].Define("weight_new", f"weight * tauSF")
+                        self.df[p] = self.df[p].Define(
+                            "weight_new", f"weight * tauSF")
         else:
             if not self._tauid:
                 for p in self.processes:
                     self.df[p] = self.df[p].Define("weight_new", "weight")
             else:
                 for p in self.processes:
-                    self.df[p] = self.df[p].Define("weight_new", "weight * tauSF")
+                    self.df[p] = self.df[p].Define(
+                        "weight_new", "weight * tauSF")
 
 
 class AnaTTbarIncl(AnaBase):
