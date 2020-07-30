@@ -27,7 +27,7 @@ drawStack(rwt_lep_pt, "lepton pT [MeV]", regionTeX, f"plots/njets/stack_lep_ptlo
 rwt_tau_pt = TTbarTrueFakePlot(rwt, "tau_pt", "weight", (36, 20000, 200000))
 drawStack(rwt_tau_pt, "tau pT [MeV]", regionTeX, f"plots/njets/stack_tau_ptlow_fr_os" + suffix_before)
 
-rwt_b0_pt = TTbarTrueFakePlot(rwt, "b0_pt", "weight", (32, 40000, 200000))
+rwt_b0_pt = TTbarTrueFakePlot(rwt, "b0_pt", "weight", (40, 50000, 250000))
 drawStack(rwt_b0_pt, "leading b-jet pT [MeV]", regionTeX, f"plots/njets/stack_b0_ptlow_fr_os" + suffix_before)
 
 rwt_b1_pt = TTbarTrueFakePlot(rwt, "b1_pt", "weight", (36, 20000, 200000))
@@ -114,7 +114,7 @@ drawStack(rwt_lep_pt, "lepton pT [MeV]", regionTeX, f"plots/njets/stack_lep_ptlo
 rwt_tau_pt = TTbarTrueFakePlot(rwt, "tau_pt", "weight_new", (36, 20000, 200000))
 drawStack(rwt_tau_pt, "tau pT [MeV]", regionTeX, f"plots/njets/stack_tau_ptlow_fr_os" + suffix_after)
 
-rwt_b0_pt = TTbarTrueFakePlot(rwt, "b0_pt", "weight_new", (32, 40000, 200000))
+rwt_b0_pt = TTbarTrueFakePlot(rwt, "b0_pt", "weight_new", (40, 50000, 250000))
 drawStack(rwt_b0_pt, "leading b-jet pT [MeV]", regionTeX, f"plots/njets/stack_b0_ptlow_fr_os" + suffix_after)
 
 rwt_b1_pt = TTbarTrueFakePlot(rwt, "b1_pt", "weight_new", (36, 20000, 200000))
