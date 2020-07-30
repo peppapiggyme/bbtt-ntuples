@@ -60,6 +60,66 @@ def reweight1D(plot, varTeX, fileName, suffix):
     return True
 
 
+def reweightTrue1D(plot, varTeX, fileName, suffix):
+    c = R.TCanvas("c", "", 900, 900)
+    # templates
+    data = plot.data
+    ttbarTrue = plot.ttbarTrue
+    ttbarFake = plot.ttbarFake
+    others = plot.others
+
+    ratio = data.Clone()
+    ratio.Add(others, -1.0)
+    ratio.Add(ttbarFake, -1.0)
+    mc_ttbar = ttbarTrue
+
+    ratio.Divide(mc_ttbar)
+    ratio.SetName(f"Rw1DHist{suffix}")
+    ratio.GetXaxis().SetTitle(varTeX)
+    ratio.GetXaxis().SetTitleSize(0.045)
+    ratio.GetXaxis().SetLabelSize(0.04)
+    ratio.GetYaxis().SetTitle("Ratio")
+    ratio.GetYaxis().SetLabelSize(0.04)
+    ratio.GetYaxis().SetTitleSize(0.045)
+    #expr = "[0]+exp([1]+[2]*x)"
+    #expr = "-1*[0]*(TMath::Log10(x+[1]))+[2]"
+    expr = "[0]+[1]/(1+x)+[2]/(1+exp([3]+[4]*x))"
+    f = R.TF1(f"Rw1DFunc{suffix}", expr, ratio.GetXaxis().GetXmin(),
+              ratio.GetXaxis().GetXmax(), 4)
+    rtf = R.TFile(
+        f"/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func{suffix}.root", "recreate")
+    ratio.Fit(f)
+    f.SetLineColor(R.kRed - 2)
+
+    ratio.Draw("E1")
+    f.Draw("SAME")
+
+    rtf.cd()
+    f.Write()
+    ratio.Write()
+    rtf.Close()
+
+    # Add ATLAS label
+    text = R.TLatex()
+    text.SetNDC()
+    text.SetTextFont(72)
+    text.SetTextSize(0.045)
+    text.DrawLatex(0.51, 0.86, "ATLAS")
+    text.SetTextFont(42)
+    text.DrawLatex(0.51 + 0.16, 0.86, "Internal")
+    text.SetTextSize(0.040)
+    text.DrawLatex(0.51, 0.80, "#sqrt{s} = 13 TeV, 139 fb^{-1}")
+    text.SetTextSize(0.035)
+    fit_result = "#Chi^{2} / NDF = " + \
+        "{:.3f} / {}".format(f.GetChisquare(), (ratio.GetNbinsX() - 1))
+    text.DrawLatex(0.51, 0.74, fit_result)
+
+    c.Update()
+    c.SaveAs(fileName)
+
+    return True
+
+
 def drawStack(plot, varTeX, regionTeX, fileName):
     c = R.TCanvas("c", "", 900, 900)
     pad = R.TPad("upper_pad", "", 0, 0.35, 1, 1)
@@ -77,7 +137,8 @@ def drawStack(plot, varTeX, regionTeX, fileName):
 
     # Always have data
     data = plot.data
-    ttbar = plot.ttbar
+    ttbarTrue = plot.ttbarTrue
+    ttbarFake = plot.ttbarFake
     others = plot.others
     # Draw stack with MC contributions
     stack = R.THStack()
@@ -118,7 +179,8 @@ def drawStack(plot, varTeX, regionTeX, fileName):
     legend.SetTextSize(0.04)
     legend.SetTextAlign(32)
     legend.AddEntry(data, "Data", "lep")
-    legend.AddEntry(ttbar, "ttbar", "f")
+    legend.AddEntry(ttbarTrue, "ttbar true-#tau", "f")
+    legend.AddEntry(ttbarFake, "ttbar fake-#tau", "f")
     legend.AddEntry(others, "others", "f")
     legend.Draw("SAME")
 

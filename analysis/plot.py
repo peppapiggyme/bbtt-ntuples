@@ -46,9 +46,11 @@ class TTbarInclPlot(object):
                 len(self._rebinning) - 1, "others_rebin", self._rebinning)
 
     def checkYields(self):
-        print(f"n_data    |   {self.data.Integral()}")
-        print(f"n_ttbar   |   {self.ttbar.Integral()}")
-        print(f"n_other   |   {self.others.Integral()}")
+        print(f"---------+----------------------------------")
+        print(f" n_data  |   {self.data.Integral()}")
+        print(f" n_ttbar |   {self.ttbar.Integral()}")
+        print(f" n_other |   {self.others.Integral()}")
+        print(f"---------+----------------------------------")
 
     def ana(self):
         return self._ana
@@ -62,7 +64,7 @@ class TTbarTrueFakePlot(object):
     return data, ttbarTrue, ttbarFake and others
     """
 
-    def __init__(self, ana, varnm, wtnm, th1bin, rebin):
+    def __init__(self, ana, varnm, wtnm, th1bin, rebin=None):
         super().__init__()
         self._ana = ana
         self._histos = {}
@@ -105,10 +107,12 @@ class TTbarTrueFakePlot(object):
                 len(self._rebinning) - 1, "others_rebin", self._rebinning)
 
     def checkYields(self):
-        print(f"n_data        |   {self.data.Integral()}")
-        print(f"n_ttbarTrue   |   {self.ttbarTrue.Integral()}")
-        print(f"n_ttbarTrue   |   {self.ttbarFake.Integral()}")
-        print(f"n_other       |   {self.others.Integral()}")
+        print(f"-------------+----------------------------------")
+        print(f" n_data      |   {self.data.Integral()}")
+        print(f" n_ttbarTrue |   {self.ttbarTrue.Integral()}")
+        print(f" n_ttbarFake |   {self.ttbarFake.Integral()}")
+        print(f" n_other     |   {self.others.Integral()}")
+        print(f"-------------+----------------------------------")
 
     def ana(self):
         return self._ana

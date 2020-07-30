@@ -1,10 +1,12 @@
 __pycache__
 .pyc
 .vscode
+*.tar.gz
 *~
 
 rootfiles/*.root
 plots/*.pdf
 plots/*/*.pdf
+temp/
 
 
