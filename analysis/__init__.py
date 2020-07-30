@@ -1,2 +1,2 @@
-import ROOT as R
-R.gROOT.SetBatch(True)
+from ROOT import gROOT
+gROOT.SetBatch(True)

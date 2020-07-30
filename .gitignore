@@ -5,4 +5,6 @@ __pycache__
 
 rootfiles/*.root
 plots/*.pdf
+plots/*/*.pdf
+
 

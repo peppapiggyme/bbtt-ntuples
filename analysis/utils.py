@@ -1,7 +1,8 @@
+import ROOT as R
 R.gROOT.SetStyle("ATLAS")
 
 
-def reweight1D(plot, varTeX, fileName):
+def reweight1D(plot, varTeX, fileName, suffix):
     c = R.TCanvas("c", "", 900, 900)
     # templates
     data = plot.data
@@ -13,19 +14,20 @@ def reweight1D(plot, varTeX, fileName):
     mc_ttbar = ttbar
 
     ratio.Divide(mc_ttbar)
-    ratio.SetName("Rw1DHist")
+    ratio.SetName(f"Rw1DHist{suffix}")
     ratio.GetXaxis().SetTitle(varTeX)
     ratio.GetXaxis().SetTitleSize(0.045)
     ratio.GetXaxis().SetLabelSize(0.04)
     ratio.GetYaxis().SetTitle("Ratio")
     ratio.GetYaxis().SetLabelSize(0.04)
     ratio.GetYaxis().SetTitleSize(0.045)
-    expr = "[0]+exp([1]+[2]*x)"
+    #expr = "[0]+exp([1]+[2]*x)"
     #expr = "-1*[0]*(TMath::Log10(x+[1]))+[2]"
-    f = R.TF1("Rw1DFunc", expr, ratio.GetXaxis().GetXmin(),
+    expr = "[0]+[1]/(1+x)+[2]/(1+exp([3]+[4]*x))"
+    f = R.TF1(f"Rw1DFunc{suffix}", expr, ratio.GetXaxis().GetXmin(),
               ratio.GetXaxis().GetXmax(), 4)
     rtf = R.TFile(
-        "/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func.root", "recreate")
+        f"/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func{suffix}.root", "recreate")
     ratio.Fit(f)
     f.SetLineColor(R.kRed - 2)
 
@@ -163,3 +165,14 @@ def drawStack(plot, varTeX, regionTeX, fileName):
     # Save the plot
     c.Update()
     c.SaveAs(fileName)
+
+
+class TermColor:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
