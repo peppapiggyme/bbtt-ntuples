@@ -2,6 +2,64 @@ import ROOT as R
 R.gROOT.SetStyle("ATLAS")
 
 
+def fakerates(pasid, total, trigger, prong):
+    data_fakerate = None
+    mc_fakerate = None
+
+    p_sig = pasid.ttbarFake.Clone()
+    p_bkg = pasid.ttbarTrue.Clone()
+    p_bkg.Add(pasid.others.Clone())
+    p_data = pasid.data.Clone()
+
+    t_sig = total.ttbarFake.Clone()
+    t_bkg = total.ttbarTrue.Clone()
+    t_bkg.Add(total.others.Clone())
+    t_data = total.data.Clone()
+
+    # ttbar in variable name -> fake-tau ttbar
+    p_data_ttbar = p_data.Clone()
+    p_data_ttbar.Add(p_bkg, -1.0)
+    t_data_ttbar = t_data.Clone()
+    t_data_ttbar.Add(t_bkg, -1.0)
+
+    for i in range(0, p_data_ttbar.GetNbinsX() + 2):
+        print(f"> bin {i}: num / den -> {p_data_ttbar.GetBinContent(i)} / {t_data_ttbar.GetBinContent(i)}")
+        if p_data_ttbar.GetBinContent(i) <= 0:
+            print(f"{TermColor.WARNING}data-driven: the {i} bin in numerator <= 0, set it to 0{TermColor.ENDC}")
+            p_data_ttbar.SetBinContent(i, 0)
+        if t_data_ttbar.GetBinContent(i) <= 0:
+            print(f"{TermColor.WARNING}data-driven: the {i} bin in denominator <= 0, set it to 0{TermColor.ENDC}")
+            t_data_ttbar.SetBinContent(i, 0)
+        
+    if R.TEfficiency.CheckConsistency(p_data_ttbar, t_data_ttbar):
+        data_fakerate = R.TEfficiency(p_data_ttbar, t_data_ttbar)
+        data_fakerate.SetName(f"fakerate_data_trig{trigger}_{prong}")
+        data_fakerate.SetStatisticOption(R.TEfficiency.kBUniform)
+
+    # ttbar in variable name -> fake-tau ttbar
+    p_mc_ttbar = p_sig
+    t_mc_ttbar = t_sig
+
+    for i in range(0, p_mc_ttbar.GetNbinsX() + 2):
+        print(f"> bin {i}: num / den -> {p_mc_ttbar.GetBinContent(i)} / {t_mc_ttbar.GetBinContent(i)}")
+        if p_mc_ttbar.GetBinContent(i) <= 0:
+            print(f"{TermColor.WARNING}mc-driven: the {i} bin in numerator <= 0, set it to 0{TermColor.ENDC}")
+            p_mc_ttbar.SetBinContent(i, 0)
+        if t_mc_ttbar.GetBinContent(i) <= 0:
+            print(f"{TermColor.WARNING}mc-driven: the {i} bin in denominator <= 0, set it to 0{TermColor.ENDC}")
+            t_mc_ttbar.SetBinContent(i, 0)
+
+    if R.TEfficiency.CheckConsistency(p_mc_ttbar, t_mc_ttbar):
+        mc_fakerate = R.TEfficiency(p_mc_ttbar, t_mc_ttbar)
+        mc_fakerate.SetName(f"fakerate_mc_trig{trigger}_{prong}")
+        mc_fakerate.SetStatisticOption(R.TEfficiency.kBUniform)
+
+    if not data_fakerate or not mc_fakerate:
+        raise ValueError("Not able to get the efficiency!")
+
+    return data_fakerate, mc_fakerate
+
+
 def reweight1D(plot, varTeX, fileName, suffix):
     c = R.TCanvas("c", "", 900, 900)
     # templates

@@ -15,34 +15,42 @@ def rootfile(x): return x + ".root"
 reg = {}
 reg["NoID"] = "n_btag == 2 && n_jets >= 2 && mBB > 150000. && mTW > 40000." # <- !!!
 
-reg["NoID OS"] = reg["NoID"] + " && OS"
-reg["NoID SS"] = reg["NoID"] + " && !OS"
-reg["NoID OS 1P"] = reg["NoID OS"] + " && tau_prong == 1"
-reg["NoID OS 3P"] = reg["NoID OS"] + " && tau_prong == 3"
-reg["NoID SS 1P"] = reg["NoID SS"] + " && tau_prong == 1"
-reg["NoID SS 3P"] = reg["NoID SS"] + " && tau_prong == 3"
+def update_region():
+    reg["NoID OS"] = reg["NoID"] + " && OS"
+    reg["NoID SS"] = reg["NoID"] + " && !OS"
+    reg["NoID OS 1P"] = reg["NoID OS"] + " && tau_prong == 1"
+    reg["NoID OS 3P"] = reg["NoID OS"] + " && tau_prong == 3"
+    reg["NoID SS 1P"] = reg["NoID SS"] + " && tau_prong == 1"
+    reg["NoID SS 3P"] = reg["NoID SS"] + " && tau_prong == 3"
 
-reg["PassID"] = reg["NoID"] + " && tau_loose"
+    reg["PassID"] = reg["NoID"] + " && tau_loose"
 
-reg["PassID OS"] = reg["PassID"] + " && OS"
-reg["PassID SS"] = reg["PassID"] + " && !OS"
-reg["PassID OS 1P"] = reg["PassID OS"] + " && tau_prong == 1"
-reg["PassID OS 3P"] = reg["PassID OS"] + " && tau_prong == 3"
-reg["PassID SS 1P"] = reg["PassID SS"] + " && tau_prong == 1"
-reg["PassID SS 3P"] = reg["PassID SS"] + " && tau_prong == 3"
+    reg["PassID OS"] = reg["PassID"] + " && OS"
+    reg["PassID SS"] = reg["PassID"] + " && !OS"
+    reg["PassID OS 1P"] = reg["PassID OS"] + " && tau_prong == 1"
+    reg["PassID OS 3P"] = reg["PassID OS"] + " && tau_prong == 3"
+    reg["PassID SS 1P"] = reg["PassID SS"] + " && tau_prong == 1"
+    reg["PassID SS 3P"] = reg["PassID SS"] + " && tau_prong == 3"
 
+update_region()
 
 class AnaBase(object):
-    def __init__(self, tauid, isOS=None, prong=None):
+    def __init__(self, tauid, isOS=None, prong=None, morecut=None):
         self._tauid = tauid
         self._isOS = isOS
         self._prong = prong
 
         self._region = "PassID" if tauid else "NoID"
         if isOS:
-            self._region += " " + "OS" if isOS else "SS"
+            self._region += " "
+            self._region += "OS" if isOS else "SS"
         if prong:
-            self._region += " " + "1P" if prong == 1 else "3P"
+            self._region += " "
+            self._region += "1P" if prong == 1 else "3P"
+        if morecut:
+            reg["NoID"] += " && "
+            reg["NoID"] += morecut
+            update_region()
 
         print(f"> analysis region is [{self._region}]")
         print(f"> selection is [{reg[self._region]}]")
@@ -110,7 +118,7 @@ class AnaBase(object):
                     rtf = R.TFile(
                         f"/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func{suffix}.root")
                     R.gInterpreter.ProcessLine(f"TH1* myfunc{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); myfunc{suffix}->SetDirectory(0);")
-            R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
+                R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
             ttbarWeight = f"(float)eval_reweighter_njets(n_jets, {rwt1d[0]})"
             if not self._tauid:
                 for p in self.processes:
@@ -141,8 +149,8 @@ class AnaBase(object):
 
 
 class AnaTTbarIncl(AnaBase):
-    def __init__(self, tauid, isOS=None, prong=None):
-        super().__init__(tauid, isOS, prong)
+    def __init__(self, tauid, isOS=None, prong=None, morecut=None):
+        super().__init__(tauid, isOS, prong, morecut)
 
         self.samples = {
             "data": {"data"},
@@ -169,8 +177,8 @@ class AnaTTbarIncl(AnaBase):
 
 
 class AnaTTbarTrueFake(AnaBase):
-    def __init__(self, tauid, isOS=None, prong=None):
-        super().__init__(tauid, isOS, prong)
+    def __init__(self, tauid, isOS=None, prong=None, morecut=None):
+        super().__init__(tauid, isOS, prong, morecut)
 
         self.samples = {
             "data": {"data"},
