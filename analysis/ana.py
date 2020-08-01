@@ -35,7 +35,7 @@ def update_region():
 update_region()
 
 class AnaBase(object):
-    def __init__(self, tauid, isOS=None, prong=None, morecut=None):
+    def __init__(self, tauid, isOS=None, prong=None, morecut=None, rewrite=None):
         self._tauid = tauid
         self._isOS = isOS
         self._prong = prong
@@ -50,6 +50,9 @@ class AnaBase(object):
         if morecut:
             reg["NoID"] += " && "
             reg["NoID"] += morecut
+            update_region()
+        if rewrite:
+            reg["NoID"] = rewrite
             update_region()
 
         print(f"> analysis region is [{self._region}]")
@@ -149,8 +152,8 @@ class AnaBase(object):
 
 
 class AnaTTbarIncl(AnaBase):
-    def __init__(self, tauid, isOS=None, prong=None, morecut=None):
-        super().__init__(tauid, isOS, prong, morecut)
+    def __init__(self, tauid, isOS=None, prong=None, morecut=None, rewrite=None):
+        super().__init__(tauid, isOS, prong, morecut, rewrite)
 
         self.samples = {
             "data": {"data"},
@@ -177,8 +180,8 @@ class AnaTTbarIncl(AnaBase):
 
 
 class AnaTTbarTrueFake(AnaBase):
-    def __init__(self, tauid, isOS=None, prong=None, morecut=None):
-        super().__init__(tauid, isOS, prong, morecut)
+    def __init__(self, tauid, isOS=None, prong=None, morecut=None, rewrite=None):
+        super().__init__(tauid, isOS, prong, morecut, rewrite)
 
         self.samples = {
             "data": {"data"},
