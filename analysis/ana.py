@@ -58,7 +58,7 @@ class AnaBase(object):
         print(f"> analysis region is [{self._region}]")
         print(f"> selection is [{reg[self._region]}]")
 
-        self.path = "/Users/bowen/Documents/work/Resolved/NtupleAna/fr-ntuple-v2/"
+        self.path = "/Users/bowen/Documents/work/Resolved/NtupleAna/fr-ntuple-v3/"
         self.samples = {}
         self.processes = set()
         self.files = {}

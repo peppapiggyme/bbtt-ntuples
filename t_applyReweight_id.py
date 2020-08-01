@@ -82,6 +82,9 @@ drawStack(rwt_lead_jet_pt, "leading jet pT [MeV]", regionTeX, f"plots/njets/stac
 rwt_dr_lep_tau = TTbarTrueFakePlot(rwt, "dRTauLep", "weight", (36, 0, 6))
 drawStack(rwt_dr_lep_tau, "#DeltaR(lep, #tau)", regionTeX, f"plots/njets/stack_dr_lep_tau_fr_os" + suffix_before)
 
+rwt_dr_bb = TTbarTrueFakePlot(rwt, "dRbb", "weight", (36, 0, 6))
+drawStack(rwt_dr_bb, "#DeltaR(b, b)", regionTeX, f"plots/njets/stack_dr_bb_fr_os" + suffix_before)
+
 print(f"{TermColor.OKGREEN}Plotting done! {TermColor.ENDC}")
 
 print(f"{TermColor.OKBLUE}Yields (Before reweighting) {TermColor.ENDC}")
@@ -168,6 +171,9 @@ drawStack(rwt_lead_jet_pt, "leading jet pT [MeV]", regionTeX, f"plots/njets/stac
 
 rwt_dr_lep_tau = TTbarTrueFakePlot(rwt, "dRTauLep", "weight_new", (36, 0, 6))
 drawStack(rwt_dr_lep_tau, "#DeltaR(lep, #tau)", regionTeX, f"plots/njets/stack_dr_lep_tau_fr_os" + suffix_after)
+
+rwt_dr_bb = TTbarTrueFakePlot(rwt, "dRbb", "weight_new", (36, 0, 6))
+drawStack(rwt_dr_bb, "#DeltaR(b, b)", regionTeX, f"plots/njets/stack_dr_bb_fr_os" + suffix_after)
 
 print(f"{TermColor.OKBLUE}Yields (After reweighting) {TermColor.ENDC}")
 

@@ -1,5 +1,6 @@
 import ROOT as R
 R.gROOT.SetStyle("ATLAS")
+R.gStyle.SetErrorX(0.5)
 
 
 def fakerates(pasid, total, trigger, prong):
@@ -276,7 +277,7 @@ def drawStack(plot, varTeX, regionTeX, fileName):
     err.GetYaxis().SetNdivisions(505)
     err.SetMinimum(0.62)
     err.SetMaximum(1.38)
-    err.Draw("E4")
+    err.Draw("E2")
     rat = data.Clone()
     rat.Divide(bkg)
     rat.SetTitle("ratio")
