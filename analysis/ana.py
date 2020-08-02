@@ -108,7 +108,7 @@ class AnaBase(object):
                     self._current_df[p] = self._current_df[p].Define(
                         "weight_new", "weight * tauSF")
 
-    def applyWeight(self, rwt1d=None, declare=False):
+    def applyWeightStep1(self, rwt1d=None, declare=False):
         """
         rwt1d is (varName, header_path)
         apply on the original df, apply the weights based on njets
@@ -149,9 +149,58 @@ class AnaBase(object):
                     self.df[p] = self.df[p].Define(
                         "weight_new", "weight * tauSF")
 
+    def applyWeightStep2(self, rwt1d=None, declare=False):
+        """
+        rwt1d is (varName, header_path)
+        apply on the original df, apply the weights based on dRbb
+        declare if the name of objects are not in the dynamic scopes
+        """
+        if rwt1d:
+            if declare:
+                suffix = "_dRbb"
+                rtf = R.TFile(
+                    f"/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func{suffix}.root")
+                R.gInterpreter.ProcessLine(f"TH1* myfunc{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); myfunc{suffix}->SetDirectory(0);")
+                R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
+            ttbarWeight = f"(float)eval_reweighter{suffix}({rwt1d[0]})"
+            for p in self.processes:
+                # NOTE: hardcoded name but should be safe, since process names are unique
+                if p.startswith("ttbar"):
+                    self.df[p] = self.df[p].Define(
+                        "weight_final", f"weight_new * {ttbarWeight}")
+                else:
+                    self.df[p] = self.df[p].Define("weight_final", "weight_new")
+        else:
+            for p in self.processes:
+                self.df[p] = self.df[p].Define("weight_final", "weight_new")
+
+    def applyWeightStep3(self, rwt1d=None, declare=False):
+        """
+        rwt1d is (varName, header_path)
+        apply on the original df, apply the weights based on dRbb
+        declare if the name of objects are not in the dynamic scopes
+        """
+        if rwt1d:
+            if declare:
+                suffix = "_dRlh"
+                rtf = R.TFile(
+                    f"/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func{suffix}.root")
+                R.gInterpreter.ProcessLine(f"TH1* myfunc{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); myfunc{suffix}->SetDirectory(0);")
+                R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
+            ttbarWeight = f"(float)eval_reweighter{suffix}({rwt1d[0]})"
+            for p in self.processes:
+                # NOTE: hardcoded name but should be safe, since process names are unique
+                if p.startswith("ttbar"):
+                    self.df[p] = self.df[p].Define(
+                        "weight_extra", f"weight_final * {ttbarWeight}")
+                else:
+                    self.df[p] = self.df[p].Define("weight_extra", "weight_final")
+        else:
+            for p in self.processes:
+                self.df[p] = self.df[p].Define("weight_extra", "weight_final")
 
 
-class AnaTTbarIncl(AnaBase):
+class AnaTTbarTrueFale(AnaBase):
     def __init__(self, tauid, isOS=None, prong=None, morecut=None, rewrite=None):
         super().__init__(tauid, isOS, prong, morecut, rewrite)
 

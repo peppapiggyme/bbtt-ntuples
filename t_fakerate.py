@@ -17,15 +17,22 @@ print(f"{TermColor.OKBLUE}Defining numerator and denominator ... {TermColor.ENDC
 
 # pass id
 pasid = AnaTTbarTrueFake(tauid=True, isOS=True)
-pasid.applyWeight(
+pasid.applyWeightStep1(
     ("ST", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), True)
+pasid.applyWeightStep2(
+    ("dRbb", os.path.join(os.getcwd(), "include", "Reweight1D_dRbb.h")), True)
+pasid.applyWeightStep3(
+    ("dRTauLep", os.path.join(os.getcwd(), "include", "Reweight1D_dRlh.h")), True)
 
 # no id
 total = AnaTTbarTrueFake(tauid=False, isOS=True)
 # <- already loaded in dynamic scope
-total.applyWeight(
+total.applyWeightStep1(
     ("ST", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), False)
-
+total.applyWeightStep2(
+    ("dRbb", os.path.join(os.getcwd(), "include", "Reweight1D_dRbb.h")), True)
+total.applyWeightStep3(
+    ("dRTauLep", os.path.join(os.getcwd(), "include", "Reweight1D_dRlh.h")), True)
 print(f"{TermColor.OKGREEN}Done {TermColor.ENDC}")
 
 # output root file

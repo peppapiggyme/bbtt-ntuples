@@ -6,8 +6,10 @@ from analysis.ana import *
 from analysis.plot import *
 
 rwt = AnaTTbarTrueFake(tauid=True, isOS=True)
+#rwt = AnaTTbarTrueFake(tauid=True, isOS=True, rewrite="n_btag == 2 && n_jets >= 2 && mBB > 150000. && mTW > 150000.")
 
 regionTeX = "lephad, OS, Mbb>150, MTW>40, Pass #tau ID"
+regionTeX = "lephad, OS, Mbb>150, MTW>150, Pass #tau ID"
 
 suffix_before = f"_tauid_before.pdf"
 suffix_after = f"_tauid_after.pdf"
@@ -95,7 +97,7 @@ rwt_tau_pt.checkYields()
 # -----------------
 
 print(f"{TermColor.OKBLUE}Applying to njets inclusive samples ... {TermColor.ENDC}")
-rwt.applyWeight(("ST", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), True)
+rwt.applyWeightStep1(("ST", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), True)
 
 # after reweighting
 # -----------------

@@ -65,7 +65,8 @@ def reweight1D(plot, varTeX, fileName, suffix):
     c = R.TCanvas("c", "", 900, 900)
     # templates
     data = plot.data
-    ttbar = plot.ttbar
+    ttbar = plot.ttbarFake.Clone()
+    ttbar.Add(plot.ttbarTrue)
     others = plot.others
 
     ratio = data.Clone()
