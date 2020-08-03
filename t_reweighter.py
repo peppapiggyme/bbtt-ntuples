@@ -9,7 +9,7 @@ print(f"{TermColor.OKBLUE}Starting program ... {TermColor.ENDC}")
 
 R.EnableImplicitMT(2)
 
-rwt = AnaTTbarTrueFale(tauid=False, isOS=True)
+rwt = AnaTTbarTrueFake(tauid=False, isOS=True)
 
 regionTeX = "lephad, OS, Mbb>150, MTW>40, No #tau ID"
 
@@ -99,7 +99,7 @@ for i in range(2, 11):
     # Apply reweighting
     # ------------------
 
-    rwt.applyWeightNjets(("ST", os.path.join(os.getcwd(), "include", f"Reweight1D_{i}jets.h")), f"_{i}jets")
+    rwt.applyWeightNjets(("HT", os.path.join(os.getcwd(), "include", f"Reweight1D_{i}jets.h")), f"_{i}jets")
 
     # After reweighting
     # ------------------

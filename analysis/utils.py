@@ -88,11 +88,11 @@ def reweight1D(plot, varTeX, fileName, suffix):
               ratio.GetXaxis().GetXmax(), 4)
     rtf = R.TFile(
         f"/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func{suffix}.root", "recreate")
-    ratio.Fit(f)
+    #ratio.Fit(f)
     f.SetLineColor(R.kRed - 2)
 
     ratio.Draw("E1")
-    f.Draw("SAME")
+    #f.Draw("SAME")
 
     rtf.cd()
     f.Write()

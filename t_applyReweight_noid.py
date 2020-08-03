@@ -5,16 +5,16 @@ from analysis.utils import *
 from analysis.ana import *
 from analysis.plot import *
 
-#rwt = AnaTTbarTrueFake(tauid=False, isOS=True, prong=3)
-rwt = AnaTTbarTrueFake(tauid=False, isOS=True, prong=3, rewrite="n_btag == 2 && n_jets >= 2 && mBB < 150000. && mTW > 60000.")
+rwt = AnaTTbarTrueFake(tauid=False, isOS=True)
+#rwt = AnaTTbarTrueFake(tauid=False, isOS=True, rewrite="n_btag == 2 && n_jets >= 2 && mBB < 150000. && mTW > 60000.")
 
-#regionTeX = "lephad, OS, Mbb>150, MTW>40, No #tau ID"
-regionTeX = "lephad, OS, Mbb<150, MTW>60, No #tau ID"
+regionTeX = "lephad, OS, Mbb>150, MTW>40, No #tau ID"
+#regionTeX = "lephad, OS, Mbb<150, MTW>60, No #tau ID"
 
-suffix_before = f"_mbbinv_3p_before.pdf"
-suffix_after = f"_mbbinv_3p_after.pdf"
-suffix_final = f"_mbbinv_3p_final.pdf"
-suffix_extra = f"_mbbinv_3p_extra.pdf"
+suffix_before = f"_before.pdf"
+suffix_after  = f"_after.pdf"
+suffix_final  = f"_final.pdf"
+suffix_extra  = f"_extra.pdf"
  
 print(f"{TermColor.OKBLUE}Preparing before reweighitng plots ... {TermColor.ENDC}")
 
@@ -63,7 +63,7 @@ drawStack(rwt_mbb, "Mbb [MeV]", regionTeX, f"plots/njets/stack_mbb_fr_os" + suff
 
 rwt_mbb_low = TTbarTrueFakePlot(rwt, "mBB", "weight", (150, 0, 150000), array.array(
     'd', [i for i in range(0, 155000, 5000)]))
-drawStack(rwt_mbb_low, "Mbb [MeV]", regionTeX, f"plots/njets/stack_mbb_low_fr_os" + suffix_after)
+drawStack(rwt_mbb_low, "Mbb [MeV]", regionTeX, f"plots/njets/stack_mbb_low_fr_os" + suffix_before)
 
 rwt_mhh = TTbarTrueFakePlot(rwt, "mHH", "weight", (2000, 200000, 2200000), array.array(
     'd', [i for i in range(200000, 2200000, 50000)]))
@@ -103,7 +103,7 @@ rwt_dr_lep_tau.checkYields()
 # -----------------
 
 print(f"{TermColor.OKBLUE}Applying to njets inclusive samples ... {TermColor.ENDC}")
-rwt.applyWeightStep1(("ST", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), True)
+rwt.applyWeightStep1(("HT", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), True)
 
 # after reweighting
 # -----------------
