@@ -103,7 +103,7 @@ rwt_dr_lep_tau.checkYields()
 # -----------------
 
 print(f"{TermColor.OKBLUE}Applying to njets inclusive samples ... {TermColor.ENDC}")
-rwt.applyWeightStep1(("HT", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), True)
+rwt.applyWeightStep1(("ST", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), True)
 
 # after reweighting
 # -----------------

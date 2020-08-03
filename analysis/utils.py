@@ -109,10 +109,10 @@ def reweight1D(plot, varTeX, fileName, suffix):
     text.DrawLatex(0.51 + 0.16, 0.86, "Internal")
     text.SetTextSize(0.040)
     text.DrawLatex(0.51, 0.80, "#sqrt{s} = 13 TeV, 139 fb^{-1}")
-    text.SetTextSize(0.035)
-    fit_result = "#Chi^{2} / NDF = " + \
-        "{:.3f} / {}".format(f.GetChisquare(), (ratio.GetNbinsX() - 1))
-    text.DrawLatex(0.51, 0.74, fit_result)
+    # text.SetTextSize(0.035)
+    # fit_result = "#Chi^{2} / NDF = " + \
+    #     "{:.3f} / {}".format(f.GetChisquare(), (ratio.GetNbinsX() - 1))
+    # text.DrawLatex(0.51, 0.74, fit_result)
 
     c.Update()
     c.SaveAs(fileName)

@@ -77,11 +77,11 @@ for i in range(2, 11):
     else:
         binning_st = [50000, 400000, 600000, 800000, 1000000, 1200000, 1400000, 1800000, 2200000, 2600000, 3000000]
 
-    rwt_ht = TTbarTrueFakePlot(rwt, "HT", "weight", (3000, 0, 3000000), array.array('d', binning_st))
-    drawStack(rwt_ht, "H_{T} [MeV]", regionTeX, f"plots/{i}jets/stack_ht_fr_os" + suffix_before)
+    # rwt_ht = TTbarTrueFakePlot(rwt, "HT", "weight", (3000, 0, 3000000), array.array('d', binning_st))
+    # drawStack(rwt_ht, "H_{T} [MeV]", regionTeX, f"plots/{i}jets/stack_ht_fr_os" + suffix_before)
 
-    # rwt_st = TTbarTrueFakePlot(rwt, "ST", "weight", (3000, 0, 3000000), array.array('d', binning_st))
-    # drawStack(rwt_st, "S_{T} [MeV]", regionTeX, f"plots/{i}jets/stack_st_fr_os" + suffix_before)
+    rwt_st = TTbarTrueFakePlot(rwt, "ST", "weight", (3000, 0, 3000000), array.array('d', binning_st))
+    drawStack(rwt_st, "S_{T} [MeV]", regionTeX, f"plots/{i}jets/stack_st_fr_os" + suffix_before)
 
     # rwt_stlephad = TTbarTrueFakePlot(rwt, "STlephad", "weight", (1000, 0, 1000000), array.array(
     #     'd', [20000, 55000, 70000, 85000, 100000, 115000, 130000, 145000, 160000, 175000, 190000, 205000, 220000, 240000, 260000, 280000, 300000, 350000, 400000, 500000, 600000, 820000]))
@@ -92,14 +92,14 @@ for i in range(2, 11):
     
     print(f"{TermColor.OKBLUE}Yields (Before reweighting) {TermColor.ENDC}")
     
-    rwt_ht.checkYields()
+    rwt_st.checkYields()
 
-    reweight1D(rwt_ht, "H_{T} [MeV]", f"plots/{i}jets/wt1d_ht_fr_os.pdf", f"_{i}jets")
+    reweight1D(rwt_st, "S_{T} [MeV]", f"plots/{i}jets/wt1d_ht_fr_os.pdf", f"_{i}jets")
 
     # Apply reweighting
     # ------------------
 
-    rwt.applyWeightNjets(("HT", os.path.join(os.getcwd(), "include", f"Reweight1D_{i}jets.h")), f"_{i}jets")
+    rwt.applyWeightNjets(("ST", os.path.join(os.getcwd(), "include", f"Reweight1D_{i}jets.h")), f"_{i}jets")
 
     # After reweighting
     # ------------------
