@@ -156,8 +156,8 @@ class AnaBase(object):
         declare if the name of objects are not in the dynamic scopes
         """
         if rwt1d:
+            suffix = "_dRbb"
             if declare:
-                suffix = "_dRbb"
                 rtf = R.TFile(
                     f"/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func{suffix}.root")
                 R.gInterpreter.ProcessLine(f"TH1* myfunc{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); myfunc{suffix}->SetDirectory(0);")
@@ -181,8 +181,8 @@ class AnaBase(object):
         declare if the name of objects are not in the dynamic scopes
         """
         if rwt1d:
+            suffix = "_dRlh"
             if declare:
-                suffix = "_dRlh"
                 rtf = R.TFile(
                     f"/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func{suffix}.root")
                 R.gInterpreter.ProcessLine(f"TH1* myfunc{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); myfunc{suffix}->SetDirectory(0);")

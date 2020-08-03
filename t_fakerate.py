@@ -18,7 +18,7 @@ print(f"{TermColor.OKBLUE}Defining numerator and denominator ... {TermColor.ENDC
 # pass id
 pasid = AnaTTbarTrueFake(tauid=True, isOS=True)
 pasid.applyWeightStep1(
-    ("ST", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), True)
+    ("HT", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), True)
 pasid.applyWeightStep2(
     ("dRbb", os.path.join(os.getcwd(), "include", "Reweight1D_dRbb.h")), True)
 pasid.applyWeightStep3(
@@ -26,13 +26,13 @@ pasid.applyWeightStep3(
 
 # no id
 total = AnaTTbarTrueFake(tauid=False, isOS=True)
-# <- already loaded in dynamic scope
+# False: already loaded in dynamic scope
 total.applyWeightStep1(
-    ("ST", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), False)
+    ("HT", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), False)
 total.applyWeightStep2(
-    ("dRbb", os.path.join(os.getcwd(), "include", "Reweight1D_dRbb.h")), True)
+    ("dRbb", os.path.join(os.getcwd(), "include", "Reweight1D_dRbb.h")), False)
 total.applyWeightStep3(
-    ("dRTauLep", os.path.join(os.getcwd(), "include", "Reweight1D_dRlh.h")), True)
+    ("dRTauLep", os.path.join(os.getcwd(), "include", "Reweight1D_dRlh.h")), False)
 print(f"{TermColor.OKGREEN}Done {TermColor.ENDC}")
 
 # output root file
