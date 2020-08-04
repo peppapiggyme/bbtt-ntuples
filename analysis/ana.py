@@ -79,7 +79,7 @@ class AnaBase(object):
         if rwt1d:
             rtf = R.TFile(
                 f"{os.getcwd()}/rootfiles/func{suffix}.root")
-            R.gInterpreter.ProcessLine(f"TH1* myfunc{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); myfunc{suffix}->SetDirectory(0);")
+            R.gInterpreter.ProcessLine(f"TH1* hCorr{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); hCorr{suffix}->SetDirectory(0);")
             R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
             ttbarWeight = f"(float)eval_reweighter{suffix}({rwt1d[0]})"
             if not self._tauid:
@@ -120,7 +120,7 @@ class AnaBase(object):
                     suffix = f"_{i}jets"
                     rtf = R.TFile(
                         f"{os.getcwd()}/rootfiles/func{suffix}.root")
-                    R.gInterpreter.ProcessLine(f"TH1* myfunc{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); myfunc{suffix}->SetDirectory(0);")
+                    R.gInterpreter.ProcessLine(f"TH1* hCorr{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); hCorr{suffix}->SetDirectory(0);")
             R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
             ttbarWeight = f"(float)eval_reweighter_njets(n_jets, {rwt1d[0]})"
             if not self._tauid:
@@ -160,7 +160,7 @@ class AnaBase(object):
             if declare:
                 rtf = R.TFile(
                     f"{os.getcwd()}/rootfiles/func{suffix}.root")
-                R.gInterpreter.ProcessLine(f"TH1* myfunc{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); myfunc{suffix}->SetDirectory(0);")
+                R.gInterpreter.ProcessLine(f"TH1* hCorr{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); hCorr{suffix}->SetDirectory(0);")
                 R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
             ttbarWeight = f"(float)eval_reweighter{suffix}({rwt1d[0]})"
             for p in self.processes:
@@ -185,7 +185,7 @@ class AnaBase(object):
             if declare:
                 rtf = R.TFile(
                     f"{os.getcwd()}/rootfiles/func{suffix}.root")
-                R.gInterpreter.ProcessLine(f"TH1* myfunc{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); myfunc{suffix}->SetDirectory(0);")
+                R.gInterpreter.ProcessLine(f"TH1* hCorr{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); hCorr{suffix}->SetDirectory(0);")
                 R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
             ttbarWeight = f"(float)eval_reweighter{suffix}({rwt1d[0]})"
             for p in self.processes:

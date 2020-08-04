@@ -1,3 +1,3 @@
 float eval_reweighter_5jets(float x) {
-    return myfunc_5jets->GetBinContent(myfunc_5jets->FindBin(x));
+    return hCorr_5jets->GetBinContent(hCorr_5jets->FindBin(x));
 }
