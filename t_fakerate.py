@@ -5,6 +5,8 @@ from analysis.utils import *
 from analysis.ana import *
 from analysis.plot import *
 
+R.gInterpreter.ProcessLine("ROOT::EnableImplicitMT();")
+
 print(f"{TermColor.OKBLUE}Starting program ... {TermColor.ENDC}")
 
 # current variation

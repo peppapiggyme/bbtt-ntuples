@@ -7,7 +7,7 @@ from analysis.plot import *
 
 print(f"{TermColor.OKBLUE}Starting program ... {TermColor.ENDC}")
 
-R.EnableImplicitMT(2)
+R.gInterpreter.ProcessLine("ROOT::EnableImplicitMT();")
 
 rwt = AnaTTbarTrueFake(tauid=False, isOS=True)
 

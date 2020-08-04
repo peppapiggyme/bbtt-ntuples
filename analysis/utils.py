@@ -1,4 +1,5 @@
 import ROOT as R
+import os
 R.gROOT.SetStyle("ATLAS")
 R.gStyle.SetErrorX(0.5)
 
@@ -87,7 +88,7 @@ def reweight1D(plot, varTeX, fileName, suffix):
     f = R.TF1(f"Rw1DFunc{suffix}", expr, ratio.GetXaxis().GetXmin(),
               ratio.GetXaxis().GetXmax(), 4)
     rtf = R.TFile(
-        f"/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func{suffix}.root", "recreate")
+        f"{os.getcwd()}/rootfiles/func{suffix}.root", "recreate")
     #ratio.Fit(f)
     f.SetLineColor(R.kRed - 2)
 
@@ -147,7 +148,7 @@ def reweightTrue1D(plot, varTeX, fileName, suffix):
     f = R.TF1(f"Rw1DFunc{suffix}", expr, ratio.GetXaxis().GetXmin(),
               ratio.GetXaxis().GetXmax(), 4)
     rtf = R.TFile(
-        f"/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func{suffix}.root", "recreate")
+        f"{os.getcwd()}/rootfiles/func{suffix}.root", "recreate")
     ratio.Fit(f)
     f.SetLineColor(R.kRed - 2)
 

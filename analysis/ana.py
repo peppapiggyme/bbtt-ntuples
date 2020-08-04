@@ -58,7 +58,7 @@ class AnaBase(object):
         print(f"> analysis region is [{self._region}]")
         print(f"> selection is [{reg[self._region]}]")
 
-        self.path = "/Users/bowen/Documents/work/Resolved/NtupleAna/fr-ntuple-v3/"
+        self.path = f"{os.getcwd()}/../fr-ntuple-v3/"
         self.samples = {}
         self.processes = set()
         self.files = {}
@@ -78,7 +78,7 @@ class AnaBase(object):
         """
         if rwt1d:
             rtf = R.TFile(
-                f"/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func{suffix}.root")
+                f"{os.getcwd()}/rootfiles/func{suffix}.root")
             R.gInterpreter.ProcessLine(f"TH1* myfunc{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); myfunc{suffix}->SetDirectory(0);")
             R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
             ttbarWeight = f"(float)eval_reweighter{suffix}({rwt1d[0]})"
@@ -119,7 +119,7 @@ class AnaBase(object):
                 for i in range(2, 11):
                     suffix = f"_{i}jets"
                     rtf = R.TFile(
-                        f"/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func{suffix}.root")
+                        f"{os.getcwd()}/rootfiles/func{suffix}.root")
                     R.gInterpreter.ProcessLine(f"TH1* myfunc{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); myfunc{suffix}->SetDirectory(0);")
             R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
             ttbarWeight = f"(float)eval_reweighter_njets(n_jets, {rwt1d[0]})"
@@ -159,7 +159,7 @@ class AnaBase(object):
             suffix = "_dRbb"
             if declare:
                 rtf = R.TFile(
-                    f"/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func{suffix}.root")
+                    f"{os.getcwd()}/rootfiles/func{suffix}.root")
                 R.gInterpreter.ProcessLine(f"TH1* myfunc{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); myfunc{suffix}->SetDirectory(0);")
                 R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
             ttbarWeight = f"(float)eval_reweighter{suffix}({rwt1d[0]})"
@@ -184,7 +184,7 @@ class AnaBase(object):
             suffix = "_dRlh"
             if declare:
                 rtf = R.TFile(
-                    f"/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func{suffix}.root")
+                    f"{os.getcwd()}/rootfiles/func{suffix}.root")
                 R.gInterpreter.ProcessLine(f"TH1* myfunc{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); myfunc{suffix}->SetDirectory(0);")
                 R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
             ttbarWeight = f"(float)eval_reweighter{suffix}({rwt1d[0]})"
