@@ -176,11 +176,11 @@ rwt_ht.checkYields()
 # ------------------
 print(f"{TermColor.OKBLUE}Second step reweighting with dRbb {TermColor.ENDC}")
 
-binning_bb = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 10]
+binning_bb = [0, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 10]
 rwt_dr_bb = TTbarTrueFakePlot(rwt, "dRbb", "weight_new", (12, 0, 6), rebin=array.array('d', binning_bb))
 reweight1D(rwt_dr_bb, "#DeltaR(b, b)", f"plots/dRbb/wt1d_dRbb_fr_os.pdf", f"_dRbb")
 
-rwt.applyWeightStep2(("dRbb", os.path.join(os.getcwd(), "include", f"Reweight1D_dRbb.h")))
+rwt.applyWeightStep2(("dRbb", os.path.join(os.getcwd(), "include", f"Reweight1D_dRbb.h")), True)
 rwt_ht = TTbarTrueFakePlot(rwt, "HT", "weight_final", (2000, 0, 2000000))
 print(f"{TermColor.OKBLUE}Yields (After reweighting step 2) {TermColor.ENDC}")
 rwt_ht.checkYields()
@@ -189,11 +189,11 @@ rwt_ht.checkYields()
 # ------------------
 print(f"{TermColor.OKBLUE}Third step reweighting with dRTauLep {TermColor.ENDC}")
 
-binning_lh = [0, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 10]
+binning_lh = [0, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 10]
 rwt_dr_lh = TTbarTrueFakePlot(rwt, "dRTauLep", "weight_final", (12, 0, 6), rebin=array.array('d', binning_lh))
 reweight1D(rwt_dr_lh, "#DeltaR(lep, #tau)", f"plots/dRlh/wt1d_dRlh_fr_os.pdf", f"_dRlh")
 
-rwt.applyWeightStep3(("dRTauLep", os.path.join(os.getcwd(), "include", f"Reweight1D_dRlh.h")))
+rwt.applyWeightStep3(("dRTauLep", os.path.join(os.getcwd(), "include", f"Reweight1D_dRlh.h")), True)
 rwt_ht = TTbarTrueFakePlot(rwt, "HT", "weight_extra", (2000, 0, 2000000))
 print(f"{TermColor.OKBLUE}Yields (After reweighting step 3) {TermColor.ENDC}")
 rwt_ht.checkYields()
