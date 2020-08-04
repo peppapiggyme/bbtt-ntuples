@@ -196,7 +196,7 @@ rwt_dr_lep_tau.checkYields()
 # (new!) step 2 reweighting
 # -------------------------
 print(f"{TermColor.OKBLUE}Applying second step reweighting ... {TermColor.ENDC}")
-rwt.applyWeightStep2(("dRbb", os.path.join(os.getcwd(), "include", f"Reweight1D_dRbb.h")), f"_dRbb", True)
+rwt.applyWeightStep2(("dRbb", os.path.join(os.getcwd(), "include", f"Reweight1D_dRbb.h")), True)
 
 print(f"{TermColor.OKBLUE}Preparing after 2nd reweighitng plots ... {TermColor.ENDC}")
 
@@ -282,7 +282,7 @@ print(f"{TermColor.OKGREEN}Plotting done! {TermColor.ENDC}")
 # (new!) step 3 reweighting
 # -------------------------
 print(f"{TermColor.OKBLUE}Applying third step reweighting ... {TermColor.ENDC}")
-rwt.applyWeightStep3(("dRTauLep", os.path.join(os.getcwd(), "include", f"Reweight1D_dRlh.h")), f"_dRlh", True)
+rwt.applyWeightStep3(("dRTauLep", os.path.join(os.getcwd(), "include", f"Reweight1D_dRlh.h")), True)
 
 print(f"{TermColor.OKBLUE}Preparing after 3rd reweighitng plots ... {TermColor.ENDC}")
 
