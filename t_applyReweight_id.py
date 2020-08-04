@@ -185,16 +185,8 @@ rwt_tau_pt.checkYields()
 
 # (new!) step 2 reweighting
 # -------------------------
-
-# derive
-print(f"{TermColor.OKBLUE}Second step reweighting with dRbb {TermColor.ENDC}")
-
-rwt_dr_bb = TTbarTrueFakePlot(rwt, "dRbb", "weight_new", (12, 0, 6))
-reweight1D(rwt_dr_bb, "#DeltaR(b, b)", f"plots/dRbb/wt1d_dRbb_fr_os.pdf", f"_dRbb")
-
-# apply
 print(f"{TermColor.OKBLUE}Applying second step reweighting ... {TermColor.ENDC}")
-rwt.applyWeightStep2(("dRbb", os.path.join(os.getcwd(), "include", f"Reweight1D_dRbb.h")), f"_dRbb")
+rwt.applyWeightStep2(("dRbb", os.path.join(os.getcwd(), "include", f"Reweight1D_dRbb.h")), f"_dRbb", True)
 
 print(f"{TermColor.OKBLUE}Preparing after 2nd reweighitng plots ... {TermColor.ENDC}")
 
@@ -279,16 +271,8 @@ print(f"{TermColor.OKGREEN}Plotting done! {TermColor.ENDC}")
 
 # (new!) step 3 reweighting
 # -------------------------
-
-# derive
-print(f"{TermColor.OKBLUE}Third step reweighting with dRTauLep {TermColor.ENDC}")
-
-rwt_dr_lh = TTbarTrueFakePlot(rwt, "dRTauLep", "weight_final", (12, 0, 6))
-reweight1D(rwt_dr_lh, "#DeltaR(lep, #tau)", f"plots/dRlh/wt1d_dRlh_fr_os.pdf", f"_dRlh")
-
-# apply
 print(f"{TermColor.OKBLUE}Applying third step reweighting ... {TermColor.ENDC}")
-rwt.applyWeightStep3(("dRTauLep", os.path.join(os.getcwd(), "include", f"Reweight1D_dRlh.h")), f"_dRlh")
+rwt.applyWeightStep3(("dRTauLep", os.path.join(os.getcwd(), "include", f"Reweight1D_dRlh.h")), f"_dRlh", True)
 
 print(f"{TermColor.OKBLUE}Preparing after 3rd reweighitng plots ... {TermColor.ENDC}")
 

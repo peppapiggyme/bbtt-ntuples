@@ -121,7 +121,7 @@ class AnaBase(object):
                     rtf = R.TFile(
                         f"/Users/bowen/Documents/work/Resolved/NtupleAna/RDFAnalysis/rootfiles/func{suffix}.root")
                     R.gInterpreter.ProcessLine(f"TH1* myfunc{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); myfunc{suffix}->SetDirectory(0);")
-                R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
+            R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
             ttbarWeight = f"(float)eval_reweighter_njets(n_jets, {rwt1d[0]})"
             if not self._tauid:
                 for p in self.processes:
