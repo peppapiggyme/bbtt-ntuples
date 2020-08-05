@@ -87,26 +87,26 @@ class AnaBase(object):
                     # NOTE: hardcoded name but should be safe, since process names are unique
                     if p.startswith("ttbar"):
                         self._current_df[p] = self._current_df[p].Define(
-                            "weight_new", f"weight * {ttbarWeight}")
+                            "weight_new", f"weight / tauSF * {ttbarWeight}")
                     else:
-                        self._current_df[p] = self._current_df[p].Define("weight_new", "weight")
+                        self._current_df[p] = self._current_df[p].Define("weight_new", "weight / tauSF")
             else:
                 for p in self.processes:
                     # NOTE: hardcoded name but should be safe, since process names are unique
                     if p.startswith("ttbar"):
                         self._current_df[p] = self._current_df[p].Define(
-                            "weight_new", f"weight * tauSF * {ttbarWeight}")
+                            "weight_new", f"weight* {ttbarWeight}")
                     else:
                         self._current_df[p] = self._current_df[p].Define(
-                            "weight_new", f"weight * tauSF")
+                            "weight_new", f"weight")
         else:
             if not self._tauid:
                 for p in self.processes:
-                    self._current_df[p] = self._current_df[p].Define("weight_new", "weight")
+                    self._current_df[p] = self._current_df[p].Define("weight_new", "weight / tauSF")
             else:
                 for p in self.processes:
                     self._current_df[p] = self._current_df[p].Define(
-                        "weight_new", "weight * tauSF")
+                        "weight_new", "weight")
 
     def applyWeightStep1(self, rwt1d=None, declare=False):
         """
@@ -128,26 +128,26 @@ class AnaBase(object):
                     # NOTE: hardcoded name but should be safe, since process names are unique
                     if p.startswith("ttbar"):
                         self.df[p] = self.df[p].Define(
-                            "weight_new", f"weight * {ttbarWeight}")
+                            "weight_new", f"weight / tauSF * {ttbarWeight}")
                     else:
-                        self.df[p] = self.df[p].Define("weight_new", "weight")
+                        self.df[p] = self.df[p].Define("weight_new", "weight / tauSF")
             else:
                 for p in self.processes:
                     # NOTE: hardcoded name but should be safe, since process names are unique
                     if p.startswith("ttbar"):
                         self.df[p] = self.df[p].Define(
-                            "weight_new", f"weight * tauSF * {ttbarWeight}")
+                            "weight_new", f"weight * {ttbarWeight}")
                     else:
                         self.df[p] = self.df[p].Define(
-                            "weight_new", f"weight * tauSF")
+                            "weight_new", f"weight")
         else:
             if not self._tauid:
                 for p in self.processes:
-                    self.df[p] = self.df[p].Define("weight_new", "weight")
+                    self.df[p] = self.df[p].Define("weight_new", "weight / tauSF")
             else:
                 for p in self.processes:
                     self.df[p] = self.df[p].Define(
-                        "weight_new", "weight * tauSF")
+                        "weight_new", "weight")
 
     def applyWeightStep2(self, rwt1d=None, declare=False):
         """
