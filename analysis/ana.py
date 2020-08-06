@@ -35,7 +35,7 @@ def update_region():
 update_region()
 
 class AnaBase(object):
-    def __init__(self, tauid, isOS=None, prong=None, morecut=None, rewrite=None):
+    def __init__(self, tauid, isOS=None, prong=None, morecut=None, rewrite=None, path=None):
         self._tauid = tauid
         self._isOS = isOS
         self._prong = prong
@@ -58,7 +58,7 @@ class AnaBase(object):
         print(f"> analysis region is [{self._region}]")
         print(f"> selection is [{reg[self._region]}]")
 
-        self.path = f"{os.getcwd()}/../fr-ntuple-v3/"
+        self.path = f"{os.getcwd()}/../fr-ntuple-v3/" if not path else path
         self.samples = {}
         self.processes = set()
         self.files = {}
@@ -209,8 +209,8 @@ class AnaBase(object):
 
 
 class AnaTTbarTrueFale(AnaBase):
-    def __init__(self, tauid, isOS=None, prong=None, morecut=None, rewrite=None):
-        super().__init__(tauid, isOS, prong, morecut, rewrite)
+    def __init__(self, tauid, isOS=None, prong=None, morecut=None, rewrite=None, path=None):
+        super().__init__(tauid, isOS, prong, morecut, rewrite, path)
 
         self.samples = {
             "data": {"data"},
@@ -237,8 +237,8 @@ class AnaTTbarTrueFale(AnaBase):
 
 
 class AnaTTbarTrueFake(AnaBase):
-    def __init__(self, tauid, isOS=None, prong=None, morecut=None, rewrite=None):
-        super().__init__(tauid, isOS, prong, morecut, rewrite)
+    def __init__(self, tauid, isOS=None, prong=None, morecut=None, rewrite=None, path=None):
+        super().__init__(tauid, isOS, prong, morecut, rewrite, path)
 
         self.samples = {
             "data": {"data"},
