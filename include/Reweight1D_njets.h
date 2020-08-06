@@ -1,3 +1,6 @@
+#ifndef REWEIGHT1D_NJETS_H
+#define REWEIGHT1D_NJETS_H
+
 float eval_reweighter_njets(int n, float x) {
     if (n == 2) {
         return hCorr_2jets->GetBinContent(hCorr_2jets->FindBin(x));
@@ -37,3 +40,5 @@ float eval_reweighter_njets(int n, float x) {
 
     return 1.0;
 }
+
+#endif
