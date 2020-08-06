@@ -15,7 +15,11 @@ regionTeX = "lephad, OS, Mbb>150, MTW>150, Pass #tau ID"
 
 suffix_syst = f"_tauid_syst.pdf"
 
-variations = ["TTBarReweight_Stat", "TTBarReweight_Closure"]
+variations = ["TTBarReweight_Stat", "TTBarReweight_Closure_TauPt"]
+# variations = ["TTBarReweight_Stat", "TTBarReweight_Closure_MET"]
+# variations = ["TTBarReweight_Stat", "TTBarReweight_Closure_Mhh"]
+# variations = ["TTBarReweight_Stat", "TTBarReweight_Closure2"]
+# variations = ["TTBarReweight_Stat", "TTBarReweight_Closure3"]
 
 print(f"{TermColor.OKBLUE}Applying/or not applying tau SF weight ... {TermColor.ENDC}")
 rwt.applyTauSF("Nominal") # only do tau SF weight
