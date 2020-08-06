@@ -46,4 +46,4 @@ clos_mhh = TTbarTrueFakePlot(clos, "mHH", "weight_extra", (2000, 200000, 2200000
     'd', [200000, 350000, 450000, 500000, 550000, 600000, 700000, 800000, 900000, 1200000, 2200000]))
 
 # basically reweight again, but take the difference against 1 as uncertainty ...
-reweight1D(clos_tau_pt, "#M_{HH} [MeV]", f"plots/dRlh/clos_mhh_fr_os.pdf", "_mhh")
+reweight1D(clos_mhh, "#M_{HH} [MeV]", f"plots/dRlh/clos_mhh_fr_os.pdf", "_mhh")
