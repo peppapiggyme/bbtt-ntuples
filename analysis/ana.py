@@ -71,6 +71,14 @@ class AnaBase(object):
     def current_df(self):
         return self._current_df
 
+    def applyTauSF(self, weight_name):
+        if not self._tauid:
+            for p in self.processes:
+                self.df[p] = self.df[p].Define(f"{weight_name}_new", f"{weight_name} / tauSF")
+        else:
+             for p in self.processes:
+                self.df[p] = self.df[p].Define(f"{weight_name}_new", f"{weight_name}")
+
     def applyWeightNjets(self, rwt1d=None, suffix=None):
         """
         rwt1d is (varName, header_path)
@@ -95,7 +103,7 @@ class AnaBase(object):
                     # NOTE: hardcoded name but should be safe, since process names are unique
                     if p.startswith("ttbar"):
                         self._current_df[p] = self._current_df[p].Define(
-                            "weight_new", f"weight* {ttbarWeight}")
+                            "weight_new", f"weight * {ttbarWeight}")
                     else:
                         self._current_df[p] = self._current_df[p].Define(
                             "weight_new", f"weight")

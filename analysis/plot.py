@@ -119,3 +119,55 @@ class TTbarTrueFakePlot(object):
 
     def bkgColors(self):
         return zip([self.others, self.ttbarFake, self.ttbarTrue], [(153, 204, 255), (255, 153, 153), (255, 255, 153)])
+
+
+class TTbarSystPlotCollection(object):
+    """
+    return data, ttbar and others
+    """
+
+    def __init__(self, ana, varnm, wt_suffix, systs, th1bin, rebin=None):
+        super().__init__()
+
+        self._systematics = systs
+        self._nomPlot = TTbarTrueFakePlot(ana, varnm, "Nominal" + wt_suffix, th1bin, rebin)
+        self._systPlots = {}
+        for syst in self._systematics:
+            self._systPlots[syst] = (
+                TTbarTrueFakePlot(ana, varnm, syst + "__1up" + wt_suffix, th1bin, rebin), 
+                TTbarTrueFakePlot(ana, varnm, syst + "__1down" + wt_suffix, th1bin, rebin)
+            )
+            
+    def nominalPlot(self):
+        return self._nomPlot
+    
+    def systematicPlots(self):
+        return self._systPlots
+    
+    def numberOfSysts(self):
+        assert(len(self._systPlots) == len(self._systematics))
+        return len(self._systPlots)
+
+    def checkYields(self):
+        print("Nominal:")
+        print(f"-------------+----------------------------------")
+        print(f" n_data      |   {self._nomPlot.data.Integral()}")
+        print(f" n_ttbarTrue |   {self._nomPlot.ttbarTrue.Integral()}")
+        print(f" n_ttbarFake |   {self._nomPlot.ttbarFake.Integral()}")
+        print(f" n_other     |   {self._nomPlot.others.Integral()}")
+        print(f"-------------+----------------------------------")
+        for syst in self._systematics:
+            print(f"{syst}__1up:")
+            print(f"-------------+----------------------------------")
+            print(f" n_data      |   {self._systPlots[syst][0].data.Integral()}")
+            print(f" n_ttbarTrue |   {self._systPlots[syst][0].ttbarTrue.Integral()}")
+            print(f" n_ttbarFake |   {self._systPlots[syst][0].ttbarFake.Integral()}")
+            print(f" n_other     |   {self._systPlots[syst][0].others.Integral()}")
+            print(f"-------------+----------------------------------")
+            print(f"{syst}__1down:")
+            print(f"-------------+----------------------------------")
+            print(f" n_data      |   {self._systPlots[syst][1].data.Integral()}")
+            print(f" n_ttbarTrue |   {self._systPlots[syst][1].ttbarTrue.Integral()}")
+            print(f" n_ttbarFake |   {self._systPlots[syst][1].ttbarFake.Integral()}")
+            print(f" n_other     |   {self._systPlots[syst][1].others.Integral()}")
+            print(f"-------------+----------------------------------")

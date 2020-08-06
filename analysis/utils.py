@@ -1,5 +1,6 @@
 import ROOT as R
 import os
+from math import sqrt
 R.gROOT.SetStyle("ATLAS")
 R.gStyle.SetErrorX(0.5)
 
@@ -181,7 +182,10 @@ def reweightTrue1D(plot, varTeX, fileName, suffix):
     return True
 
 
-def drawStack(plot, varTeX, regionTeX, fileName):
+def drawStack(plot, varTeX, regionTeX, fileName, systs=None):
+    """
+    systs = {"systname": (plot_up, plot_down), ...}
+    """
     c = R.TCanvas("c", "", 900, 900)
     pad = R.TPad("upper_pad", "", 0, 0.35, 1, 1)
     pad.SetBottomMargin(0.03)
@@ -200,9 +204,11 @@ def drawStack(plot, varTeX, regionTeX, fileName):
     data = plot.data
     ttbarTrue = plot.ttbarTrue
     ttbarFake = plot.ttbarFake
+    stack = R.THStack()
+    ttbar = plot.ttbarTrue.Clone("ttbar")
+    ttbar.Add(plot.ttbarFake)
     others = plot.others
     # Draw stack with MC contributions
-    stack = R.THStack()
     for h, color in plot.bkgColors():
         h.SetLineWidth(1)
         h.SetLineColor(1)
@@ -285,10 +291,48 @@ def drawStack(plot, varTeX, regionTeX, fileName):
     rat.SetTitle("ratio")
     rat.Draw("E1 SAME")
 
+    if systs:
+        # so far only ttbar systematics 
+        sys_up = data.Clone("sys_up")
+        sys_up.SetLineColor(R.TColor.GetColor(189, 27, 108))
+        sys_up.SetLineStyle(1)
+        sys_up.SetLineWidth(2)
+        sys_do = sys_up.Clone("sys_down")
+        tot_up = [0 for i in range(0, sys_up.GetNbinsX() + 2)]
+        tot_do = [0 for i in range(0, sys_up.GetNbinsX() + 2)]
+        for sn, up_down in systs.items():
+            up, do = up_down
+            ttbar_up = up.ttbarTrue.Clone("ttbar_up")
+            ttbar_up.Add(up.ttbarFake)
+            ttbar_do = do.ttbarTrue.Clone("ttbar_down")
+            ttbar_do.Add(do.ttbarFake)
+            
+            # ratio
+            ttbar_up.Add(ttbar, -1)
+            ttbar_do.Add(ttbar, -1)
+            
+            for i in range(0, sys_up.GetNbinsX() + 2):
+                tot_up[i] += ttbar_up.GetBinContent(i)**2
+                tot_do[i] += ttbar_do.GetBinContent(i)**2
+        
+        for i in range(0, sys_up.GetNbinsX() + 2):
+            if bkg.GetBinContent(i) > 0:
+                sys_up.SetBinContent(i, 1 + err.GetBinError(i) + sqrt(tot_up[i]) / bkg.GetBinContent(i))
+                sys_do.SetBinContent(i, 1 - err.GetBinError(i) - sqrt(tot_do[i]) / bkg.GetBinContent(i))
+            else:
+                sys_up.SetBinContent(i, 0)
+                sys_do.SetBinContent(i, 0)
+            sys_up.SetBinError(i, 0)
+            sys_do.SetBinError(i, 0)
+            
+        # plot stat + syst
+        sys_up.Draw("HIST SAME")
+        sys_do.Draw("HIST SAME")
+
     # Save the plot
     c.Update()
     c.SaveAs(fileName)
-
+    print(f"{TermColor.OKGREEN}√ {fileName} printed {TermColor.ENDC}")
 
 class TermColor:
     HEADER = '\033[95m'
