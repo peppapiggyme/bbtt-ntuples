@@ -1,7 +1,7 @@
 import ROOT as R
 # TODO: inheritence
 
-class TTbarTrueFakePlot(object):
+class TTbarInclPlot(object):
     """
     return data, ttbar and others
     """

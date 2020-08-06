@@ -18,9 +18,13 @@ clos.applyWeightStep2(("dRbb", os.path.join(os.getcwd(), "include", f"Reweight1D
 print(f"{TermColor.OKBLUE}Applying third step reweighting ... {TermColor.ENDC}")
 clos.applyWeightStep3(("dRTauLep", os.path.join(os.getcwd(), "include", f"Reweight1D_dRlh.h")), True)
 
+# parametrisations
 clos_tau_pt = TTbarTrueFakePlot(clos, "tau_pt", "weight_extra", (980, 20000, 1000000), array.array(
     'd', [20000, 30000, 40000, 50000, 70000, 100000, 1000000]))
+clos_met = TTbarTrueFakePlot(clos, "MET", "weight_extra", (400, 0, 400000), array.array(
+    'd', [20000, 40000, 60000, 80000, 100000, 120000, 160000, 220000, 300000, 400000]))
 
 # basically reweight again, but take the difference against 1 as uncertainty ...
 reweight1D(clos_tau_pt, "#tau_{had} p_{T} [MeV]", f"plots/dRlh/clos_tau_pt_fr_os.pdf", "_tau_pt")
+reweight1D(clos_met, "MET [MeV]", f"plots/dRlh/clos_met_fr_os.pdf", "_tau_pt")
 
