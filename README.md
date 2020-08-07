@@ -1,5 +1,10 @@
 Dependence: ROOT6.22 + python3
 
+installation
+```shell
+conda env create -f CondaEnv.yml
+```
+
 ttbar reweighting factor calculation: three steps in one script
 ```
 python t_reweighter.py
