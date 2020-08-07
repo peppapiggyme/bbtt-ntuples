@@ -55,15 +55,17 @@ class AnaBase(object):
             reg["NoID"] = rewrite
             update_region()
 
-        print(f"> analysis region is [{self._region}]")
-        print(f"> selection is [{reg[self._region]}]")
-
+        
         self.path = f"{os.getcwd()}/../fr-ntuple-v3/" if not path else path
         self.samples = {}
         self.processes = set()
         self.files = {}
         self.df = {}  # -> the df without filter applied
         self._current_df = {}  # -> the df with filter applied
+        
+        print(f"> ntuple path: {self.path}")
+        print(f"> analysis region is [{self._region}]")
+        print(f"> selection is [{reg[self._region]}]")
 
     def set_current_df(self, new_df):
         self._current_df = new_df
