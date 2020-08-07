@@ -298,8 +298,8 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None):
         sys_up.SetLineStyle(1)
         sys_up.SetLineWidth(2)
         sys_do = sys_up.Clone("sys_down")
-        tot_up = [0 for i in range(0, sys_up.GetNbinsX() + 2)]
-        tot_do = [0 for i in range(0, sys_up.GetNbinsX() + 2)]
+        tot_up = [err.GetBinError(i)**2 for i in range(0, sys_up.GetNbinsX() + 2)]
+        tot_do = [err.GetBinError(i)**2 for i in range(0, sys_up.GetNbinsX() + 2)]
         for sn, up_down in systs.items():
             up, do = up_down
             ttbar_up = up.ttbarTrue.Clone("ttbar_up")
@@ -312,16 +312,13 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None):
             ttbar_do.Add(ttbar, -1)
             
             for i in range(0, sys_up.GetNbinsX() + 2):
-                tot_up[i] += ttbar_up.GetBinContent(i)**2
-                tot_do[i] += ttbar_do.GetBinContent(i)**2
+                if bkg.GetBinContent(i) > 0:
+                    tot_up[i] += (ttbar_up.GetBinContent(i) / bkg.GetBinContent(i))**2
+                    tot_do[i] += (ttbar_do.GetBinContent(i) / bkg.GetBinContent(i))**2
         
         for i in range(0, sys_up.GetNbinsX() + 2):
-            if bkg.GetBinContent(i) > 0:
-                sys_up.SetBinContent(i, 1 + err.GetBinError(i) + sqrt(tot_up[i]) / bkg.GetBinContent(i))
-                sys_do.SetBinContent(i, 1 - err.GetBinError(i) - sqrt(tot_do[i]) / bkg.GetBinContent(i))
-            else:
-                sys_up.SetBinContent(i, 0)
-                sys_do.SetBinContent(i, 0)
+            sys_up.SetBinContent(i, 1 + sqrt(tot_up[i]))
+            sys_do.SetBinContent(i, 1 - sqrt(tot_do[i]))
             sys_up.SetBinError(i, 0)
             sys_do.SetBinError(i, 0)
             

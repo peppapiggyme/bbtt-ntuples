@@ -52,7 +52,7 @@ rwt_plot = TTbarSystPlotCollection(rwt, "b1_pt", "_new", variations, (36, 20000,
 drawStack(rwt_plot.nominalPlot(), "sub-leading b-jet pT [MeV]", regionTeX, f"plots/after/stack_b1_ptlow_fr_os" + suffix_syst, systs=rwt_plot.systematicPlots())
 
 rwt_plot = TTbarSystPlotCollection(rwt, "tau_pt", "_new", variations, (36, 20000, 200000))
-drawStack(rwt_plot.nominalPlot(), "tau pT [MeV]", regionTeX, f"plots/after/stack_tau_pt_fr_os" + suffix_syst, systs=rwt_plot.systematicPlots())
+drawStack(rwt_plot.nominalPlot(), "tau pT [MeV]", regionTeX, f"plots/after/stack_tau_ptlow_fr_os" + suffix_syst, systs=rwt_plot.systematicPlots())
 
 rwt_plot = TTbarSystPlotCollection(rwt, "lep_pt", "_new", variations, (980, 20000, 1000000), array.array(
      'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 250000, 1000000]))
