@@ -1,15 +1,33 @@
-ttbar reweighting
+Dependence: ROOT6.22 + python3
+
+ttbar reweighting factor calculation: three steps in one script
 ```
-/Users/bowen/anaconda3/envs/cern/bin/python t_reweighter.py
+python t_reweighter.py
+```
+
+check the correlation of the variables that are used for parrametrisation
+```
+python t_checkCorrelation.py
 ```
 
 apply reweight
 ```
-/Users/bowen/anaconda3/envs/cern/bin/python t_applyReweight_id.py
-/Users/bowen/anaconda3/envs/cern/bin/python t_applyReweight_noid.py
+python t_applyReweight_id.py
+python t_applyReweight_noid.py
 ```
 
-calculate fake rates
+derive non-closure uncertainties
 ```
-/Users/bowen/anaconda3/envs/cern/bin/python t_fakerate.py
+python t_reweightClosure.py
+```
+
+check the reweighting systematics: need to run on post-reweighting ntuples
+```
+python t_reweightSyst_id.py
+python t_reweightSyst_noid.py
+```
+
+calculate fake rates: so far run on pre-reweighting ntuples
+```
+python t_fakerate.py
 ```
