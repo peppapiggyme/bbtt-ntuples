@@ -39,7 +39,7 @@ clos.applyWeightStep2(("dRbb", os.path.join(os.getcwd(), "include", f"Reweight1D
 # clos.applyWeightStep3(("dRTauLep", os.path.join(os.getcwd(), "include", f"Reweight1D_dRlh.h")), False)
 
 # parametrisations
-binning_bb = [0, 0.6, 1, 1.5, 2, 2.5, 3, 10]
+binning_bb = [0, 0.5, 1, 1.5, 2, 2.5, 3, 10]
 clos_dRbb = TTbarTrueFakePlot(clos, "dRbb", "weight_final", (36, 0, 6), rebin=array.array('d', binning_bb))
 
 # basically reweight again, but take the difference against 1 as uncertainty ...

@@ -92,9 +92,9 @@ for v in variations:
             total, "tau_pt", f"{v}_new", (9800, 20000, 1000000), bin00[prong])
 
         drawStack(plot_pasid, "#tau p_{T} [MeV]", f"lephad, OS, {prong}, offline ID",
-                f"plots/tau_pt/stack_tau_pt_tauid_{prong}.pdf")
+                f"plots/tau_pt/stack_tau_pt_tauid_{prong}__{v}.pdf")
         drawStack(plot_total, "#tau p_{T} [MeV]", f"lephad, OS, {prong}, no ID",
-                f"plots/tau_pt/stack_tau_pt_{prong}.pdf")
+                f"plots/tau_pt/stack_tau_pt_{prong}__{v}.pdf")
 
         fd, fm = fakerates(plot_pasid, plot_total, "00", prong)
         fd.Write()
@@ -122,16 +122,16 @@ for v in variations:
                 total, "tau_pt", f"{v}_new", (9800, 20000, 1000000), binning_here)
 
             drawStack(plot_pasid, "#tau p_{T} [MeV]", f"lephad, OS, {prong}, offline ID + HLT_tau{trigger}",
-                    f"plots/tau_pt/stack_tau_pt_tauid_{prong}_{trigger}.pdf")
+                    f"plots/tau_pt/stack_tau_pt_tauid_{prong}_{trigger}__{v}.pdf")
             # the trigger is in the filename but only year cut is applied not trigger matching to the denominator
             drawStack(plot_total, "#tau p_{T} [MeV]", f"lephad, OS, {prong}, no ID",
-                    f"plots/tau_pt/stack_tau_pt_{prong}_{trigger}.pdf")
+                    f"plots/tau_pt/stack_tau_pt_{prong}_{trigger}__{v}.pdf")
 
             fd, fm = fakerates(plot_pasid, plot_total, trigger, prong)
             fd.Write()
             fm.Write()
-    print(f"{TermColor.OKBLUE}All fake rates have been written to the output file {TermColor.ENDC}")
 
+    print(f"{TermColor.OKBLUE}All fake rates have been written to the output file {TermColor.ENDC}")
     print(f"{TermColor.OKBLUE}Reset region ... {TermColor.ENDC}")
     pasid.set_current_df(pasid.df)
     total.set_current_df(total.df)
