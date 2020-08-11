@@ -11,7 +11,7 @@ R.gInterpreter.ProcessLine("ROOT::EnableImplicitMT();")
 clos = AnaTTbarTrueFake(tauid=False, isOS=True)
 
 print(f"{TermColor.OKBLUE}Applying to njets inclusive samples ... {TermColor.ENDC}")
-clos.applyWeightStep1(("HT", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), True)
+clos.applyWeightStep1(("ST", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), True)
 
 print(f"{TermColor.OKBLUE}Applying second step reweighting ... {TermColor.ENDC}")
 clos.applyWeightStep2(("dRbb", os.path.join(os.getcwd(), "include", f"Reweight1D_dRbb.h")), True)
@@ -30,7 +30,7 @@ reweight1D(clos_tau_pt, "#tau_{had} p_{T} [MeV]", f"plots/dRlh/clos_tau_pt_fr_os
 clos = AnaTTbarTrueFake(tauid=False, isOS=True, rewrite="n_btag == 2 && n_jets >= 2 && mBB < 150000. && mTW > 60000.")
 
 print(f"{TermColor.OKBLUE}Applying to njets inclusive samples ... {TermColor.ENDC}")
-clos.applyWeightStep1(("HT", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), False)
+clos.applyWeightStep1(("ST", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), False)
 
 print(f"{TermColor.OKBLUE}Applying second step reweighting ... {TermColor.ENDC}")
 clos.applyWeightStep2(("dRbb", os.path.join(os.getcwd(), "include", f"Reweight1D_dRbb.h")), False)

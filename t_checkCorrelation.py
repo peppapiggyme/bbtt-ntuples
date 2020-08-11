@@ -37,6 +37,6 @@ def getCorr(x_str, y_str):
     print(f"Pearson correlation coefficient {x_str} - {y_str}: \n{np.corrcoef(x, y)}")
 
 getCorr("dRbb", "dRTauLep")
-getCorr("HT", "dRTauLep")
-getCorr("HT", "dRbb")
+getCorr("ST", "dRTauLep")
+getCorr("ST", "dRbb")
 getCorr("n_jets", "HT")

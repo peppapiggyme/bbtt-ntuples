@@ -20,7 +20,7 @@ print(f"{TermColor.OKBLUE}Defining numerator and denominator ... {TermColor.ENDC
 # pass id
 pasid = AnaTTbarTrueFake(tauid=True, isOS=True)
 pasid.applyWeightStep1(
-    ("HT", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), True)
+    ("ST", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), True)
 pasid.applyWeightStep2(
     ("dRbb", os.path.join(os.getcwd(), "include", "Reweight1D_dRbb.h")), True)
 pasid.applyWeightStep3(
@@ -30,7 +30,7 @@ pasid.applyWeightStep3(
 total = AnaTTbarTrueFake(tauid=False, isOS=True)
 # False: already loaded in dynamic scope
 total.applyWeightStep1(
-    ("HT", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), False)
+    ("ST", os.path.join(os.getcwd(), "include", "Reweight1D_njets.h")), False)
 total.applyWeightStep2(
     ("dRbb", os.path.join(os.getcwd(), "include", "Reweight1D_dRbb.h")), False)
 total.applyWeightStep3(
