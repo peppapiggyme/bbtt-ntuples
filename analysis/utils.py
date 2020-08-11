@@ -63,7 +63,7 @@ def fakerates(pasid, total, trigger, prong):
     return data_fakerate, mc_fakerate
 
 
-def reweight1D(plot, varTeX, fileName, suffix):
+def reweight1D(plot, varTeX, fileName, suffix, drawOpt="E1"):
     c = R.TCanvas("c", "", 900, 900)
     # templates
     data = plot.data
@@ -93,11 +93,11 @@ def reweight1D(plot, varTeX, fileName, suffix):
     #ratio.Fit(f)
     f.SetLineColor(R.kRed - 2)
 
-    ratio.Draw("E1")
+    ratio.Draw(drawOpt)
     #f.Draw("SAME")
 
     rtf.cd()
-    f.Write()
+    #f.Write()
     ratio.Write()
     rtf.Close()
 
