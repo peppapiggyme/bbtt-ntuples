@@ -146,14 +146,14 @@ for i in range(2, 11):
 
     rwt_st = TTbarTrueFakePlot(rwt, "ST", "weight_new", (2000, 0, 2000000), array.array(
         'd', [i for i in range(0, 2050000, 50000)]))
-    drawStack(rwt_ht, "S_{T} [MeV]", regionTeX, f"plots/{i}jets/stack_st_fr_os" + suffix_after)
+    drawStack(rwt_st, "S_{T} [MeV]", regionTeX, f"plots/{i}jets/stack_st_fr_os" + suffix_after)
 
     rwt_njets = TTbarTrueFakePlot(rwt, "n_jets", "weight_new", (11, 2, 13))
     drawStack(rwt_njets, "# jets", regionTeX, f"plots/{i}jets/stack_njets_fr_os" + suffix_after)
 
     print(f"{TermColor.OKBLUE}Yields (After reweighting) {TermColor.ENDC}")
 
-    rwt_ht.checkYields()
+    rwt_st.checkYields()
 
     print(f"{TermColor.OKGREEN}Finished njets = {i}! {TermColor.ENDC}")
 
@@ -185,15 +185,15 @@ rwt_st = TTbarTrueFakePlot(rwt, "ST", "weight_final", (2000, 0, 2000000))
 print(f"{TermColor.OKBLUE}Yields (After reweighting step 2) {TermColor.ENDC}")
 rwt_st.checkYields()
 
-# step 3 reweighting
-# ------------------
-print(f"{TermColor.OKBLUE}Third step reweighting with dRTauLep {TermColor.ENDC}")
+# # step 3 reweighting
+# # ------------------
+# print(f"{TermColor.OKBLUE}Third step reweighting with dRTauLep {TermColor.ENDC}")
 
-binning_lh = [0, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 10]
-rwt_dr_lh = TTbarTrueFakePlot(rwt, "dRTauLep", "weight_final", (12, 0, 6), rebin=array.array('d', binning_lh))
-reweight1D(rwt_dr_lh, "#DeltaR(lep, #tau)", f"plots/dRlh/wt1d_dRlh_fr_os.pdf", f"_dRlh")
+# binning_lh = [0, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 10]
+# rwt_dr_lh = TTbarTrueFakePlot(rwt, "dRTauLep", "weight_final", (12, 0, 6), rebin=array.array('d', binning_lh))
+# reweight1D(rwt_dr_lh, "#DeltaR(lep, #tau)", f"plots/dRlh/wt1d_dRlh_fr_os.pdf", f"_dRlh")
 
-rwt.applyWeightStep3(("dRTauLep", os.path.join(os.getcwd(), "include", f"Reweight1D_dRlh.h")), True)
-rwt_st = TTbarTrueFakePlot(rwt, "ST", "weight_extra", (2000, 0, 2000000))
-print(f"{TermColor.OKBLUE}Yields (After reweighting step 3) {TermColor.ENDC}")
-rwt_st.checkYields()
+# rwt.applyWeightStep3(("dRTauLep", os.path.join(os.getcwd(), "include", f"Reweight1D_dRlh.h")), True)
+# rwt_st = TTbarTrueFakePlot(rwt, "ST", "weight_extra", (2000, 0, 2000000))
+# print(f"{TermColor.OKBLUE}Yields (After reweighting step 3) {TermColor.ENDC}")
+# rwt_st.checkYields()

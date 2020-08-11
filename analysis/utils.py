@@ -64,6 +64,7 @@ def fakerates(pasid, total, trigger, prong):
 
 
 def reweight1D(plot, varTeX, fileName, suffix, drawOpt="E1"):
+    print(f"{TermColor.OKBLUE}~ Reweighitng using <{varTeX}>{TermColor.ENDC}")
     c = R.TCanvas("c", "", 900, 900)
     # templates
     data = plot.data

@@ -2,7 +2,10 @@ Dependence: ROOT6.22 + python3
 
 installation
 ```shell
-conda env create -f CondaEnv.yml
+# conda env create -f CondaEnv.yml
+conda create -c conda-forge --name cern root
+conda activate cern
+conda install uproot matplotlib
 ```
 
 ttbar reweighting factor calculation: three steps in one script

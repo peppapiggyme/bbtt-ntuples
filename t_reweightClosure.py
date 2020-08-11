@@ -16,8 +16,8 @@ clos.applyWeightStep1(("ST", os.path.join(os.getcwd(), "include", "Reweight1D_nj
 print(f"{TermColor.OKBLUE}Applying second step reweighting ... {TermColor.ENDC}")
 clos.applyWeightStep2(("dRbb", os.path.join(os.getcwd(), "include", f"Reweight1D_dRbb.h")), True)
 
-print(f"{TermColor.OKBLUE}Applying third step reweighting ... {TermColor.ENDC}")
-clos.applyWeightStep3(("dRTauLep", os.path.join(os.getcwd(), "include", f"Reweight1D_dRlh.h")), True)
+# print(f"{TermColor.OKBLUE}Applying third step reweighting ... {TermColor.ENDC}")
+# clos.applyWeightStep3(("dRTauLep", os.path.join(os.getcwd(), "include", f"Reweight1D_dRlh.h")), True)
 
 # parametrisations
 clos_tau_pt = TTbarTrueFakePlot(clos, "tau_pt", "weight_extra", (980, 20000, 1000000), array.array(
@@ -35,8 +35,8 @@ clos.applyWeightStep1(("ST", os.path.join(os.getcwd(), "include", "Reweight1D_nj
 print(f"{TermColor.OKBLUE}Applying second step reweighting ... {TermColor.ENDC}")
 clos.applyWeightStep2(("dRbb", os.path.join(os.getcwd(), "include", f"Reweight1D_dRbb.h")), False)
 
-print(f"{TermColor.OKBLUE}Applying third step reweighting ... {TermColor.ENDC}")
-clos.applyWeightStep3(("dRTauLep", os.path.join(os.getcwd(), "include", f"Reweight1D_dRlh.h")), False)
+# print(f"{TermColor.OKBLUE}Applying third step reweighting ... {TermColor.ENDC}")
+# clos.applyWeightStep3(("dRTauLep", os.path.join(os.getcwd(), "include", f"Reweight1D_dRlh.h")), False)
 
 # parametrisations
 binning_bb = [0, 0.6, 1, 1.5, 2, 2.5, 3, 10]
