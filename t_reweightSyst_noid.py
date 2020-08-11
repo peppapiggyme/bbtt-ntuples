@@ -7,19 +7,16 @@ from analysis.plot import *
 
 R.gInterpreter.ProcessLine("ROOT::EnableImplicitMT();")
 
-rwt = AnaTTbarTrueFake(tauid=False, isOS=True, path=f"{os.getcwd()}/../fr-ntuple-v5/")
-#rwt = AnaTTbarTrueFake(tauid=False, isOS=True, rewrite="n_btag == 2 && n_jets >= 2 && mBB < 150000. && mTW > 60000.", path=f"{os.getcwd()}/../fr-ntuple-v5/")
+rwt = AnaTTbarTrueFake(tauid=False, isOS=True, path=f"{os.getcwd()}/../fr-ntuple-v6/")
+#rwt = AnaTTbarTrueFake(tauid=False, isOS=True, rewrite="n_btag == 2 && n_jets >= 2 && mBB < 150000. && mTW > 60000.", path=f"{os.getcwd()}/../fr-ntuple-v6/")
 
 regionTeX = "lephad, OS, Mbb>150, MTW>40, No #tau ID"
 #regionTeX = "lephad, OS, Mbb<150, MTW>60, No #tau ID"
 
 suffix_syst = f"_syst.pdf"
 
-variations = ["TTBarReweight_Stat", "TTBarReweight_Closure_TauPt"]
-# variations = ["TTBarReweight_Stat", "TTBarReweight_Closure_MET"]
-# variations = ["TTBarReweight_Stat", "TTBarReweight_Closure_Mhh"]
+variations = ["TTBarReweight_Stat", "TTBarReweight_Closure_TauPt", "TTBarReweight_Closure_dRbb"]
 # variations = ["TTBarReweight_Stat", "TTBarReweight_Closure2"]
-# variations = ["TTBarReweight_Stat", "TTBarReweight_Closure3"]
 
 print(f"{TermColor.OKBLUE}Applying/or not applying tau SF weight ... {TermColor.ENDC}")
 rwt.applyTauSF("Nominal") # only do tau SF weight
