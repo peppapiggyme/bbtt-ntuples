@@ -20,11 +20,11 @@ clos.applyWeightStep2(("dRbb", os.path.join(os.getcwd(), "include", f"Reweight1D
 # clos.applyWeightStep3(("dRTauLep", os.path.join(os.getcwd(), "include", f"Reweight1D_dRlh.h")), True)
 
 # parametrisations
-clos_tau_pt = TTbarTrueFakePlot(clos, "tau_pt", "weight_extra", (980, 20000, 1000000), array.array(
+clos_tau_pt = TTbarTrueFakePlot(clos, "tau_pt", "weight_final", (980, 20000, 1000000), array.array(
     'd', [20000, 30000, 40000, 50000, 70000, 100000, 1000000]))
 
 # basically reweight again, but take the difference against 1 as uncertainty ...
-reweight1D(clos_tau_pt, "#tau_{had} p_{T} [MeV]", f"plots/dRlh/clos_tau_pt_fr_os.pdf", "_clos_tau_pt", drawOpt="HIST")
+reweight1D(clos_tau_pt, "#tau_{had} p_{T} [MeV]", f"plots/dRbb/clos_tau_pt_fr_os.pdf", "_clos_tau_pt", drawOpt="HIST")
 
 # VR1
 clos = AnaTTbarTrueFake(tauid=False, isOS=True, rewrite="n_btag == 2 && n_jets >= 2 && mBB < 150000. && mTW > 60000.")
@@ -40,7 +40,7 @@ clos.applyWeightStep2(("dRbb", os.path.join(os.getcwd(), "include", f"Reweight1D
 
 # parametrisations
 binning_bb = [0, 0.6, 1, 1.5, 2, 2.5, 3, 10]
-clos_dRbb = TTbarTrueFakePlot(clos, "dRbb", "weight_extra", (36, 0, 6), rebin=array.array('d', binning_bb))
+clos_dRbb = TTbarTrueFakePlot(clos, "dRbb", "weight_final", (36, 0, 6), rebin=array.array('d', binning_bb))
 
 # basically reweight again, but take the difference against 1 as uncertainty ...
-reweight1D(clos_dRbb, "#DeltaR(b, b)", f"plots/dRlh/clos_dRbb_fr_os.pdf", "_clos_dRbb", drawOpt="HIST")
+reweight1D(clos_dRbb, "#DeltaR(b, b)", f"plots/dRbb/clos_dRbb_fr_os.pdf", "_clos_dRbb", drawOpt="HIST")
