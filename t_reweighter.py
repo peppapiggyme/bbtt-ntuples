@@ -11,7 +11,7 @@ R.gInterpreter.ProcessLine("ROOT::EnableImplicitMT();")
 
 rwt = AnaTTbarTrueFake(tauid=False, isOS=True)
 
-regionTeX = "lephad, OS, Mbb sideband (50~100, 150~350), MTW>40, No #tau ID"
+regionTeX = "lephad, OS, Mbb sideband, MTW>40, No #tau ID"
 
 suffix_before = f"_before.pdf"
 suffix_after = f"_after.pdf"
