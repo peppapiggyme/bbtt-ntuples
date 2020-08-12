@@ -66,6 +66,7 @@ def fakerates(pasid, total, trigger, prong):
 def reweight1D(plot, varTeX, fileName, suffix, drawOpt="E1"):
     print(f"{TermColor.OKBLUE}~ Reweighitng using <{varTeX}>{TermColor.ENDC}")
     c = R.TCanvas("c", "", 900, 900)
+    c.SetRightMargin(1.6 * c.GetRightMargin())
     # templates
     data = plot.data
     ttbar = plot.ttbarFake.Clone()
@@ -188,6 +189,7 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None):
     systs = {"systname": (plot_up, plot_down), ...}
     """
     c = R.TCanvas("c", "", 900, 900)
+    c.SetRightMargin(1.6 * c.GetRightMargin())
     pad = R.TPad("upper_pad", "", 0, 0.35, 1, 1)
     pad.SetBottomMargin(0.03)
     pad.SetTickx(False)
