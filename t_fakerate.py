@@ -39,7 +39,7 @@ print(f"{TermColor.OKGREEN}Done {TermColor.ENDC}")
 # output root file
 fout = R.TFile("rootfiles/ttbar-fakerates.root", "recreate")
 for v in variations:
-    print(f"{TermColor.OKBLUE}~ running variation <{v}>{TermColor.ENDC}")
+    print(f"{TermColor.BOLD}{TermColor.OKBLUE}~ running variation <{v}>{TermColor.ENDC}{TermColor.ENDC}")
     fdir = fout.mkdir(v)
     fdir.cd()
 
