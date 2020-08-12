@@ -10,8 +10,8 @@ R.gInterpreter.ProcessLine("ROOT::EnableImplicitMT();")
 #rwt = AnaTTbarTrueFake(tauid=True, isOS=True)
 rwt = AnaTTbarTrueFake(tauid=True, isOS=True, rewrite="n_btag == 2 && n_jets >= 2 && ((mBB > 150000. && mBB < 350000.) || (mBB > 50000. && mBB < 100000.)) && mTW > 150000.")
 
-#regionTeX = "lephad, OS, Mbb sideband (50~100, 150~350), MTW>40, Pass #tau ID"
-regionTeX = "lephad, OS, Mbb sideband (50~100, 150~350), MTW>150, Pass #tau ID"
+#regionTeX = "lephad, OS, Mbb sideband, MTW>40, Pass #tau ID"
+regionTeX = "lephad, OS, Mbb sideband, MTW>150, Pass #tau ID"
 
 suffix_before = f"_tauid_before.pdf"
 suffix_after  = f"_tauid_after.pdf"
