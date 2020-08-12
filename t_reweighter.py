@@ -13,6 +13,10 @@ rwt = AnaTTbarTrueFake(tauid=False, isOS=True)
 
 regionTeX = "lephad, OS, Mbb sideband (50~100, 150~350), MTW>40, No #tau ID"
 
+suffix_before = f"_before.pdf"
+suffix_after = f"_after.pdf"
+suffix_final = f"_final.pdf"
+
 df_njets = {}
 for i in range(2, 11):
     df_njets[i] = {}
@@ -32,18 +36,16 @@ for i in range(2, 11):
     # Before reweighting
     # ------------------
 
-    suffix_before = f"_before.pdf"
-
     binning_st = {}
-    binning_st[2] = [50000, 200000, 250000, 300000, 350000, 400000, 450000, 500000, 600000, 750000, 3000000]
-    binning_st[3] = [50000, 200000, 250000, 300000, 350000, 400000, 450000, 500000, 600000, 750000, 3000000]
-    binning_st[4] = [50000, 250000, 300000, 350000, 400000, 450000, 500000, 600000, 700000, 750000, 900000, 3000000]
-    binning_st[5] = [50000, 300000, 350000, 400000, 450000, 500000, 550000, 600000, 650000, 700000, 750000, 900000, 1000000, 3000000]
-    binning_st[6] = [50000, 300000, 350000, 400000, 450000, 500000, 550000, 600000, 650000, 700000, 750000, 900000, 1000000, 3000000]
-    binning_st[7] = [50000, 400000, 500000, 600000, 700000, 800000, 900000, 1000000, 1200000, 1500000, 3000000]
-    binning_st[8] = [50000, 400000, 500000, 600000, 700000, 800000, 900000, 1000000, 1200000, 1500000, 3000000]
-    binning_st[9] = [50000, 500000, 700000, 900000, 1200000, 1500000, 3000000]
-    binning_st[10] = [50000, 700000, 1000000, 1200000, 1500000, 3000000]
+    binning_st[2] = [0, 150000, 200000, 250000, 300000, 350000, 400000, 450000, 500000, 600000, 700000, 3000000]
+    binning_st[3] = [0, 200000, 250000, 300000, 350000, 400000, 450000, 500000, 600000, 700000, 800000, 3000000]
+    binning_st[4] = [0, 250000, 300000, 350000, 400000, 450000, 500000, 550000, 600000, 700000, 800000, 900000, 3000000]
+    binning_st[5] = [0, 250000, 300000, 350000, 400000, 450000, 500000, 550000, 600000, 700000, 800000, 900000, 1000000, 3000000]
+    binning_st[6] = [0, 300000, 350000, 400000, 450000, 500000, 550000, 600000, 650000, 700000, 800000, 900000, 1000000, 3000000]
+    binning_st[7] = [0, 400000, 500000, 600000, 700000, 800000, 900000, 1000000, 1200000, 1400000, 3000000]
+    binning_st[8] = [0, 400000, 500000, 600000, 700000, 800000, 900000, 1000000, 1200000, 1400000, 3000000]
+    binning_st[9] = [0, 500000, 700000, 800000, 900000, 1100000, 1400000, 3000000]
+    binning_st[10] = [0, 700000, 1000000, 1200000, 1500000, 3000000]
 
     # rwt_ht = TTbarTrueFakePlot(rwt, "HT", "weight", (3000, 0, 3000000), array.array('d', binning_st[i]))
     # drawStack(rwt_ht, "H_{T} [MeV]", regionTeX, f"plots/{i}jets/stack_ht_fr_os" + suffix_before)
@@ -67,8 +69,6 @@ for i in range(2, 11):
 
     # After reweighting
     # ------------------
-
-    suffix_after = f"_after.pdf"
 
     rwt_st = TTbarTrueFakePlot(rwt, "ST", "weight_new", (2000, 0, 2000000), array.array(
         'd', [i for i in range(0, 2050000, 50000)]))
@@ -102,8 +102,9 @@ rwt_st.checkYields()
 # ------------------
 print(f"{TermColor.OKBLUE}Second step reweighting with dRbb {TermColor.ENDC}")
 
-binning_bb = [0, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 10]
+binning_bb = [0, 0.5, 1.0, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 10]
 rwt_dr_bb = TTbarTrueFakePlot(rwt, "dRbb", "weight_new", (12, 0, 6), rebin=array.array('d', binning_bb))
+drawStack(rwt_dr_bb, "#DeltaR(b, b)", regionTeX, f"plots/dRbb/check_stack_dRbb_fr_os" + suffix_final)
 reweight1D(rwt_dr_bb, "#DeltaR(b, b)", f"plots/dRbb/wt1d_dRbb_fr_os.pdf", f"_dRbb")
 
 rwt.applyWeightStep2(("dRbb", os.path.join(os.getcwd(), "include", f"Reweight1D_dRbb.h")), True)
