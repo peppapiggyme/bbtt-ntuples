@@ -13,7 +13,7 @@ def rootfile(x): return x + ".root"
 # DON'T FORGET TO CHECK THE PRESELECTION FOR FR REGION !!!
 
 reg = {}
-reg["NoID"] = "n_btag == 2 && n_jets >= 2 && mBB > 150000. && mTW > 40000." # <- !!!
+reg["NoID"] = "n_btag == 2 && n_jets >= 2 && ((mBB > 150000. && mBB < 350000.) || (mBB > 50000. && mBB < 100000.)) && mTW > 40000." # <- !!!
 
 def update_region():
     reg["NoID OS"] = reg["NoID"] + " && OS"

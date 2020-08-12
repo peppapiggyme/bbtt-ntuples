@@ -8,10 +8,10 @@ from analysis.plot import *
 R.gInterpreter.ProcessLine("ROOT::EnableImplicitMT();")
 
 #rwt = AnaTTbarTrueFake(tauid=True, isOS=True, path=f"{os.getcwd()}/../fr-ntuple-v7/")
-rwt = AnaTTbarTrueFake(tauid=True, isOS=True, rewrite="n_btag == 2 && n_jets >= 2 && mBB > 150000. && mTW > 150000.", path=f"{os.getcwd()}/../fr-ntuple-v7/")
+rwt = AnaTTbarTrueFake(tauid=True, isOS=True, rewrite="n_btag == 2 && n_jets >= 2 && ((mBB > 150000. && mBB < 350000.) || (mBB > 50000. && mBB < 100000.)) && mTW > 150000.", path=f"{os.getcwd()}/../fr-ntuple-v7/")
 
-#regionTeX = "lephad, OS, Mbb>150, MTW>40, Pass #tau ID"
-regionTeX = "lephad, OS, Mbb>150, MTW>150, Pass #tau ID"
+#regionTeX = "lephad, OS, Mbb sideband (50~100, 150~350), MTW>40, Pass #tau ID"
+regionTeX = "lephad, OS, Mbb sideband (50~100, 150~350), MTW>150, Pass #tau ID"
 
 suffix_syst = f"_tauid_syst.pdf"
 
