@@ -7,8 +7,8 @@ from analysis.plot import *
 
 R.gInterpreter.ProcessLine("ROOT::EnableImplicitMT();")
 
-rwt = AnaTTbarTrueFake(tauid=False, isOS=True, path=f"{os.getcwd()}/../fr-ntuple-v6/")
-#rwt = AnaTTbarTrueFake(tauid=False, isOS=True, rewrite="n_btag == 2 && n_jets >= 2 && mBB < 150000. && mTW > 60000.", path=f"{os.getcwd()}/../fr-ntuple-v6/")
+rwt = AnaTTbarTrueFake(tauid=False, isOS=True, path=f"{os.getcwd()}/../fr-ntuple-v7/")
+#rwt = AnaTTbarTrueFake(tauid=False, isOS=True, rewrite="n_btag == 2 && n_jets >= 2 && mBB < 150000. && mTW > 60000.", path=f"{os.getcwd()}/../fr-ntuple-v7/")
 
 regionTeX = "lephad, OS, Mbb>150, MTW>40, No #tau ID"
 #regionTeX = "lephad, OS, Mbb<150, MTW>60, No #tau ID"
