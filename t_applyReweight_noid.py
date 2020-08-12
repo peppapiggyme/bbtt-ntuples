@@ -132,13 +132,13 @@ rwt_b1_pt = TTbarTrueFakePlot(rwt, "b1_pt", "weight_new", (980, 20000, 1000000),
     'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 250000, 1000000]))
 drawStack(rwt_b1_pt, "sub-leading b-jet pT [MeV]", regionTeX, f"plots/njets/stack_b1_pt_fr_os" + suffix_after)
 
-rwt_mtw = TTbarTrueFakePlot(rwt, "mTW", "weight", (40, 40000, 240000))
+rwt_mtw = TTbarTrueFakePlot(rwt, "mTW", "weight_new", (40, 40000, 240000))
 drawStack(rwt_mtw, "M_{T} [MeV]", regionTeX, f"plots/njets/stack_mtw_fr_os" + suffix_after)
 
-rwt_mbb = TTbarTrueFakePlot(rwt, "mBB", "weight", (40, 0, 400000))
+rwt_mbb = TTbarTrueFakePlot(rwt, "mBB", "weight_new", (40, 0, 400000))
 drawStack(rwt_mbb, "Mbb [MeV]", regionTeX, f"plots/njets/stack_mbb_fr_os" + suffix_after)
 
-rwt_mhh = TTbarTrueFakePlot(rwt, "mHH", "weight", (40, 200000, 2200000))
+rwt_mhh = TTbarTrueFakePlot(rwt, "mHH", "weight_new", (40, 200000, 2200000))
 drawStack(rwt_mhh, "Mhh [MeV]", regionTeX, f"plots/njets/stack_mhh_fr_os" + suffix_after)
 
 rwt_ht = TTbarTrueFakePlot(rwt, "HT", "weight_new", (2000, 0, 2000000), array.array(
@@ -204,14 +204,14 @@ rwt_b1_pt = TTbarTrueFakePlot(rwt, "b1_pt", "weight_final", (980, 20000, 1000000
     'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 250000, 1000000]))
 drawStack(rwt_b1_pt, "sub-leading b-jet pT [MeV]", regionTeX, f"plots/dRbb/stack_b1_pt_fr_os" + suffix_final)
 
-rwt_mtw = TTbarTrueFakePlot(rwt, "mTW", "weight", (40, 40000, 240000))
-drawStack(rwt_mtw, "M_{T} [MeV]", regionTeX, f"plots/njets/stack_mtw_fr_os" + suffix_final)
+rwt_mtw = TTbarTrueFakePlot(rwt, "mTW", "weight_final", (40, 40000, 240000))
+drawStack(rwt_mtw, "M_{T} [MeV]", regionTeX, f"plots/dRbb/stack_mtw_fr_os" + suffix_final)
 
-rwt_mbb = TTbarTrueFakePlot(rwt, "mBB", "weight", (40, 0, 400000))
-drawStack(rwt_mbb, "Mbb [MeV]", regionTeX, f"plots/njets/stack_mbb_fr_os" + suffix_final)
+rwt_mbb = TTbarTrueFakePlot(rwt, "mBB", "weight_final", (40, 0, 400000))
+drawStack(rwt_mbb, "Mbb [MeV]", regionTeX, f"plots/dRbb/stack_mbb_fr_os" + suffix_final)
 
-rwt_mhh = TTbarTrueFakePlot(rwt, "mHH", "weight", (40, 200000, 2200000))
-drawStack(rwt_mhh, "Mhh [MeV]", regionTeX, f"plots/njets/stack_mhh_fr_os" + suffix_final)
+rwt_mhh = TTbarTrueFakePlot(rwt, "mHH", "weight_final", (40, 200000, 2200000))
+drawStack(rwt_mhh, "Mhh [MeV]", regionTeX, f"plots/dRbb/stack_mhh_fr_os" + suffix_final)
 
 rwt_ht = TTbarTrueFakePlot(rwt, "HT", "weight_final", (2000, 0, 2000000), array.array(
     'd', [i for i in range(0, 2050000, 50000)]))
@@ -231,7 +231,7 @@ rwt_dr_lep_tau = TTbarTrueFakePlot(rwt, "dRTauLep", "weight_final", (36, 0, 6))
 drawStack(rwt_dr_lep_tau, "#DeltaR(lep, #tau)", regionTeX, f"plots/dRbb/stack_dr_lep_tau_fr_os" + suffix_final)
 
 rwt_dr_bb = TTbarTrueFakePlot(rwt, "dRbb", "weight_final", (36, 0, 6))
-drawStack(rwt_dr_bb, "#DeltaR(b, b)", regionTeX, f"plots/dRbb/stack_dr_bb_fr_os" + suffix_extra)
+drawStack(rwt_dr_bb, "#DeltaR(b, b)", regionTeX, f"plots/dRbb/stack_dr_bb_fr_os" + suffix_final)
 
 rwt_dr_lep_tau.checkYields()
 

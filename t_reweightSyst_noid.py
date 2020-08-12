@@ -24,8 +24,7 @@ for v in variations:
     rwt.applyTauSF(f"{v}__1up")
     rwt.applyTauSF(f"{v}__1down")
 
-rwt_plot = TTbarSystPlotCollection(rwt, "mTW", "_new", variations, (200, 40000, 240000), array.array(
-    'd', [i for i in range(50000, 260000, 10000)]))
+rwt_plot = TTbarSystPlotCollection(rwt, "mTW", "_new", variations, (40, 40000, 240000))
 drawStack(rwt_plot.nominalPlot(), "M_{T} [MeV]", regionTeX, f"plots/after/stack_mtw_fr_os" + suffix_syst, systs=rwt_plot.systematicPlots())
 
 rwt_plot = TTbarSystPlotCollection(rwt, "HT", "_new", variations, (2000, 0, 2000000), array.array(
@@ -74,16 +73,11 @@ rwt_plot = TTbarSystPlotCollection(rwt, "MET", "_new", variations, (400, 0, 4000
     'd', [i for i in range(0, 420000, 20000)]))
 drawStack(rwt_plot.nominalPlot(), "MET [MeV]", regionTeX, f"plots/after/stack_met_fr_os" + suffix_syst, systs=rwt_plot.systematicPlots())
 
-rwt_plot = TTbarSystPlotCollection(rwt, "mBB", "_new", variations, (150, 0, 150000), array.array(
+rwt_plot = TTbarSystPlotCollection(rwt, "mBB", "_new", variations, (40, 0, 400000), array.array(
     'd', [i for i in range(0, 155000, 5000)]))
-drawStack(rwt_plot.nominalPlot(), "Mbb [MeV]", regionTeX, f"plots/after/stack_mbb_low_fr_os" + suffix_syst, systs=rwt_plot.systematicPlots())
-
-rwt_plot = TTbarSystPlotCollection(rwt, "mBB", "_new", variations, (500, 150000, 650000), array.array(
-    'd', [i for i in range(150000, 670000, 20000)]))
 drawStack(rwt_plot.nominalPlot(), "Mbb [MeV]", regionTeX, f"plots/after/stack_mbb_fr_os" + suffix_syst, systs=rwt_plot.systematicPlots())
 
-rwt_plot = TTbarSystPlotCollection(rwt, "mHH", "_new", variations, (2000, 200000, 2200000), array.array(
-    'd', [i for i in range(200000, 2200000, 50000)]))
+rwt_plot = TTbarSystPlotCollection(rwt, "mHH", "_new", variations, (40, 200000, 2200000))
 drawStack(rwt_plot.nominalPlot(), "Mhh [MeV]", regionTeX, f"plots/after/stack_mhh_fr_os" + suffix_syst, systs=rwt_plot.systematicPlots())
 
 rwt_plot = TTbarSystPlotCollection(rwt, "dRbb", "_new", variations, (36, 0, 6))
