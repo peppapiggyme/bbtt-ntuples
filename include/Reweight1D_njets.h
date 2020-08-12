@@ -1,5 +1,5 @@
-#ifndef REWEIGHT1D_NJETS_H
-#define REWEIGHT1D_NJETS_H
+#ifndef REWEIGHT1D_NJETS
+#define REWEIGHT1D_NJETS
 
 float eval_reweighter_njets(int n, float x) {
     if (n == 2) {
@@ -41,4 +41,4 @@ float eval_reweighter_njets(int n, float x) {
     return 1.0;
 }
 
-#endif
+#endif /* REWEIGHT1D_NJETS */
