@@ -17,20 +17,20 @@ variations = [
     "Nominal",
     "TTBarReweight_Stat__1up", "TTBarReweight_Stat__1down",
     "TTBarReweight_Closure_TauPt__1up", "TTBarReweight_Closure_TauPt__1down",
-    "TTBarReweight_Closure_dRbb__1up", "TTBarReweight_Closure_dRbb__1down"
+    "TTBarReweight_Closure_Mhh__1up", "TTBarReweight_Closure_Mhh__1down"
 ]
 
 print(f"{TermColor.OKBLUE}Defining numerator and denominator ... {TermColor.ENDC}")
 
 # pass id
 pasid = AnaTTbarTrueFake(tauid=True, isOS=True,
-                         path=f"{os.getcwd()}/../fr-ntuple-v7/")
+                         path=f"{os.getcwd()}/../fr-ntuple-v9/")
 for v in variations:
     pasid.applyTauSF(v)  # only do tau SF weight
 
 # no id
 total = AnaTTbarTrueFake(tauid=False, isOS=True,
-                         path=f"{os.getcwd()}/../fr-ntuple-v7/")
+                         path=f"{os.getcwd()}/../fr-ntuple-v9/")
 for v in variations:
     total.applyTauSF(v)  # only do tau SF weight
 

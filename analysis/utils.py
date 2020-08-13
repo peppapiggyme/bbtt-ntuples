@@ -126,6 +126,7 @@ def reweight1D(plot, varTeX, fileName, suffix, drawOpt="E1"):
 
 def reweightTrue1D(plot, varTeX, fileName, suffix):
     c = R.TCanvas("c", "", 900, 900)
+    c.SetRightMargin(1.6 * c.GetRightMargin())
     # templates
     data = plot.data
     ttbarTrue = plot.ttbarTrue
@@ -191,11 +192,13 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None):
     c = R.TCanvas("c", "", 900, 900)
     c.SetRightMargin(1.6 * c.GetRightMargin())
     pad = R.TPad("upper_pad", "", 0, 0.35, 1, 1)
+    pad.SetRightMargin(1.6 * pad.GetRightMargin())
     pad.SetBottomMargin(0.03)
     pad.SetTickx(False)
     pad.SetTicky(False)
     pad.Draw()
     ratio = R.TPad("lower_pad", "", 0, 0, 1, 0.35)
+    ratio.SetRightMargin(1.6 * ratio.GetRightMargin())
     ratio.SetTopMargin(0)
     ratio.SetBottomMargin(0.4)
     ratio.SetGridy()
@@ -242,7 +245,7 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None):
     data.Draw("E1 SAME")
 
     # Add legend
-    legend = R.TLegend(0.70, 0.65, 0.92, 0.92)
+    legend = R.TLegend(0.69, 0.65, 0.90, 0.92)
     legend.SetTextFont(42)
     legend.SetFillStyle(0)
     legend.SetBorderSize(0)
@@ -259,13 +262,13 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None):
     text.SetNDC()
     text.SetTextFont(72)
     text.SetTextSize(0.055)
-    text.DrawLatex(0.21, 0.86, "ATLAS")
+    text.DrawLatex(0.20, 0.86, "ATLAS")
     text.SetTextFont(42)
-    text.DrawLatex(0.21 + 0.12, 0.86, "Internal")
+    text.DrawLatex(0.20 + 0.12, 0.86, "Internal")
     text.SetTextSize(0.045)
-    text.DrawLatex(0.21, 0.80, "#sqrt{s} = 13 TeV, 139 fb^{-1}")
+    text.DrawLatex(0.20, 0.80, "#sqrt{s} = 13 TeV, 139 fb^{-1}")
     text.SetTextSize(0.040)
-    text.DrawLatex(0.21, 0.74, regionTeX)
+    text.DrawLatex(0.20, 0.74, regionTeX)
 
     ratio.cd()
 

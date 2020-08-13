@@ -13,7 +13,7 @@ def rootfile(x): return x + ".root"
 # DON'T FORGET TO CHECK THE PRESELECTION FOR FR REGION !!!
 
 reg = {}
-reg["NoID"] = "n_btag == 2 && n_jets >= 2 && ((mBB > 150000. && mBB < 350000.) || (mBB > 50000. && mBB < 100000.)) && mTW > 40000." # <- !!!
+reg["NoID"] = "n_btag == 2 && n_jets >= 2 && ((mBB > 150000. && mBB < 350000.) || (mBB > 50000. && mBB < 100000.)) && mTW > 60000." # <- !!!
 
 def update_region():
     reg["NoID OS"] = reg["NoID"] + " && OS"
@@ -74,6 +74,9 @@ class AnaBase(object):
         return self._current_df
 
     def applyTauSF(self, weight_name):
+        """
+        TODO: seperate data from the processes. So far it's ok since tauSF and weight are 1 for data
+        """
         if not self._tauid:
             for p in self.processes:
                 self.df[p] = self.df[p].Define(f"{weight_name}_new", f"{weight_name} / tauSF")
