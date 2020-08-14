@@ -24,13 +24,13 @@ print(f"{TermColor.OKBLUE}Defining numerator and denominator ... {TermColor.ENDC
 
 # pass id
 pasid = AnaTTbarTrueFake(tauid=True, isOS=True,
-                         path=f"{os.getcwd()}/../fr-ntuple-v9/")
+                         path=f"{os.getcwd()}/../fr-ntuple-v10/")
 for v in variations:
     pasid.applyTauSF(v)  # only do tau SF weight
 
 # no id
 total = AnaTTbarTrueFake(tauid=False, isOS=True,
-                         path=f"{os.getcwd()}/../fr-ntuple-v9/")
+                         path=f"{os.getcwd()}/../fr-ntuple-v10/")
 for v in variations:
     total.applyTauSF(v)  # only do tau SF weight
 
