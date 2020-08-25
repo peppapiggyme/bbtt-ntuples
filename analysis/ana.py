@@ -56,7 +56,7 @@ class AnaBase(object):
             update_region()
 
         
-        self.path = f"{os.getcwd()}/../fr-ntuple-v3/" if not path else path
+        self.path = f"{os.getcwd()}/../fr-ntuple-v12/" if not path else path
         self.samples = {}
         self.processes = set()
         self.files = {}
@@ -83,6 +83,19 @@ class AnaBase(object):
         else:
              for p in self.processes:
                 self.df[p] = self.df[p].Define(f"{weight_name}_new", f"{weight_name}")
+    
+    def applyTauSFAndFakeRate(self, weight_name):
+        if not self._tauid:
+            for p in self.processes:
+                if p.startswith("ttbarFake"):
+                    self.df[p] = self.df[p].Define(f"{weight_name}_new", f"{weight_name} / tauSF * fakeRate")
+                else:
+                    self.df[p] = self.df[p].Define(f"{weight_name}_new", f"{weight_name} * fakeRate")
+        else:
+            raise ValueError("Current only support no ID:\n"
+                             " - the fake rate is apply on ttbar\n"
+                             " - the fake rate for data and other MC is 0\n"
+                             " - the tau scale factors are applied on the other MC\n")
 
     def applyWeightNjets(self, rwt1d=None, suffix=None):
         """
