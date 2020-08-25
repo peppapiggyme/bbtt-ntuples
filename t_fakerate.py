@@ -15,9 +15,9 @@ print(f"{TermColor.OKBLUE}Starting program ... {TermColor.ENDC}")
 #
 variations = [
     "Nominal",
-    "TTBarReweight_Stat__1up", "TTBarReweight_Stat__1down",
-    "TTBarReweight_Closure_TauPt__1up", "TTBarReweight_Closure_TauPt__1down",
-    "TTBarReweight_Closure_Mhh__1up", "TTBarReweight_Closure_Mhh__1down"
+    "TTBarReweight_Stat1__1up", "TTBarReweight_Stat1__1down",
+    "TTBarReweight_Stat2__1up", "TTBarReweight_Stat2__1down",
+    "TTBarReweight_Stat3__1up", "TTBarReweight_Stat3__1down",
 ]
 
 print(f"{TermColor.OKBLUE}Defining numerator and denominator ... {TermColor.ENDC}")

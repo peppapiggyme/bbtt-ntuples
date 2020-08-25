@@ -7,16 +7,15 @@ from analysis.plot import *
 
 R.gInterpreter.ProcessLine("ROOT::EnableImplicitMT();")
 
-rwt = AnaTTbarTrueFake(tauid=False, isOS=True, path=f"{os.getcwd()}/../fr-ntuple-v10/")
-#rwt = AnaTTbarTrueFake(tauid=False, isOS=True, rewrite="n_btag == 2 && n_jets >= 2 && mBB > 100000. && mBB < 150000. && mTW > 60000.", path=f"{os.getcwd()}/../fr-ntuple-v10/")
+rwt = AnaTTbarTrueFake(tauid=False, isOS=True, path=f"{os.getcwd()}/../fr-ntuple-v12/")
+#rwt = AnaTTbarTrueFake(tauid=False, isOS=True, rewrite="n_btag == 2 && n_jets >= 2 && mBB > 100000. && mBB < 150000. && mTW > 60000.", path=f"{os.getcwd()}/../fr-ntuple-v12/")
 
 regionTeX = "lephad, OS, Mbb sideband, MTW>60, No #tau ID"
 #regionTeX = "lephad, OS, Mbb window , MTW>60, No #tau ID"
 
 suffix_syst = f"_mbbinv_syst.pdf"
 
-variations = ["TTBarReweight_Stat", "TTBarReweight_Closure_TauPt", "TTBarReweight_Closure_Mhh"]
-# variations = ["TTBarReweight_Stat", "TTBarReweight_Closure2"]
+variations = ["TTBarReweight_Stat1", "TTBarReweight_Stat2", "TTBarReweight_Stat3"]
 
 print(f"{TermColor.OKBLUE}Applying/or not applying tau SF weight ... {TermColor.ENDC}")
 rwt.applyTauSF("Nominal") # only do tau SF weight
@@ -26,6 +25,7 @@ for v in variations:
 
 rwt_cn = TTbarSystPlotCollection(rwt, "MET", "_new", variations, (400, 0, 400000), array.array(
     'd', [i for i in range(0, 420000, 20000)]))
+rwt_cn.checkYields()
 drawStack(rwt_cn.nominalPlot(), "MET [MeV]", regionTeX, f"plots/after/stack_met_fr_os" + suffix_syst, systs=rwt_cn.systematicPlots())
     
 rwt_cn = TTbarSystPlotCollection(rwt, "mTW", "_new", variations, (40, 40000, 240000))
