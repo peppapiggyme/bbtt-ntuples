@@ -38,6 +38,10 @@ rwt_plot = TTbarTrueFakePlot(rwt, "lep_pt", "Nominal_new", (380, 20000, 1000000)
 drawStack(rwt_plot, "lepton pT [MeV]", regionTeX, f"plots/fakerate/stack_lep_pt_fr_os" + suffix)
 
 rwt_plot = TTbarTrueFakePlot(rwt, "tau_pt", "Nominal_new", (980, 20000, 1000000), array.array(
+    'd', [20000, 25000, 30000, 35000, 40000, 45000, 50000, 55000, 70000, 90000]))
+drawStack(rwt_plot, "tau pT [MeV]", regionTeX, f"plots/fakerate/stack_tau_pt_bin_0_fr_os" + suffix)
+
+rwt_plot = TTbarTrueFakePlot(rwt, "tau_pt", "Nominal_new", (980, 20000, 1000000), array.array(
     'd', [20000, 25000, 30000, 35000, 40000, 45000, 50000, 55000, 70000, 90000, 1000000]))
 drawStack(rwt_plot, "tau pT [MeV]", regionTeX, f"plots/fakerate/stack_tau_pt_fr_os" + suffix)
 
