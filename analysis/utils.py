@@ -9,6 +9,14 @@ def fakerates(pasid, total, trigger, prong):
     data_fakerate = None
     mc_fakerate = None
 
+    """
+    p -> pass
+    t -> total
+
+    pasid -> pass id
+    total -> no id
+    """
+
     p_sig = pasid.ttbarFake.Clone()
     p_bkg = pasid.ttbarTrue.Clone()
     p_bkg.Add(pasid.others.Clone())
@@ -30,9 +38,11 @@ def fakerates(pasid, total, trigger, prong):
         if p_data_ttbar.GetBinContent(i) <= 0:
             print(f"{TermColor.WARNING}data-driven: the {i} bin in numerator <= 0, set it to 0{TermColor.ENDC}")
             p_data_ttbar.SetBinContent(i, 0)
+            p_data_ttbar.SetBinError(i, 0)
         if t_data_ttbar.GetBinContent(i) <= 0:
             print(f"{TermColor.WARNING}data-driven: the {i} bin in denominator <= 0, set it to 0{TermColor.ENDC}")
             t_data_ttbar.SetBinContent(i, 0)
+            t_data_ttbar.SetBinError(i, 0)
         
     if R.TEfficiency.CheckConsistency(p_data_ttbar, t_data_ttbar):
         data_fakerate = R.TEfficiency(p_data_ttbar, t_data_ttbar)
@@ -48,9 +58,11 @@ def fakerates(pasid, total, trigger, prong):
         if p_mc_ttbar.GetBinContent(i) <= 0:
             print(f"{TermColor.WARNING}mc-driven: the {i} bin in numerator <= 0, set it to 0{TermColor.ENDC}")
             p_mc_ttbar.SetBinContent(i, 0)
+            p_mc_ttbar.SetBinError(i, 0)
         if t_mc_ttbar.GetBinContent(i) <= 0:
             print(f"{TermColor.WARNING}mc-driven: the {i} bin in denominator <= 0, set it to 0{TermColor.ENDC}")
             t_mc_ttbar.SetBinContent(i, 0)
+            t_mc_ttbar.SetBinError(i, 0)
 
     if R.TEfficiency.CheckConsistency(p_mc_ttbar, t_mc_ttbar):
         mc_fakerate = R.TEfficiency(p_mc_ttbar, t_mc_ttbar)
