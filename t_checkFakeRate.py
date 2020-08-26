@@ -7,7 +7,7 @@ from analysis.plot import *
 
 R.gInterpreter.ProcessLine("ROOT::EnableImplicitMT();")
 
-rwt = AnaTTbarTrueFake(tauid=False, isOS=True, rewrite="n_btag == 2 && n_jets >= 2 && mBB > 150000. && mTW > 40000.", path=f"{os.getcwd()}/../fr-ntuple-v12/")
+rwt = AnaTTbarTrueFake(tauid=False, isOS=True, rewrite="n_btag == 2 && n_jets >= 2 && mBB > 150000. && mTW > 40000.", path=f"{os.getcwd()}/../fr-ntuple-v14/")
 
 regionTeX = "lephad, OS, Mbb>150, MTW>40, Pass #tau ID"
 
@@ -34,19 +34,19 @@ rwt_plot = TTbarTrueFakePlot(rwt, "b1_pt", "Nominal_new", (36, 20000, 200000))
 drawStack(rwt_plot, "sub-leading b-jet pT [MeV]", regionTeX, f"plots/fakerate/stack_b1_ptlow_fr_os" + suffix)
 
 rwt_plot = TTbarTrueFakePlot(rwt, "lep_pt", "Nominal_new", (380, 20000, 1000000), array.array(
-    'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 250000, 1000000]))
+    'd', [20000, 25000, 30000, 35000, 40000, 45000, 50000, 55000, 70000, 90000, 1000000]))
 drawStack(rwt_plot, "lepton pT [MeV]", regionTeX, f"plots/fakerate/stack_lep_pt_fr_os" + suffix)
 
 rwt_plot = TTbarTrueFakePlot(rwt, "tau_pt", "Nominal_new", (980, 20000, 1000000), array.array(
-    'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 250000, 1000000]))
+    'd', [20000, 25000, 30000, 35000, 40000, 45000, 50000, 55000, 70000, 90000, 1000000]))
 drawStack(rwt_plot, "tau pT [MeV]", regionTeX, f"plots/fakerate/stack_tau_pt_fr_os" + suffix)
 
-rwt_plot = TTbarTrueFakePlot(rwt, "b0_pt", "Nominal_new", (980, 20000, 1000000), array.array(
-    'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 250000, 1000000]))
+rwt_plot = TTbarTrueFakePlot(rwt, "b0_pt", "Nominal_new", (950, 50000, 1000000), array.array(
+    'd', [50000, 60000, 70000, 800000, 90000, 120000, 160000, 250000, 1000000]))
 drawStack(rwt_plot, "leading b-jet pT [MeV]", regionTeX, f"plots/fakerate/stack_b0_pt_fr_os" + suffix)
 
 rwt_plot = TTbarTrueFakePlot(rwt, "b1_pt", "Nominal_new", (980, 20000, 1000000), array.array(
-    'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 250000, 1000000]))
+    'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 1000000]))
 drawStack(rwt_plot, "sub-leading b-jet pT [MeV]", regionTeX, f"plots/fakerate/stack_b1_pt_fr_os" + suffix)
 
 rwt_plot = TTbarTrueFakePlot(rwt, "mTW", "Nominal_new", (40, 40000, 240000))
@@ -77,7 +77,3 @@ drawStack(rwt_plot, "#DeltaR(lep, #tau)", regionTeX, f"plots/fakerate/stack_dr_l
 
 rwt_plot = TTbarTrueFakePlot(rwt, "dRbb", "Nominal_new", (36, 0, 6))
 drawStack(rwt_plot, "#DeltaR(b, b)", regionTeX, f"plots/fakerate/stack_dr_bb_fr_os" + suffix)
-
-
-print(rwt_cn.numberOfSysts())
-rwt_cn.checkYields()

@@ -24,15 +24,13 @@ print(f"{TermColor.OKBLUE}Defining numerator and denominator ... {TermColor.ENDC
 
 # pass id
 pasid = AnaTTbarTrueFake(tauid=True, isOS=True, 
-                         rewrite="n_btag == 2 && n_jets >= 2 && mBB > 150000. && mTW > 40000.", 
-                         path=f"{os.getcwd()}/../fr-ntuple-v10/")
+                         rewrite="n_btag == 2 && n_jets >= 2 && mBB > 150000. && mTW > 40000.")
 for v in variations:
     pasid.applyTauSF(v)  # only do tau SF weight
 
 # no id
 total = AnaTTbarTrueFake(tauid=False, isOS=True, 
-                         rewrite="n_btag == 2 && n_jets >= 2 && mBB > 150000. && mTW > 40000.",
-                         path=f"{os.getcwd()}/../fr-ntuple-v10/")
+                         rewrite="n_btag == 2 && n_jets >= 2 && mBB > 150000. && mTW > 40000.")
 for v in variations:
     total.applyTauSF(v)  # only do tau SF weight
 

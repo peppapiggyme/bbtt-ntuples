@@ -56,7 +56,7 @@ class AnaBase(object):
             update_region()
 
         
-        self.path = f"{os.getcwd()}/../fr-ntuple-v12/" if not path else path
+        self.path = f"{os.getcwd()}/../fr-ntuple-v14/" if not path else path
         self.samples = {}
         self.processes = set()
         self.files = {}

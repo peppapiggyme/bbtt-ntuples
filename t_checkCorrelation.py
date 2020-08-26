@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib import rcParams
 rcParams.update({'font.size': 22})
 
-ttbar = uproot.open(f"{os.getcwd()}/../fr-ntuple-v3/ttbarIncl.root")["Nominal"]
+ttbar = uproot.open(f"{os.getcwd()}/../fr-ntuple-v14/ttbarIncl.root")["Nominal"]
 
 def getCorr(x_str, y_str):
     x = ttbar.array(x_str)
