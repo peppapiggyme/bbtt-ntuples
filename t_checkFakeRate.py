@@ -42,7 +42,7 @@ rwt_plot = TTbarTrueFakePlot(rwt, "tau_pt", "Nominal_new", (980, 20000, 1000000)
 drawStack(rwt_plot, "tau pT [MeV]", regionTeX, f"plots/fakerate/stack_tau_pt_fr_os" + suffix)
 
 rwt_plot = TTbarTrueFakePlot(rwt, "b0_pt", "Nominal_new", (950, 50000, 1000000), array.array(
-    'd', [50000, 60000, 70000, 800000, 90000, 120000, 160000, 250000, 1000000]))
+    'd', [50000, 60000, 70000, 80000, 90000, 120000, 160000, 250000, 1000000]))
 drawStack(rwt_plot, "leading b-jet pT [MeV]", regionTeX, f"plots/fakerate/stack_b0_pt_fr_os" + suffix)
 
 rwt_plot = TTbarTrueFakePlot(rwt, "b1_pt", "Nominal_new", (980, 20000, 1000000), array.array(
