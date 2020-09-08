@@ -61,13 +61,14 @@ for v in variations:
 
     period_15_17 = "rnd_run_number >= 266904 && rnd_run_number <= 341649"
     period_18 = "rnd_run_number >= 348197 && rnd_run_number <= 364485"
+    period_18_fix = "rnd_run_number >= 350067 && rnd_run_number <= 364485"
     period_18_K = "rnd_run_number >= 355529 && rnd_run_number <= 364485"
 
     trig_map = {
         "25": [f"match_tau25 && {period_15_17}", period_15_17],
         "35": [f"match_tau35 && {period_15_17}", period_15_17],
         "25EF": [f"match_tau25_EF && {period_18}", period_18],
-        "35EF": [f"match_tau35_EF && {period_18}", period_18],
+        "35EF": [f"match_tau35_EF && {period_18_fix}", period_18_fix],
         "25RNN": [f"match_tau25_RNN && {period_18_K}", period_18_K],
         "35RNN": [f"match_tau35_RNN && {period_18_K}", period_18_K],
     }
