@@ -80,9 +80,11 @@ for trig in trigs:
             gSyst.SetLineColor(mc[j][1])
             leg.AddEntry(gSyst, nm, "lep")
             mg.Add(gSyst, "p")
-        
+
         mg.Add(gNomGeV, "p")
         mg.Draw("ap")
+        mg.GetXaxis().SetTitle("#tau p_{T} [GeV]")
+        mg.SetMinimum(0.)
 
         text = TLatex()
         text.SetNDC()
@@ -131,6 +133,8 @@ for trig in trigs:
         gMCGeV.SetLineColor(mc[0][1])
         mg.Add(gMCGeV, "p")
         mg.Draw("ap")
+        mg.GetXaxis().SetTitle("#tau p_{T} [GeV]")
+        mg.SetMinimum(0.)
 
         leg = TLegend(0.60, 0.55, 0.80, 0.75)
         leg.SetTextFont(42)
