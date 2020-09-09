@@ -39,3 +39,18 @@ calculate fake rates: so far run on pre-reweighting ntuples
 ```
 python t_fakerate.py
 ```
+
+plot the fake rates
+```
+python t_plotFakeRates.py
+```
+
+check tau truth origins (need ttbar sample with additional truth info)
+```
+python t_tauTruthOrigin.py
+```
+
+derive the map from truth variable to reco variable (reweighting parameters)
+```
+python t_reweightVars.py
+```
