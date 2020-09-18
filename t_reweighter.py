@@ -102,7 +102,7 @@ rwt_st.checkYields()
 # ------------------
 print(f"{TermColor.OKBLUE}Second step reweighting with dRbb {TermColor.ENDC}")
 
-binning_bb = [0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2.4, 2.6, 2.8, 3.0, 3.2, 3.6, 4, 4.5, 10]
+binning_bb = [0.4, 0.8, 1.2, 1.6, 2, 2.2, 2.6, 2.8, 3.0, 3.2, 3.6, 4, 4.5, 10]
 rwt_dr_bb = TTbarTrueFakePlot(rwt, "dRbb", "weight_new", (100, 0, 10), rebin=array.array('d', binning_bb))
 drawStack(rwt_dr_bb, "#DeltaR(b, b)", regionTeX, f"plots/dRbb/check_stack_dRbb_fr_os" + suffix_final)
 reweight1D(rwt_dr_bb, "#DeltaR(b, b)", f"plots/dRbb/wt1d_dRbb_fr_os.pdf", f"_dRbb")

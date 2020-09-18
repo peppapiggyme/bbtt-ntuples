@@ -59,14 +59,14 @@ for v in variations:
 
     print(f"{TermColor.OKBLUE}Calculating fake rates ... {TermColor.ENDC}")
 
-    period_15_17 = "rnd_run_number >= 266904 && rnd_run_number <= 341649"
+    period_15_18 = "rnd_run_number >= 266904 && rnd_run_number <= 364485"
     period_18 = "rnd_run_number >= 348197 && rnd_run_number <= 364485"
     period_18_fix = "rnd_run_number >= 350067 && rnd_run_number <= 364485"
     period_18_K = "rnd_run_number >= 355529 && rnd_run_number <= 364485"
 
     trig_map = {
-        "25": [f"match_tau25 && {period_15_17}", period_15_17],
-        "35": [f"match_tau35 && {period_15_17}", period_15_17],
+        "25": [f"match_tau25 && {period_15_18}", period_15_18],
+        "35": [f"match_tau35 && {period_15_18}", period_15_18],
         "25EF": [f"match_tau25_EF && {period_18}", period_18],
         "35EF": [f"match_tau35_EF && {period_18_fix}", period_18_fix],
         "25RNN": [f"match_tau25_RNN && {period_18_K}", period_18_K],
@@ -96,6 +96,16 @@ for v in variations:
                 f"plots/tau_pt/stack_tau_pt_tauid_{prong}__{v}.pdf")
         drawStack(plot_total, "#tau p_{T} [MeV]", f"lephad, OS, {prong}, no ID",
                 f"plots/tau_pt/stack_tau_pt_{prong}__{v}.pdf")
+
+        plot_draw = TTbarTrueFakePlot(
+            pasid, "tau_pt", f"{v}_new", (40, 20000, 100000))
+        drawStack(plot_draw, "#tau p_{T} [MeV]", f"lephad, OS, {prong}, offline ID",
+                f"plots/tau_pt/stack_tau_ptlow_tauid_{prong}__{v}.pdf")
+
+        plot_draw = TTbarTrueFakePlot(
+            total, "tau_pt", f"{v}_new", (40, 20000, 100000))
+        drawStack(plot_draw, "#tau p_{T} [MeV]", f"lephad, OS, {prong}, no ID",
+                f"plots/tau_pt/stack_tau_ptlow_{prong}__{v}.pdf")
 
         fd, fm = fakerates(plot_pasid, plot_total, "00", prong)
         fd.Write()
@@ -127,6 +137,16 @@ for v in variations:
             # the trigger is in the filename but only year cut is applied not trigger matching to the denominator
             drawStack(plot_total, "#tau p_{T} [MeV]", f"lephad, OS, {prong}, no ID",
                     f"plots/tau_pt/stack_tau_pt_{prong}_{trigger}__{v}.pdf")
+
+            plot_draw = TTbarTrueFakePlot(
+                pasid, "tau_pt", f"{v}_new", (40, 20000, 100000))
+            drawStack(plot_draw, "#tau p_{T} [MeV]", f"lephad, OS, {prong}, offline ID + HLT_tau{trigger}",
+                    f"plots/tau_pt/stack_tau_ptlow_tauid_{prong}_{trigger}__{v}.pdf")
+
+            plot_draw = TTbarTrueFakePlot(
+                total, "tau_pt", f"{v}_new", (40, 20000, 100000))
+            drawStack(plot_draw, "#tau p_{T} [MeV]", f"lephad, OS, {prong}, no ID",
+                    f"plots/tau_pt/stack_tau_ptlow_{prong}_{trigger}__{v}.pdf")
 
             fd, fm = fakerates(plot_pasid, plot_total, trigger, prong)
             fd.Write()
