@@ -41,10 +41,10 @@ class AnaBase(object):
         self._prong = prong
 
         self._region = "PassID" if tauid else "NoID"
-        if isOS:
+        if isOS is not None:
             self._region += " "
             self._region += "OS" if isOS else "SS"
-        if prong:
+        if prong is not None:
             self._region += " "
             self._region += "1P" if prong == 1 else "3P"
         if morecut:
@@ -83,6 +83,23 @@ class AnaBase(object):
         else:
              for p in self.processes:
                 self.df[p] = self.df[p].Define(f"{weight_name}_new", f"{weight_name}")
+
+    def applyTauSFTruthBased(self, weight_name):
+        """
+        TODO: seperate data from the processes. So far it's ok since tauSF and weight are 1 for data
+        """
+        if not self._tauid:
+            for p in self.processes:
+                if p.startswith("ttbar"):
+                    self.df[p] = self.df[p].Define(f"{weight_name}_new", f"3.8504155 * {weight_name} / tauSF")
+                else:
+                    self.df[p] = self.df[p].Define(f"{weight_name}_new", f"Nominal / tauSF")
+        else:
+             for p in self.processes:
+                if p.startswith("ttbar"):
+                    self.df[p] = self.df[p].Define(f"{weight_name}_new", f"3.8504155 * {weight_name}")
+                else:
+                    self.df[p] = self.df[p].Define(f"{weight_name}_new", f"Nominal")
     
     def applyTauSFAndFakeRate(self, weight_name):
         if not self._tauid:
@@ -233,7 +250,8 @@ class AnaTTbarTrueFale(AnaBase):
         self.samples = {
             "data": {"data"},
             "ttbar": {"ttbarIncl"},
-            "others": {"ttH", "VHbb", "stop", "diboson", "Zee",
+            "stop": {"stop"},
+            "others": {"ttH", "VHbb", "diboson", "Zee",
                        "Ztautau", "Zmumu", "Wmunu", "Wenu", "Wtaunu",
                        "Htautau"},
         }
@@ -261,7 +279,8 @@ class AnaTTbarTrueFake(AnaBase):
         self.samples = {
             "data": {"data"},
             "ttbar": {"ttbarIncl"},
-            "others": {"ttH", "VHbb", "stop", "diboson", "Zee",
+            "stop": {"stop"},
+            "others": {"ttH", "VHbb", "diboson", "Zee",
                        "Ztautau", "Zmumu", "Wmunu", "Wenu", "Wtaunu",
                        "Htautau"},
         }

@@ -6,7 +6,13 @@ __pycache__
 
 rootfiles/*.root
 plots/*.pdf
+plots/*.png
+plots/*.root
+plots/*.C
 plots/*/*.pdf
+plots/*/*.png
+plots/*/*.root
+plots/*/*.C
 temp/
 
 

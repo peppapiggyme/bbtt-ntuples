@@ -208,6 +208,7 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None):
     pad.SetBottomMargin(0.03)
     pad.SetTickx(False)
     pad.SetTicky(False)
+    # pad.SetLogy(True)
     pad.Draw()
     ratio = R.TPad("lower_pad", "", 0, 0, 1, 0.35)
     ratio.SetRightMargin(1.6 * ratio.GetRightMargin())
@@ -226,6 +227,7 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None):
     ttbar = plot.ttbarTrue.Clone("ttbar")
     ttbar.Add(plot.ttbarFake)
     others = plot.others
+    stop = plot.stop
     # Draw stack with MC contributions
     for h, color in plot.bkgColors():
         h.SetLineWidth(1)
@@ -266,6 +268,7 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None):
     legend.AddEntry(data, "Data", "lep")
     legend.AddEntry(ttbarTrue, "ttbar true-#tau", "f")
     legend.AddEntry(ttbarFake, "ttbar fake-#tau", "f")
+    legend.AddEntry(stop, "single top", "f")
     legend.AddEntry(others, "others", "f")
     legend.Draw("SAME")
 

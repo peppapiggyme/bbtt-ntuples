@@ -76,6 +76,7 @@ class TTbarTrueFakePlot(object):
         self.data = self._merge_histos("data")
         self.ttbarTrue = self._merge_histos("ttbarTrue")
         self.ttbarFake = self._merge_histos("ttbarFake")
+        self.stop = self._merge_histos("stop")
         self.others = self._merge_histos("others")
         self._rebin()
 
@@ -103,6 +104,8 @@ class TTbarTrueFakePlot(object):
                 len(self._rebinning) - 1, "ttbarTrue_rebin", self._rebinning)
             self.ttbarFake = self.ttbarFake.Rebin(
                 len(self._rebinning) - 1, "ttbarFake_rebin", self._rebinning)
+            self.stop = self.stop.Rebin(
+                len(self._rebinning) - 1, "others_rebin", self._rebinning)
             self.others = self.others.Rebin(
                 len(self._rebinning) - 1, "others_rebin", self._rebinning)
 
@@ -118,7 +121,7 @@ class TTbarTrueFakePlot(object):
         return self._ana
 
     def bkgColors(self):
-        return zip([self.others, self.ttbarFake, self.ttbarTrue], [(153, 204, 255), (255, 153, 153), (255, 255, 153)])
+        return zip([self.others, self.stop, self.ttbarFake, self.ttbarTrue], [(153, 204, 255), (46, 97, 80), (255, 153, 153), (255, 255, 153)])
 
 
 class TTbarSystPlotCollection(object):
