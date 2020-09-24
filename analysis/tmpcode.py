@@ -1,71 +1,32 @@
 # put tmp code here
 
-# rwt_lep_pt = TTbarTrueFakePlot(rwt, "lep_pt", "weight", (380, 20000, 1000000), array.array(
-#     'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 250000, 1000000]))
-# drawStack(rwt_lep_pt, "lepton pT [MeV]", regionTeX, f"plots/{i}jets/stack_lep_pt_fr_os" + suffix_before)
+# code for dRbb and dRll reweighting
+# ==================================
 
-# rwt_met = TTbarTrueFakePlot(rwt, "MET", "weight", (400, 0, 400000), array.array(
-#     'd', [i for i in range(0, 420000, 20000)]))
-# drawStack(rwt_met, "MET [MeV]", regionTeX, f"plots/{i}jets/stack_met_fr_os" + suffix_before)
+# step 2 reweighting
+# ------------------
+print(f"{TermColor.OKBLUE}Second step reweighting with dRbb {TermColor.ENDC}")
 
-# rwt_metsig = TTbarTrueFakePlot(rwt, "METSig", "weight", (20, 0, 20))
-# drawStack(rwt_metsig, "MET Significance", regionTeX, f"plots/{i}jets/stack_metsig_fr_os" + suffix_before)
+binning_bb = [0.4, 0.8, 1.2, 1.6, 2, 2.2, 2.6, 2.8, 3.0, 3.2, 3.6, 4, 4.5, 10]
+rwt_dr_bb = TTbarTrueFakePlot(rwt, "dRbb", "weight_new", (100, 0, 10), rebin=array.array('d', binning_bb))
+drawStack(rwt_dr_bb, "#DeltaR(b, b)", regionTeX, f"plots/dRbb/check_stack_dRbb_fr_os" + suffix_final)
+reweight1D(rwt_dr_bb, "#DeltaR(b, b)", f"plots/dRbb/wt1d_dRbb_fr_os.pdf", f"_dRbb")
 
-# rwt_tau_pt = TTbarTrueFakePlot(rwt, "tau_pt", "weight", (980, 20000, 1000000), array.array(
-#     'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 250000, 1000000]))
-# drawStack(rwt_tau_pt, "tau pT [MeV]", regionTeX, f"plots/{i}jets/stack_tau_pt_fr_os" + suffix_before)
+rwt.applyWeightStep2(("dRbb", os.path.join(os.getcwd(), "include", f"Reweight1D_dRbb.h")), True)
+rwt_st = TTbarTrueFakePlot(rwt, "ST", "weight_final", (2000, 0, 2000000))
+print(f"{TermColor.OKBLUE}Yields (After reweighting step 2) {TermColor.ENDC}")
+rwt_st.checkYields()
 
-# rwt_b0_pt = TTbarTrueFakePlot(rwt, "b0_pt", "weight", (980, 20000, 1000000), array.array(
-#     'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 250000, 1000000]))
-# drawStack(rwt_b0_pt, "leading b-jet pT [MeV]", regionTeX, f"plots/{i}jets/stack_b0_pt_fr_os" + suffix_before)
+# step 3 reweighting
+# ------------------
+print(f"{TermColor.OKBLUE}Third step reweighting with dRTauLep {TermColor.ENDC}")
 
-# rwt_b1_pt = TTbarTrueFakePlot(rwt, "b1_pt", "weight", (980, 20000, 1000000), array.array(
-#     'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 250000, 1000000]))
-# drawStack(rwt_b1_pt, "sub-leading b-jet pT [MeV]", regionTeX, f"plots/{i}jets/stack_b1_pt_fr_os" + suffix_before)
+binning_lh = [0.2, 0.6, 1, 1.4, 1.8, 2.2, 2.6, 3, 3.4, 3.8, 4.2, 4.6, 5, 10]
+rwt_dr_lh = TTbarTrueFakePlot(rwt, "dRTauLep", "weight_final", (100, 0, 10), rebin=array.array('d', binning_lh))
+reweight1D(rwt_dr_lh, "#DeltaR(lep, #tau)", f"plots/dRlh/wt1d_dRlh_fr_os.pdf", f"_dRlh")
 
-# rwt_mtw = TTbarTrueFakePlot(rwt, "mTW", "weight", (200, 40000, 240000), array.array(
-#     'd', [i for i in range(50000, 260000, 10000)]))
-# drawStack(rwt_mtw, "M_{T} [MeV]", regionTeX, f"plots/{i}jets/stack_mtw_fr_os" + suffix_before)
+rwt.applyWeightStep3(("dRTauLep", os.path.join(os.getcwd(), "include", f"Reweight1D_dRlh.h")), True)
+rwt_st = TTbarTrueFakePlot(rwt, "ST", "weight_extra", (2000, 0, 2000000))
+print(f"{TermColor.OKBLUE}Yields (After reweighting step 3) {TermColor.ENDC}")
+rwt_st.checkYields()
 
-# rwt_mbb = TTbarTrueFakePlot(rwt, "mBB", "weight", (500, 150000, 650000), array.array(
-#     'd', [i for i in range(150000, 670000, 20000)]))
-# drawStack(rwt_mbb, "Mbb [MeV]", regionTeX, f"plots/{i}jets/stack_mbb_fr_os" + suffix_before)
-
-# rwt_mhh = TTbarTrueFakePlot(rwt, "mHH", "weight", (2000, 200000, 2200000), array.array(
-#     'd', [i for i in range(200000, 2200000, 50000)]))
-# drawStack(rwt_mhh, "Mhh [MeV]", regionTeX, f"plots/{i}jets/stack_mhh_fr_os" + suffix_before)
-
-# rwt_lep_pt = TTbarTrueFakePlot(rwt, "lep_pt", "weight_new", (380, 20000, 1000000), array.array(
-#     'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 250000, 1000000]))
-# drawStack(rwt_lep_pt, "lepton pT [MeV]", regionTeX, f"plots/{i}jets/stack_lep_pt_fr_os" + suffix_after)
-
-# rwt_met = TTbarTrueFakePlot(rwt, "MET", "weight_new", (400, 0, 400000), array.array(
-#     'd', [i for i in range(0, 420000, 20000)]))
-# drawStack(rwt_met, "MET [MeV]", regionTeX, f"plots/{i}jets/stack_met_fr_os" + suffix_after)
-
-# rwt_metsig = TTbarTrueFakePlot(rwt, "METSig", "weight_new", (20, 0, 20))
-# drawStack(rwt_metsig, "MET Significance", regionTeX, f"plots/{i}jets/stack_metsig_fr_os" + suffix_after)
-
-# rwt_tau_pt = TTbarTrueFakePlot(rwt, "tau_pt", "weight_new", (980, 20000, 1000000), array.array(
-#     'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 250000, 1000000]))
-# drawStack(rwt_tau_pt, "tau pT [MeV]", regionTeX, f"plots/{i}jets/stack_tau_pt_fr_os" + suffix_after)
-
-# rwt_b0_pt = TTbarTrueFakePlot(rwt, "b0_pt", "weight_new", (980, 20000, 1000000), array.array(
-#     'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 250000, 1000000]))
-# drawStack(rwt_b0_pt, "leading b-jet pT [MeV]", regionTeX, f"plots/{i}jets/stack_b0_pt_fr_os" + suffix_after)
-
-# rwt_b1_pt = TTbarTrueFakePlot(rwt, "b1_pt", "weight_new", (980, 20000, 1000000), array.array(
-#     'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 250000, 1000000]))
-# drawStack(rwt_b1_pt, "sub-leading b-jet pT [MeV]", regionTeX, f"plots/{i}jets/stack_b1_pt_fr_os" + suffix_after)
-
-# rwt_mtw = TTbarTrueFakePlot(rwt, "mTW", "weight_new", (200, 40000, 240000), array.array(
-#     'd', [i for i in range(50000, 260000, 10000)]))
-# drawStack(rwt_mtw, "M_{T} [MeV]", regionTeX, f"plots/{i}jets/stack_mtw_fr_os" + suffix_after)
-
-# rwt_mbb = TTbarTrueFakePlot(rwt, "mBB", "weight_new", (500, 150000, 650000), array.array(
-#     'd', [i for i in range(150000, 670000, 20000)]))
-# drawStack(rwt_mbb, "Mbb [MeV]", regionTeX, f"plots/{i}jets/stack_mbb_fr_os" + suffix_after)
-
-# rwt_mhh = TTbarTrueFakePlot(rwt, "mHH", "weight_new", (2000, 200000, 2200000), array.array(
-#     'd', [i for i in range(200000, 2200000, 50000)]))
-# drawStack(rwt_mhh, "Mhh [MeV]", regionTeX, f"plots/{i}jets/stack_mhh_fr_os" + suffix_after)

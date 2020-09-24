@@ -13,7 +13,7 @@ def rootfile(x): return x + ".root"
 # DON'T FORGET TO CHECK THE PRESELECTION FOR FR REGION !!!
 
 reg = {}
-reg["NoID"] = "n_btag == 2 && n_jets >= 2 && ((mBB > 150000. && mBB < 350000.) || (mBB > 50000. && mBB < 100000.)) && mTW > 60000." # <- !!!
+reg["NoID"] = "n_btag == 2 && n_jets >= 2 && mBB > 150000.&& mTW > 40000." # <- !!!
 
 def update_region():
     reg["NoID OS"] = reg["NoID"] + " && OS"
@@ -62,6 +62,8 @@ class AnaBase(object):
         self.files = {}
         self.df = {}  # -> the df without filter applied
         self._current_df = {}  # -> the df with filter applied
+
+        self.regionTeX = reg[self._region]
         
         print(f"> ntuple path: {self.path}")
         print(f"> analysis region is [{self._region}]")
@@ -97,7 +99,49 @@ class AnaBase(object):
                              " - the fake rate for data and other MC is 0\n"
                              " - the tau scale factors are applied on the other MC\n")
 
-    def applyWeightNjets(self, rwt1d=None, suffix=None):
+    def applyTauSFAndTTBarNorm(self, old_wt="weight", new_wt="weight_new", norm_factor=0.931):
+        """
+        this is the baseline strategy for resonance analysis
+        the corresponding ttbar reweighting region must match to the nom_factor
+        e.g. nom_factor = 0.931 <-> lh SLT presel + mbb150 + mtw40 (= fake rate derive region)
+        @todo: the nom_factor can be calculated within this package easily...
+        """
+        if not self._tauid:
+            for p in self.processes:
+                if p.startswith("ttbar"):
+                    self.df[p] = self.df[p].Define(f"{new_wt}", f"{old_wt} * {norm_factor} / tauSF")
+                else:    
+                    self.df[p] = self.df[p].Define(f"{new_wt}", f"{old_wt} / tauSF")
+        else:
+             for p in self.processes:
+                if p.startswith("ttbar"):
+                    self.df[p] = self.df[p].Define(f"{new_wt}", f"{old_wt} * {norm_factor}")
+                else:
+                    self.df[p] = self.df[p].Define(f"{new_wt}", f"{old_wt}")
+
+    def applyTauSFAndWeightBBLL(self, old_wt="weight", new_wt="weight_new"):
+        """
+        apply the bbll 1D linear function reweighting (b0_pt)
+        """
+        ttbarWeight = "(1.05 - 0.000001 * b0_pt)"
+        if not self._tauid:
+            for p in self.processes:
+                if p.startswith("ttbar"):
+                    self.df[p] = self.df[p].Define(
+                        "weight_new", f"weight / tauSF * {ttbarWeight}")
+                else:
+                    self.df[p] = self.df[p].Define("weight_new", "weight / tauSF")
+        else:
+            for p in self.processes:
+                # NOTE: hardcoded name but should be safe, since process names are unique
+                if p.startswith("ttbar"):
+                    self.df[p] = self.df[p].Define(
+                        "weight_new", f"weight * {ttbarWeight}")
+                else:
+                    self.df[p] = self.df[p].Define(
+                        "weight_new", f"weight")
+
+    def applyTauSFAndTTBarNormAndWeightNjets(self, old_wt, new_wt, rwt1d=None, suffix=None, norm_factor=0.931):
         """
         rwt1d is (varName, header_path)
         apply on current df, by a given njets (indicated in the suffix)
@@ -113,40 +157,39 @@ class AnaBase(object):
                     # NOTE: hardcoded name but should be safe, since process names are unique
                     if p.startswith("ttbar"):
                         self._current_df[p] = self._current_df[p].Define(
-                            "weight_new", f"weight / tauSF * {ttbarWeight}")
+                            f"{new_wt}", f"{old_wt} / tauSF * {ttbarWeight} * {norm_factor}")
                     else:
-                        self._current_df[p] = self._current_df[p].Define("weight_new", "weight / tauSF")
+                        self._current_df[p] = self._current_df[p].Define(f"{new_wt}", f"{old_wt} / tauSF")
             else:
                 for p in self.processes:
                     # NOTE: hardcoded name but should be safe, since process names are unique
                     if p.startswith("ttbar"):
                         self._current_df[p] = self._current_df[p].Define(
-                            "weight_new", f"weight * {ttbarWeight}")
+                            f"{new_wt}", f"{old_wt} * {ttbarWeight} * {norm_factor}")
                     else:
                         self._current_df[p] = self._current_df[p].Define(
-                            "weight_new", f"weight")
+                            f"{new_wt}", f"{old_wt}")
         else:
             if not self._tauid:
                 for p in self.processes:
-                    self._current_df[p] = self._current_df[p].Define("weight_new", "weight / tauSF")
+                    self._current_df[p] = self._current_df[p].Define(f"{new_wt}", f"{old_wt} / tauSF")
             else:
                 for p in self.processes:
                     self._current_df[p] = self._current_df[p].Define(
-                        "weight_new", "weight")
-
-    def applyWeightStep1(self, rwt1d=None, declare=False):
+                        f"{new_wt}", f"{old_wt}")
+    
+    def applyTauSFAndTTBarNormAndWeightStep1(self, old_wt, new_wt, rwt1d=None, norm_factor=0.931):
         """
         rwt1d is (varName, header_path)
         apply on the original df, apply the weights based on njets
-        declare if the name of objects are not in the dynamic scopes
+        [x] declare if the name of objects are not in the dynamic scopes
         """
         if rwt1d:
-            if declare:
-                for i in range(2, 11):
-                    suffix = f"_{i}jets"
-                    rtf = R.TFile(
-                        f"{os.getcwd()}/rootfiles/func{suffix}.root")
-                    R.gInterpreter.ProcessLine(f"TH1* hCorr{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); hCorr{suffix}->SetDirectory(0);")
+            for i in range(2, 11):
+                suffix = f"_{i}jets"
+                rtf = R.TFile(
+                    f"{os.getcwd()}/rootfiles/func{suffix}.root")
+                R.gInterpreter.ProcessLine(f"TH1* hCorr{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); hCorr{suffix}->SetDirectory(0);")
             R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
             ttbarWeight = f"(float)eval_reweighter_njets(n_jets, {rwt1d[0]})"
             if not self._tauid:
@@ -154,79 +197,81 @@ class AnaBase(object):
                     # NOTE: hardcoded name but should be safe, since process names are unique
                     if p.startswith("ttbar"):
                         self.df[p] = self.df[p].Define(
-                            "weight_new", f"weight / tauSF * {ttbarWeight}")
+                            f"{new_wt}", f"{old_wt} / tauSF * {ttbarWeight} * {norm_factor}")
                     else:
-                        self.df[p] = self.df[p].Define("weight_new", "weight / tauSF")
+                        self.df[p] = self.df[p].Define(f"{new_wt}", f"{old_wt} / tauSF")
             else:
                 for p in self.processes:
                     # NOTE: hardcoded name but should be safe, since process names are unique
                     if p.startswith("ttbar"):
                         self.df[p] = self.df[p].Define(
-                            "weight_new", f"weight * {ttbarWeight}")
+                            f"{new_wt}", f"{old_wt} * {ttbarWeight} * {norm_factor}")
                     else:
                         self.df[p] = self.df[p].Define(
-                            "weight_new", f"weight")
+                            f"{new_wt}", f"{old_wt}")
         else:
             if not self._tauid:
                 for p in self.processes:
-                    self.df[p] = self.df[p].Define("weight_new", "weight / tauSF")
+                    self.df[p] = self.df[p].Define(f"{new_wt}", f"{old_wt} / tauSF")
             else:
                 for p in self.processes:
                     self.df[p] = self.df[p].Define(
-                        "weight_new", "weight")
+                        f"{new_wt}", f"{old_wt}")
 
-    def applyWeightStep2(self, rwt1d=None, declare=False):
+    def applyWeightStep2(self, old_wt, new_wt, rwt1d=None, declare=False):
         """
         rwt1d is (varName, header_path)
         apply on the original df, apply the weights based on dRbb
         declare if the name of objects are not in the dynamic scopes
+
+        @note: this will not be used for resonance analysis
         """
         if rwt1d:
             suffix = "_dRbb"
-            if declare:
-                rtf = R.TFile(
-                    f"{os.getcwd()}/rootfiles/func{suffix}.root")
-                R.gInterpreter.ProcessLine(f"TH1* hCorr{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); hCorr{suffix}->SetDirectory(0);")
-                R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
+            rtf = R.TFile(
+                f"{os.getcwd()}/rootfiles/func{suffix}.root")
+            R.gInterpreter.ProcessLine(f"TH1* hCorr{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); hCorr{suffix}->SetDirectory(0);")
+            R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
             ttbarWeight = f"(float)eval_reweighter{suffix}({rwt1d[0]})"
             for p in self.processes:
                 # NOTE: hardcoded name but should be safe, since process names are unique
                 if p.startswith("ttbar"):
                     self.df[p] = self.df[p].Define(
-                        "weight_final", f"weight_new * {ttbarWeight}")
+                        f"{new_wt}", f"{old_wt} * {ttbarWeight}")
                 else:
-                    self.df[p] = self.df[p].Define("weight_final", "weight_new")
+                    self.df[p] = self.df[p].Define(f"{new_wt}", f"{old_wt}")
         else:
             for p in self.processes:
-                self.df[p] = self.df[p].Define("weight_final", "weight_new")
+                self.df[p] = self.df[p].Define(f"{new_wt}", f"{old_wt}")
 
-    def applyWeightStep3(self, rwt1d=None, declare=False):
+    def applyWeightStep3(self, old_wt, new_wt, rwt1d=None, declare=False):
         """
         rwt1d is (varName, header_path)
         apply on the original df, apply the weights based on dRbb
         declare if the name of objects are not in the dynamic scopes
+        
+        @note: this will not be used for resonance analysis
         """
         if rwt1d:
             suffix = "_dRlh"
-            if declare:
-                rtf = R.TFile(
-                    f"{os.getcwd()}/rootfiles/func{suffix}.root")
-                R.gInterpreter.ProcessLine(f"TH1* hCorr{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); hCorr{suffix}->SetDirectory(0);")
-                R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
+            rtf = R.TFile(
+                f"{os.getcwd()}/rootfiles/func{suffix}.root")
+            R.gInterpreter.ProcessLine(f"TH1* hCorr{suffix} = (TH1*)Rw1DHist{suffix}->Clone(); hCorr{suffix}->SetDirectory(0);")
+            R.gInterpreter.Declare(f"#include \"{rwt1d[1]}\"")
             ttbarWeight = f"(float)eval_reweighter{suffix}({rwt1d[0]})"
             for p in self.processes:
                 # NOTE: hardcoded name but should be safe, since process names are unique
                 if p.startswith("ttbar"):
                     self.df[p] = self.df[p].Define(
-                        "weight_extra", f"weight_final * {ttbarWeight}")
+                        f"{new_wt}", f"{old_wt} * {ttbarWeight}")
                 else:
-                    self.df[p] = self.df[p].Define("weight_extra", "weight_final")
+                    self.df[p] = self.df[p].Define(f"{new_wt}", f"{old_wt}")
         else:
             for p in self.processes:
-                self.df[p] = self.df[p].Define("weight_extra", "weight_final")
+                self.df[p] = self.df[p].Define(f"{new_wt}", f"{old_wt}")
 
 
-class AnaTTbarTrueFale(AnaBase):
+class AnaTTbarIncl(AnaBase):
     def __init__(self, tauid, isOS=None, prong=None, morecut=None, rewrite=None, path=None):
         super().__init__(tauid, isOS, prong, morecut, rewrite, path)
 

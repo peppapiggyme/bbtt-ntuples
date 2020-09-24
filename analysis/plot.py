@@ -52,6 +52,13 @@ class TTbarInclPlot(object):
         print(f" n_other |   {self.others.Integral()}")
         print(f"---------+----------------------------------")
 
+    def checkEntries(self):
+        print(f"---------+----------------------------------")
+        print(f" n_data  |   {self.data.GetEntries()}")
+        print(f" n_ttbar |   {self.ttbar.GetEntries()}")
+        print(f" n_other |   {self.others.GetEntries()}")
+        print(f"---------+----------------------------------")
+
     def ana(self):
         return self._ana
 
@@ -113,6 +120,25 @@ class TTbarTrueFakePlot(object):
         print(f" n_ttbarFake |   {self.ttbarFake.Integral()}")
         print(f" n_other     |   {self.others.Integral()}")
         print(f"-------------+----------------------------------")
+
+    def checkEntries(self):
+        print(f"---------+----------------------------------")
+        print(f" n_data      |   {self.data.GetEntries()}")
+        print(f" n_ttbarTrue |   {self.ttbarTrue.GetEntries()}")
+        print(f" n_ttbarFake |   {self.ttbarFake.GetEntries()}")
+        print(f" n_other     |   {self.others.GetEntries()}")
+        print(f"---------+----------------------------------")
+
+    def checkTTBarNorm(self):
+        """
+        Use this only when filling 1 bin!
+        """
+        if self._th1binning[0] != 1 or (self._rebinning and len(self._rebinning) != 2):
+            print("Warning: please fill one bin otherwise no garentee of precision!")
+        norm = (self.data.Integral() - self.others.Integral()) / (self.ttbarTrue.Integral() + self.ttbarFake.Integral())
+        print(f"> the nominal ttbar norm is {norm}")
+
+        return norm
 
     def ana(self):
         return self._ana

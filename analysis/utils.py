@@ -1,6 +1,9 @@
 import ROOT as R
 import os
+import array
 from math import sqrt
+from analysis.ana import *
+from analysis.plot import *
 R.gROOT.SetStyle("ATLAS")
 R.gStyle.SetErrorX(0.5)
 
@@ -107,6 +110,9 @@ def reweight1D(plot, varTeX, fileName, suffix, drawOpt="E1"):
     #ratio.Fit(f)
     f.SetLineColor(R.kRed - 2)
 
+    ret = ratio.Clone()
+    ret.SetDirectory(0)
+
     ratio.Draw(drawOpt)
     #f.Draw("SAME")
 
@@ -133,7 +139,7 @@ def reweight1D(plot, varTeX, fileName, suffix, drawOpt="E1"):
     c.Update()
     c.SaveAs(fileName)
 
-    return True
+    return ret
 
 
 def reweightTrue1D(plot, varTeX, fileName, suffix):
@@ -318,7 +324,7 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None):
         sys_do = sys_up.Clone("sys_down")
         tot_up = [err.GetBinError(i)**2 for i in range(0, sys_up.GetNbinsX() + 2)]
         tot_do = [err.GetBinError(i)**2 for i in range(0, sys_up.GetNbinsX() + 2)]
-        for sn, up_down in systs.items():
+        for _, up_down in systs.items():
             up, do = up_down
             ttbar_up = up.ttbarTrue.Clone("ttbar_up")
             ttbar_up.Add(up.ttbarFake)
@@ -348,6 +354,87 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None):
     c.Update()
     c.SaveAs(fileName)
     print(f"{TermColor.OKGREEN}√ {fileName} printed {TermColor.ENDC}")
+
+
+def plotAllTTbarTrueFakePlot(ana, weight_name, subdir, suffix):
+    print(f"{TermColor.BOLD}{TermColor.OKBLUE}Information: {TermColor.ENDC}{TermColor.ENDC}")
+    print(f"{TermColor.OKBLUE}Plotting with selection [{reg[ana._region]}] {TermColor.ENDC}")
+    print(f"{TermColor.OKBLUE}Plotting with weight [{weight_name}], "
+          f"output subdirectory and suffix are [{subdir}] [{suffix}] {TermColor.ENDC}")
+
+    ana_plot = TTbarTrueFakePlot(ana, "OS", weight_name, (1, -100, 100))
+    print(f"{TermColor.OKBLUE}Checking Yields... {TermColor.ENDC}")
+    ana_plot.checkYields()
+    print(f"{TermColor.OKBLUE}Checking Entries... {TermColor.ENDC}")
+    ana_plot.checkEntries()
+    print(f"{TermColor.OKBLUE}Checking TTBar Normalisation... {TermColor.ENDC}")
+    ana_plot.checkTTBarNorm()
+
+    ana_plot = TTbarTrueFakePlot(ana, "MET", weight_name, (400, 0, 400000), array.array(
+        'd', [i for i in range(0, 420000, 20000)]))
+    drawStack(ana_plot, "MET [MeV]", ana.regionTeX, f"plots/{subdir}/stack_met_fr" + suffix)
+
+    ana_plot = TTbarTrueFakePlot(ana, "lep_pt", weight_name, (36, 20000, 200000))
+    drawStack(ana_plot, "lepton pT [MeV]", ana.regionTeX, f"plots/{subdir}/stack_lep_ptlow_fr" + suffix)
+
+    ana_plot = TTbarTrueFakePlot(ana, "tau_pt", weight_name, (36, 20000, 200000))
+    drawStack(ana_plot, "tau pT [MeV]", ana.regionTeX, f"plots/{subdir}/stack_tau_ptlow_fr" + suffix)
+
+    ana_plot = TTbarTrueFakePlot(ana, "b0_pt", weight_name, (40, 50000, 250000))
+    drawStack(ana_plot, "leading b-jet pT [MeV]", ana.regionTeX, f"plots/{subdir}/stack_b0_ptlow_fr" + suffix)
+
+    ana_plot = TTbarTrueFakePlot(ana, "b1_pt", weight_name, (36, 20000, 200000))
+    drawStack(ana_plot, "sub-leading b-jet pT [MeV]", ana.regionTeX, f"plots/{subdir}/stack_b1_ptlow_fr" + suffix)
+
+    ana_plot = TTbarTrueFakePlot(ana, "lep_pt", weight_name, (380, 20000, 1000000), array.array(
+        'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 250000, 400000, 1000000]))
+    drawStack(ana_plot, "lepton pT [MeV]", ana.regionTeX, f"plots/{subdir}/stack_lep_pt_fr" + suffix)
+
+    ana_plot = TTbarTrueFakePlot(ana, "tau_pt", weight_name, (980, 20000, 1000000), array.array(
+        'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 250000, 1000000]))
+    drawStack(ana_plot, "tau pT [MeV]", ana.regionTeX, f"plots/{subdir}/stack_tau_pt_fr" + suffix)
+
+    ana_plot = TTbarTrueFakePlot(ana, "b0_pt", weight_name, (980, 20000, 1000000), array.array(
+        'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 250000, 400000, 1000000]))
+    drawStack(ana_plot, "leading b-jet pT [MeV]", ana.regionTeX, f"plots/{subdir}/stack_b0_pt_fr" + suffix)
+
+    ana_plot = TTbarTrueFakePlot(ana, "b1_pt", weight_name, (980, 20000, 1000000), array.array(
+        'd', [20000, 30000, 40000, 50000, 60000, 70000, 90000, 120000, 160000, 250000, 1000000]))
+    drawStack(ana_plot, "sub-leading b-jet pT [MeV]", ana.regionTeX, f"plots/{subdir}/stack_b1_pt_fr" + suffix)
+
+    ana_plot = TTbarTrueFakePlot(ana, "mTW", weight_name, (40, 40000, 240000))
+    drawStack(ana_plot, "M_{T} [MeV]", ana.regionTeX, f"plots/{subdir}/stack_mtw_fr" + suffix)
+
+    ana_plot = TTbarTrueFakePlot(ana, "mBB", weight_name, (40, 0, 400000))
+    drawStack(ana_plot, "Mbb [MeV]", ana.regionTeX, f"plots/{subdir}/stack_mbb_fr" + suffix)
+
+    ana_plot = TTbarTrueFakePlot(ana, "mMMC", weight_name, (40, 0, 400000))
+    drawStack(ana_plot, "M#tau#tau [MeV]", ana.regionTeX, f"plots/{subdir}/stack_mtautau_fr" + suffix)
+
+    ana_plot = TTbarTrueFakePlot(ana, "mHH", weight_name, (40, 200000, 2200000), array.array(
+        'd', [200000, 250000, 300000, 350000, 400000, 450000, 500000, 600000, 700000, 800000, 900000, 1000000, 1200000, 1500000, 2000000]))
+    drawStack(ana_plot, "Mhh [MeV]", ana.regionTeX, f"plots/{subdir}/stack_mhh_fr" + suffix)
+
+    ana_plot = TTbarTrueFakePlot(ana, "HT", weight_name, (2000, 0, 2000000), array.array(
+        'd', [i for i in range(0, 2050000, 50000)]))
+    drawStack(ana_plot, "H_{T} [MeV]", ana.regionTeX, f"plots/{subdir}/stack_ht_fr" + suffix)
+
+    ana_plot = TTbarTrueFakePlot(ana, "ST", weight_name, (2000, 0, 2000000), array.array(
+        'd', [i for i in range(0, 2050000, 50000)]))
+    drawStack(ana_plot, "S_{T} [MeV]", ana.regionTeX, f"plots/{subdir}/stack_st_fr" + suffix)
+
+    ana_plot = TTbarTrueFakePlot(ana, "n_jets", weight_name, (11, 2, 13))
+    drawStack(ana_plot, "# jets", ana.regionTeX, f"plots/{subdir}/stack_njets_fr" + suffix)
+
+    ana_plot = TTbarTrueFakePlot(ana, "lead_jet_pt", weight_name, (50, 50000, 550000))
+    drawStack(ana_plot, "leading jet pT [MeV]", ana.regionTeX, f"plots/{subdir}/stack_lead_jet_ptlow_fr" + suffix)
+
+    ana_plot = TTbarTrueFakePlot(ana, "dRTauLep", weight_name, (36, 0, 6))
+    drawStack(ana_plot, "#DeltaR(lep, #tau)", ana.regionTeX, f"plots/{subdir}/stack_dr_lep_tau_fr" + suffix)
+
+    ana_plot = TTbarTrueFakePlot(ana, "dRbb", weight_name, (36, 0, 6))
+    drawStack(ana_plot, "#DeltaR(b, b)", ana.regionTeX, f"plots/{subdir}/stack_dr_bb_fr" + suffix)
+
 
 class TermColor:
     HEADER = '\033[95m'
