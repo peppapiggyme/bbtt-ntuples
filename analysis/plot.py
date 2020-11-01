@@ -152,16 +152,16 @@ class TTbarSystPlotCollection(object):
     return data, ttbar and others
     """
 
-    def __init__(self, ana, varnm, wt_suffix, systs, th1bin, rebin=None):
+    def __init__(self, ana, varnm, wt_prefix, wt_suffix, systs, th1bin, rebin=None):
         super().__init__()
 
         self._systematics = systs
-        self._nomPlot = TTbarTrueFakePlot(ana, varnm, "Nominal" + wt_suffix, th1bin, rebin)
+        self._nomPlot = TTbarTrueFakePlot(ana, varnm, wt_prefix + "Nominal" + wt_suffix, th1bin, rebin)
         self._systPlots = {}
         for syst in self._systematics:
             self._systPlots[syst] = (
-                TTbarTrueFakePlot(ana, varnm, syst + "__1up" + wt_suffix, th1bin, rebin), 
-                TTbarTrueFakePlot(ana, varnm, syst + "__1down" + wt_suffix, th1bin, rebin)
+                TTbarTrueFakePlot(ana, varnm, wt_prefix + syst + "__1up" + wt_suffix, th1bin, rebin), 
+                TTbarTrueFakePlot(ana, varnm, wt_prefix + syst + "__1down" + wt_suffix, th1bin, rebin)
             )
             
     def nominalPlot(self):

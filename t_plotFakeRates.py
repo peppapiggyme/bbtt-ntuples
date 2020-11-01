@@ -12,18 +12,12 @@ f = TFile("rootfiles/ttbar-fakerates.root")
 # f.ls()
 dNom = f.Get("Nominal")
 # dNom.ls()
-dStat1U = f.Get("TTBarReweight_Stat1__1up")
-dStat1D = f.Get("TTBarReweight_Stat1__1down")
-dStat2U = f.Get("TTBarReweight_Stat2__1up")
-dStat2D = f.Get("TTBarReweight_Stat2__1down")
-dStat3U = f.Get("TTBarReweight_Stat3__1up")
-dStat3D = f.Get("TTBarReweight_Stat3__1down")
+dStatU = f.Get("TTBarReweight_Stat__1up")
+dStatD = f.Get("TTBarReweight_Stat__1down")
 
 dSysts = OrderedDict()
 dSysts = {
-    "ttbarReweightStat1" : [dStat1U, dStat1D],
-    "ttbarReweightStat2" : [dStat2U, dStat2D],
-    "ttbarReweightStat3" : [dStat3U, dStat3D],
+    "ttbarReweightStat" : [dStatU, dStatD],
 }
 
 trigs = ["00", "25", "35", "25EF", "35EF", "25RNN", "35RNN"]

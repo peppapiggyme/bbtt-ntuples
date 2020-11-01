@@ -20,4 +20,4 @@ for p in [1, 3]:
     clos_tau_pt = TTbarTrueFakePlot(clos, "tau_pt", "weight_rw", (980, 20000, 1000000), array.array('d',  binning))
 
     # basically reweight again, but take the difference against 1 as uncertainty ...
-    reweight1D(clos_tau_pt, "#tau_{had} p_{T} [MeV]", f"plots/njets/clos_tau_pt_fr_os_{p}p.pdf", f"_clos_tau_pt_{p}p", drawOpt="HIST")
+    reweight1D(clos_tau_pt, "#tau_{had} p_{T} [MeV]", f"plots/njets/clos_tau_pt_fr_os_{p}p.pdf", f"_clos_tau_pt_{p}p", drawOpt="HIST", rel=True)
