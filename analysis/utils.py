@@ -334,7 +334,11 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None):
     resize = 0.65 / 0.35
 
     err = bkg.Clone()
-    err.Divide(bkg)
+    # error in the denominator should not be taken into account
+    bkg_scale = bkg.Clone()
+    for i in range(1, bkg_scale.GetNbinsX() + 1):
+        bkg_scale.SetError(i, 0.0)
+    err.Divide(bkg_scale)
     err.SetFillStyle(1001)
     err.SetFillColor(R.TColor.GetColor(133, 173, 173))
     err.SetMarkerSize(0)
@@ -352,7 +356,7 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None):
     err.SetMaximum(1.38)
     err.Draw("E2")
     rat = data.Clone()
-    rat.Divide(bkg)
+    rat.Divide(bkg_scale)
     rat.SetTitle("ratio")
     rat.Draw("E1 SAME")
 
