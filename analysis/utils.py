@@ -371,7 +371,7 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None, comp=None):
     err.SetMaximum(1.38)
     err.Draw("E2")
     rat = data.Clone()
-    rat.Divide(bkg)
+    rat.Divide(bkg_scale)
     rat.SetTitle("ratio")
     rat.Draw("E1 SAME")
 
