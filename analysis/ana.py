@@ -56,7 +56,7 @@ class AnaBase(object):
             update_region()
 
         
-        self.path = f"{os.getcwd()}/../fr-ntuple-v17/" if not path else path
+        self.path = f"{os.getcwd()}/../ResolvedNtuples/fr-ntuple-v17/" if not path else path
         self.samples = {}
         self.processes = set()
         self.files = {}
@@ -309,6 +309,9 @@ class AnaTTbarTrueFake(AnaBase):
             "others": {"ttH", "VHbb", "stop", "diboson", "Zee",
                        "Ztautau", "Zmumu", "Wmunu", "Wenu", "Wtaunu",
                        "Htautau"},
+            # "stop": {"stop"},
+            # "Wjets": {"Wmunu", "Wenu", "Wtaunu"},
+            # "others": {"ttH", "VHbb", "diboson", "Zee", "Ztautau", "Zmumu", "Htautau"},
         }
 
         for label, pros in self.samples.items():

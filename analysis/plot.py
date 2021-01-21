@@ -83,6 +83,8 @@ class TTbarTrueFakePlot(object):
         self.data = self._merge_histos("data")
         self.ttbarTrue = self._merge_histos("ttbarTrue")
         self.ttbarFake = self._merge_histos("ttbarFake")
+        # self.stop = self._merge_histos("stop")
+        # self.Wjets = self._merge_histos("Wjets")
         self.others = self._merge_histos("others")
         self._rebin()
 
@@ -110,22 +112,48 @@ class TTbarTrueFakePlot(object):
                 len(self._rebinning) - 1, "ttbarTrue_rebin", self._rebinning)
             self.ttbarFake = self.ttbarFake.Rebin(
                 len(self._rebinning) - 1, "ttbarFake_rebin", self._rebinning)
+            # self.stop = self.stop.Rebin(
+            #     len(self._rebinning) - 1, "stop_rebin", self._rebinning)
+            # self.Wjets = self.Wjets.Rebin(
+            #     len(self._rebinning) - 1, "Wjets_rebin", self._rebinning)
             self.others = self.others.Rebin(
                 len(self._rebinning) - 1, "others_rebin", self._rebinning)
 
     def checkYields(self):
+        total = self.ttbarTrue.Integral() \
+              + self.ttbarFake.Integral() \
+              + self.others.Integral()
+        print("==== Total ====")
         print(f"-------------+----------------------------------")
         print(f" n_data      |   {self.data.Integral()}")
-        print(f" n_ttbarTrue |   {self.ttbarTrue.Integral()}")
-        print(f" n_ttbarFake |   {self.ttbarFake.Integral()}")
-        print(f" n_other     |   {self.others.Integral()}")
+        print(f" n_ttbarTrue |   {self.ttbarTrue.Integral()} \t({self.ttbarTrue.Integral()/total})")
+        print(f" n_ttbarFake |   {self.ttbarFake.Integral()} \t({self.ttbarFake.Integral()/total})")
+        # print(f" n_stop      |   {self.stop.Integral()} \t({self.stop.Integral()/total})")
+        # print(f" n_Wjets     |   {self.Wjets.Integral()} \t({self.Wjets.Integral()/total})")
+        print(f" n_others    |   {self.others.Integral()} \t({self.others.Integral()/total})")
         print(f"-------------+----------------------------------")
+        
+        for i in range(1, self.data.GetNbinsX()+1):
+            print(f"==== Bin {i} ====")
+            total = self.ttbarTrue.GetBinContent(i) \
+                  + self.ttbarFake.GetBinContent(i) \
+                  + self.others.GetBinContent(i)
+            print(f"-------------+----------------------------------")
+            print(f" n_data      |   {self.data.GetBinContent(i)}")
+            print(f" n_ttbarTrue |   {self.ttbarTrue.GetBinContent(i)} +- {self.ttbarTrue.GetBinError(i)} \t({self.ttbarTrue.GetBinContent(i)/total})")
+            print(f" n_ttbarFake |   {self.ttbarFake.GetBinContent(i)} +- {self.ttbarFake.GetBinError(i)} \t({self.ttbarFake.GetBinContent(i)/total})")
+            # print(f" n_stop      |   {self.stop.GetBinContent(i)} +- {self.stop.GetBinError(i)} \t({self.stop.GetBinContent(i)/total})")
+            # print(f" n_Wjets     |   {self.Wjets.GetBinContent(i)} +- {self.Wjets.GetBinError(i)} \t({self.Wjets.GetBinContent(i)/total})")
+            print(f" n_other     |   {self.others.GetBinContent(i)} +- {self.others.GetBinError(i)} \t({self.others.GetBinContent(i)/total})")
+            print(f"-------------+----------------------------------")
 
     def checkEntries(self):
         print(f"---------+----------------------------------")
         print(f" n_data      |   {self.data.GetEntries()}")
         print(f" n_ttbarTrue |   {self.ttbarTrue.GetEntries()}")
         print(f" n_ttbarFake |   {self.ttbarFake.GetEntries()}")
+        # print(f" n_stop      |   {self.stop.GetEntries()}")
+        # print(f" n_Wjets     |   {self.Wjets.GetEntries()}")
         print(f" n_other     |   {self.others.GetEntries()}")
         print(f"---------+----------------------------------")
 
@@ -145,6 +173,8 @@ class TTbarTrueFakePlot(object):
 
     def bkgColors(self):
         return zip([self.others, self.ttbarFake, self.ttbarTrue], [(153, 204, 255), (255, 153, 153), (255, 255, 153)])
+        # return zip([self.others, self.Wjets, self.stop, self.ttbarFake, self.ttbarTrue], 
+        #            [(153, 204, 255), (102, 102, 153), (204, 0, 102), (255, 153, 153), (255, 255, 153)])
 
 
 class TTbarSystPlotCollection(object):

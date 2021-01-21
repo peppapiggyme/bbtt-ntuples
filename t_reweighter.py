@@ -55,7 +55,7 @@ for i in range(2, 11):
     
     print(f"{TermColor.OKBLUE}Yields (Before reweighting) {TermColor.ENDC}")
     
-    rwt_st.checkYields()
+    # rwt_st.checkYields()
 
     reweight1D(rwt_st, "S_{T} [MeV]", f"plots/{i}jets/wt1d_st_fr_os.pdf", f"_{i}jets")
 
@@ -67,8 +67,9 @@ for i in range(2, 11):
     # After reweighting
     # ------------------
 
-    rwt_st = TTbarTrueFakePlot(rwt, "ST", "weight_rw", (2000, 0, 2000000), array.array(
-        'd', [i for i in range(0, 2050000, 50000)]))
+    # rwt_st = TTbarTrueFakePlot(rwt, "ST", "weight_rw", (2000, 0, 2000000), array.array(
+    #     'd', [i for i in range(0, 2050000, 50000)]))
+    rwt_st = TTbarTrueFakePlot(rwt, "ST", "weight_rw", (3000, 0, 3000000), array.array('d', binning_st[i]))
     drawStack(rwt_st, "S_{T} [MeV]", regionTeX, f"plots/{i}jets/stack_st_fr_os" + suffix_after)
 
     rwt_njets = TTbarTrueFakePlot(rwt, "n_jets", "weight_rw", (11, 2, 13))

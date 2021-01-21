@@ -244,7 +244,7 @@ def reweightTrue1D(plot, varTeX, fileName, suffix):
     return True
 
 
-def drawStack(plot, varTeX, regionTeX, fileName, systs=None):
+def drawStack(plot, varTeX, regionTeX, fileName, systs=None, comp=None):
     """
     systs = {"systname": (plot_up, plot_down), ...}
     """
@@ -290,6 +290,19 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None):
     stack.SetMaximum(data.GetMaximum() * 1.4)
     stack.GetYaxis().ChangeLabel(1, -1, 0)
 
+    if comp:
+        stack_comp = R.THStack()
+        bkg_comp = None
+        for h, _ in comp.bkgColors():
+            if not bkg_comp:
+                bkg_comp = h.Clone("comp")
+            else:
+                bkg_comp.Add(h)
+        bkg_comp.SetLineColor(R.kBlue)
+        bkg_comp.SetLineWidth(2)
+        bkg_comp.SetLineStyle(2)
+        bkg_comp.Draw("HIST SAME")
+
     # bkg.SetFillStyle(3254)
     # bkg.SetFillColor(R.kGray + 3)
     # bkg.SetMarkerSize(0)
@@ -314,6 +327,8 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None):
     legend.AddEntry(ttbarTrue, "t#bar{t}", "f")
     legend.AddEntry(ttbarFake, "t#bar{t} (jet fake #tau)", "f")
     legend.AddEntry(others, "others", "f")
+    if comp:
+        legend.AddEntry(bkg_comp, "Norm. Only", "l")
     legend.Draw("SAME")
 
     # Add ATLAS label
@@ -334,7 +349,11 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None):
     resize = 0.65 / 0.35
 
     err = bkg.Clone()
-    err.Divide(bkg)
+    # error in the denominator should not be taken into account
+    bkg_scale = bkg.Clone()
+    for i in range(1, bkg_scale.GetNbinsX() + 1):
+        bkg_scale.SetBinError(i, 0.0)
+    err.Divide(bkg_scale)
     err.SetFillStyle(1001)
     err.SetFillColor(R.TColor.GetColor(133, 173, 173))
     err.SetMarkerSize(0)
@@ -402,6 +421,19 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None):
         # plot stat + syst
         sys_up.Draw("HIST SAME")
         sys_do.Draw("HIST SAME")
+
+    if comp:
+        rat_comp = data.Clone()
+        rat_comp.Divide(bkg_comp)
+        # make the plot nicer (no edge lines)
+        for i in range(0, rat_comp.GetNbinsX() + 2):
+            if rat_comp.GetBinContent(i) < 0.01:
+                rat_comp.SetBinContent(i, 1.0)
+                rat_comp.SetBinError(i, 0.0)
+        rat_comp.SetLineColor(R.kBlue)
+        rat_comp.SetLineWidth(2)
+        rat_comp.SetLineStyle(2)
+        rat_comp.Draw("HIST SAME")
 
     # Save the plot
     c.Update()
