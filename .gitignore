@@ -10,6 +10,6 @@ plots/*/*.pdf
 plots/*.png
 plots/*/*.png
 temp/
-
+*output*
 
 .DS_Store

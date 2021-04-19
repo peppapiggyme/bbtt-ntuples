@@ -47,11 +47,11 @@ class AnaBase(object):
         if prong:
             self._region += " "
             self._region += "1P" if prong == 1 else "3P"
-        if morecut:
+        if morecut is not None:
             reg["NoID"] += " && "
             reg["NoID"] += morecut
             update_region()
-        if rewrite:
+        if rewrite is not None:
             reg["NoID"] = rewrite
             update_region()
 
@@ -342,4 +342,28 @@ class AnaTTbarTrueFake(AnaBase):
         for p in self.processes:
             self.df[p] = self.df[p].Filter(reg[self._region])
         
+        self._current_df = self.df
+
+
+class AnaBBLL(AnaBase):
+    def __init__(self, rewrite=None, path=None):
+        super().__init__(False, False, None, None, rewrite, path)
+
+        self.samples = {
+            "ttbar": {"ttbarIncl"}
+        }
+
+        for label, pros in self.samples.items():
+            for p in pros:
+                self.processes.add(p)
+
+        for p in self.processes:
+            self.files[p] = os.path.join(self.path, rootfile(p))
+
+        for p in self.processes:
+            self.df[p] = R.RDataFrame("Nominal", self.files[p])
+
+        for p in self.processes:
+            self.df[p] = self.df[p].Filter(reg[self._region])
+
         self._current_df = self.df
