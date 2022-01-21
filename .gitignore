@@ -11,5 +11,7 @@ plots/*.png
 plots/*/*.png
 temp/
 *output*
+forNOTE_v1
+forNOTE_v2
 
 .DS_Store

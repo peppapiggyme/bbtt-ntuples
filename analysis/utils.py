@@ -117,30 +117,42 @@ def fakerates_mc(p_sig, t_sig, trigger, prong):
     return mc_fakerate
 
 
-def reweight1D(plot, varTeX, fileName, suffix, drawOpt="E1", rel=False):
+def reweight1D(plot, varTeX, fileName, suffix, drawOpt="E1", rel=False, canvas_size=(900,900), 
+    ytitle="Ratio", yrange=None, hline=1, njets=None):
     print(f"{TermColor.OKBLUE}~ Reweighitng using <{varTeX}>{TermColor.ENDC}")
-    c = R.TCanvas("c", "", 900, 900)
+    c = R.TCanvas("c", "", canvas_size[0], canvas_size[1])
     c.SetRightMargin(1.6 * c.GetRightMargin())
+
     # templates
     data = plot.data
     ttbar = plot.ttbarFake.Clone()
     ttbar.Add(plot.ttbarTrue)
     others = plot.others
+    stop = plot.stop
+    Wjets = plot.Wjets
 
     ratio = data.Clone()
     ratio.Add(others, -1.0)
+    ratio.Add(stop, -1.0)
+    ratio.Add(Wjets, -1.0)
     mc_ttbar = ttbar
     if rel:
         ratio.Add(mc_ttbar, -1.0)
+
+    print(ratio.Integral())
+    print(mc_ttbar.Integral())
 
     ratio.Divide(mc_ttbar)
     ratio.SetName(f"Rw1DHist{suffix}")
     ratio.GetXaxis().SetTitle(varTeX)
     ratio.GetXaxis().SetTitleSize(0.045)
-    ratio.GetXaxis().SetLabelSize(0.04)
-    ratio.GetYaxis().SetTitle("Ratio")
-    ratio.GetYaxis().SetLabelSize(0.04)
+    ratio.GetXaxis().SetLabelSize(0.045)
+    ratio.GetYaxis().SetTitle(ytitle)
+    ratio.GetYaxis().SetLabelSize(0.045)
     ratio.GetYaxis().SetTitleSize(0.045)
+
+    if yrange:
+        ratio.GetYaxis().SetRangeUser(yrange[0], yrange[1])
     #expr = "[0]+exp([1]+[2]*x)"
     #expr = "-1*[0]*(TMath::Log10(x+[1]))+[2]"
     expr = "[0]+[1]/(1+x)+[2]/(1+exp([3]+[4]*x))"
@@ -165,17 +177,27 @@ def reweight1D(plot, varTeX, fileName, suffix, drawOpt="E1", rel=False):
     # Add ATLAS label
     text = R.TLatex()
     text.SetNDC()
-    text.SetTextFont(72)
-    text.SetTextSize(0.045)
-    text.DrawLatex(0.51, 0.86, "ATLAS")
+    # text.SetTextFont(72)
+    # text.SetTextSize(0.045)
+    # text.DrawLatex(0.51, 0.86, "ATLAS")
     text.SetTextFont(42)
-    text.DrawLatex(0.51 + 0.16, 0.86, "Internal")
-    text.SetTextSize(0.040)
-    text.DrawLatex(0.51, 0.80, "#sqrt{s} = 13 TeV, 139 fb^{-1}")
+    # text.DrawLatex(0.51 + 0.16, 0.86, "Internal")
+    text.SetTextSize(0.045)
+    text.DrawLatex(0.51, 0.86, "#sqrt{s} = 13 TeV, 139 fb^{-1}")
+    if njets:
+        njets_text = f" = {njets}" if int(njets) < 10 else " #geq 10"
+        njets_text = "N_{jets}" + njets_text
+        text.DrawLatex(0.51, 0.78, njets_text)
     # text.SetTextSize(0.035)
     # fit_result = "#Chi^{2} / NDF = " + \
     #     "{:.3f} / {}".format(f.GetChisquare(), (ratio.GetNbinsX() - 1))
     # text.DrawLatex(0.51, 0.74, fit_result)
+
+    line = R.TLine(ratio.GetXaxis().GetXmin(), hline, ratio.GetXaxis().GetXmax(), hline)
+    line.SetLineColor(R.kRed+2)
+    line.SetLineStyle(2)
+    line.Draw("SAME")
+    ratio.Draw(drawOpt + " SAME")
 
     c.Update()
     c.SaveAs(fileName)
@@ -244,20 +266,20 @@ def reweightTrue1D(plot, varTeX, fileName, suffix):
     return True
 
 
-def drawStack(plot, varTeX, regionTeX, fileName, systs=None, comp=None):
+def drawStack(plot, varTeX, regionTeX, fileName, systs=None, comp=None, ratio_range=(0.62,1.38)):
     """
     systs = {"systname": (plot_up, plot_down), ...}
     """
     c = R.TCanvas("c", "", 900, 900)
-    c.SetRightMargin(1.6 * c.GetRightMargin())
+    c.SetRightMargin(c.GetRightMargin())
     pad = R.TPad("upper_pad", "", 0, 0.35, 1, 1)
-    pad.SetRightMargin(1.6 * pad.GetRightMargin())
+    pad.SetRightMargin(pad.GetRightMargin())
     pad.SetBottomMargin(0.03)
     pad.SetTickx(False)
     pad.SetTicky(False)
     pad.Draw()
     ratio = R.TPad("lower_pad", "", 0, 0, 1, 0.35)
-    ratio.SetRightMargin(1.6 * ratio.GetRightMargin())
+    ratio.SetRightMargin(ratio.GetRightMargin())
     ratio.SetTopMargin(0)
     ratio.SetBottomMargin(0.4)
     ratio.SetGridy()
@@ -272,7 +294,15 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None, comp=None):
     stack = R.THStack()
     ttbar = plot.ttbarTrue.Clone("ttbar")
     ttbar.Add(plot.ttbarFake)
+    stop = plot.stop
+    Wjets = plot.Wjets
     others = plot.others
+    data.GetXaxis().SetRange(1, data.GetNbinsX() + 1)
+    ttbarTrue.GetXaxis().SetRange(1, ttbarTrue.GetNbinsX() + 1)
+    ttbarFake.GetXaxis().SetRange(1, ttbarFake.GetNbinsX() + 1)
+    stop.GetXaxis().SetRange(1, stop.GetNbinsX() + 1)
+    Wjets.GetXaxis().SetRange(1, Wjets.GetNbinsX() + 1)
+    others.GetXaxis().SetRange(1, others.GetNbinsX() + 1)
     # Draw stack with MC contributions
     for h, color in plot.bkgColors():
         h.SetLineWidth(1)
@@ -285,10 +315,11 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None, comp=None):
     stack.GetXaxis().SetTitleSize(0)
     stack.GetXaxis().SetTitleOffset(1.3)
     stack.GetYaxis().SetTitle("Events")
-    stack.GetYaxis().SetLabelSize(0.04)
-    stack.GetYaxis().SetTitleSize(0.045)
+    stack.GetYaxis().SetLabelSize(0.045)
+    stack.GetYaxis().SetTitleSize(0.055)
     stack.SetMaximum(data.GetMaximum() * 1.4)
     stack.GetYaxis().ChangeLabel(1, -1, 0)
+    stack.GetXaxis().SetRange(1, data.GetNbinsX() + 1)
 
     if comp:
         stack_comp = R.THStack()
@@ -298,7 +329,7 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None, comp=None):
                 bkg_comp = h.Clone("comp")
             else:
                 bkg_comp.Add(h)
-        bkg_comp.SetLineColor(R.kBlue)
+        bkg_comp.SetLineColor(R.kRed + 1)
         bkg_comp.SetLineWidth(2)
         bkg_comp.SetLineStyle(2)
         bkg_comp.Draw("HIST SAME")
@@ -314,35 +345,49 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None, comp=None):
     data.SetMarkerSize(1.2)
     data.SetLineWidth(2)
     data.SetLineColor(R.kBlack)
-    data.Draw("E1 SAME")
+    data.Draw("E0 X0 SAME")
+
+    dummy_stat = R.TH1F()
+    dummy_stat.SetFillStyle(3254)
+    dummy_stat.SetFillColor(R.kGray+2)
+    dummy_stat.SetMarkerSize(0)
+
+    dummy_syst_stat = R.TH1F()
+    dummy_syst_stat.SetLineColor(R.kBlue + 1)
+    dummy_syst_stat.SetLineWidth(2)
+    dummy_syst_stat.SetFillColor(R.kWhite)
+    dummy_syst_stat.SetMarkerSize(0)
 
     # Add legend
-    legend = R.TLegend(0.69, 0.65, 0.90, 0.92)
+    legend = R.TLegend(0.62, 0.45, 0.92, 0.92)
     legend.SetTextFont(42)
     legend.SetFillStyle(0)
     legend.SetBorderSize(0)
-    legend.SetTextSize(0.04)
+    legend.SetTextSize(0.045)
     legend.SetTextAlign(32)
-    legend.AddEntry(data, "Data", "lep")
-    legend.AddEntry(ttbarTrue, "t#bar{t}", "f")
-    legend.AddEntry(ttbarFake, "t#bar{t} (jet fake #tau)", "f")
-    legend.AddEntry(others, "others", "f")
+    legend.AddEntry(data, "Data", "ep")
+    legend.AddEntry(ttbarTrue, "True-#tau_{had} t#bar{t}", "f")
+    legend.AddEntry(ttbarFake, "Fake-#tau_{had} t#bar{t}", "f")
+    legend.AddEntry(stop, "Single top", "f")
+    legend.AddEntry(Wjets, "W+jets", "f")
+    legend.AddEntry(others, "Others", "f")
     if comp:
-        legend.AddEntry(bkg_comp, "Norm. Only", "l")
+        legend.AddEntry(bkg_comp, "Pre-reweight Bkg.", "l")
+    legend.AddEntry(dummy_stat, "Stat.", "f")
+    legend.AddEntry(dummy_syst_stat, "Syst. + Stat.", "f")
     legend.Draw("SAME")
 
     # Add ATLAS label
     text = R.TLatex()
     text.SetNDC()
-    text.SetTextFont(72)
-    text.SetTextSize(0.055)
-    text.DrawLatex(0.20, 0.86, "ATLAS")
+    # text.SetTextFont(72)
+    # text.SetTextSize(0.055)
+    # text.DrawLatex(0.20, 0.86, "ATLAS")
     text.SetTextFont(42)
-    text.DrawLatex(0.20 + 0.12, 0.86, "Internal")
+    # text.DrawLatex(0.20 + 0.12, 0.86, "Internal")
     text.SetTextSize(0.045)
-    text.DrawLatex(0.20, 0.80, "#sqrt{s} = 13 TeV, 139 fb^{-1}")
-    text.SetTextSize(0.040)
-    text.DrawLatex(0.20, 0.74, regionTeX)
+    text.DrawLatex(0.20, 0.86, "#sqrt{s} = 13 TeV, 139 fb^{-1}")
+    text.DrawLatex(0.20, 0.80, regionTeX)
 
     ratio.cd()
 
@@ -354,31 +399,31 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None, comp=None):
     for i in range(1, bkg_scale.GetNbinsX() + 1):
         bkg_scale.SetBinError(i, 0.0)
     err.Divide(bkg_scale)
-    err.SetFillStyle(1001)
-    err.SetFillColor(R.TColor.GetColor(133, 173, 173))
+    err.SetFillStyle(3254)
+    err.SetFillColor(R.kGray+2)
     err.SetMarkerSize(0)
-    err.SetName("Unc.")
+    err.SetName("Stat.")
     err.GetXaxis().SetTitle(varTeX)
     err.GetXaxis().SetTitleOffset(0.8 * resize)
-    err.GetXaxis().SetTitleSize(0.045 * resize)
-    err.GetXaxis().SetLabelSize(0.04 * resize)
+    err.GetXaxis().SetTitleSize(0.0455 * resize)
+    err.GetXaxis().SetLabelSize(0.045 * resize)
     err.GetYaxis().SetTitle("Data / Pred.")
     err.GetYaxis().SetTitleOffset(0.4 * resize)
-    err.GetYaxis().SetTitleSize(0.045 * resize)
-    err.GetYaxis().SetLabelSize(0.04 * resize)
+    err.GetYaxis().SetTitleSize(0.055 * resize)
+    err.GetYaxis().SetLabelSize(0.045 * resize)
     err.GetYaxis().SetNdivisions(505)
-    err.SetMinimum(0.62)
-    err.SetMaximum(1.38)
+    err.SetMinimum(ratio_range[0])
+    err.SetMaximum(ratio_range[1])
     err.Draw("E2")
     rat = data.Clone()
     rat.Divide(bkg_scale)
     rat.SetTitle("ratio")
-    rat.Draw("E1 SAME")
+    rat.Draw("E0 X0 SAME")
 
     if systs:
         # so far only ttbar systematics 
         sys_up = data.Clone("sys_up")
-        sys_up.SetLineColor(R.TColor.GetColor(189, 27, 108))
+        sys_up.SetLineColor(R.kBlue + 1)
         sys_up.SetLineStyle(1)
         sys_up.SetLineWidth(2)
         sys_do = sys_up.Clone("sys_down")
@@ -400,16 +445,16 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None, comp=None):
                     tot_up[i] += (ttbar_up.GetBinContent(i) / bkg.GetBinContent(i))**2
                     tot_do[i] += (ttbar_do.GetBinContent(i) / bkg.GetBinContent(i))**2
         
-        # o--------------------------------------------------o
-        # | hardcoded normalisation scale factor uncertainty |
-        # |          N(data) - N(others)         + 0.007     |
-        # |    SF = --------------------- = 0.931            |
-        # |               N(ttbar)               - 0.023     |
-        # o--------------------------------------------------o
-        for i in range(0, sys_up.GetNbinsX() + 2):
-            if bkg.GetBinContent(i) > 0:
-                tot_up[i] += (ttbar.GetBinContent(i) * 0.007 / 0.931 / bkg.GetBinContent(i))**2
-                tot_do[i] += (ttbar.GetBinContent(i) * 0.023 / 0.931 / bkg.GetBinContent(i))**2
+        # # o--------------------------------------------------o
+        # # | hardcoded normalisation scale factor uncertainty |
+        # # |          N(data) - N(others)         + 0.007     |
+        # # |    SF = --------------------- = 0.931            |
+        # # |               N(ttbar)               - 0.023     |
+        # # o--------------------------------------------------o
+        # for i in range(0, sys_up.GetNbinsX() + 2):
+        #     if bkg.GetBinContent(i) > 0:
+        #         tot_up[i] += (ttbar.GetBinContent(i) * 0.007 / 0.931 / bkg.GetBinContent(i))**2
+        #         tot_do[i] += (ttbar.GetBinContent(i) * 0.023 / 0.931 / bkg.GetBinContent(i))**2
         
 
         for i in range(0, sys_up.GetNbinsX() + 2):
@@ -430,7 +475,7 @@ def drawStack(plot, varTeX, regionTeX, fileName, systs=None, comp=None):
             if rat_comp.GetBinContent(i) < 0.01:
                 rat_comp.SetBinContent(i, 1.0)
                 rat_comp.SetBinError(i, 0.0)
-        rat_comp.SetLineColor(R.kBlue)
+        rat_comp.SetLineColor(R.kRed + 1)
         rat_comp.SetLineWidth(2)
         rat_comp.SetLineStyle(2)
         rat_comp.Draw("HIST SAME")

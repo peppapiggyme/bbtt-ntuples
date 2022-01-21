@@ -75,6 +75,10 @@ class AnaBase(object):
     def current_df(self):
         return self._current_df
 
+    def add_var(self, var, expr):
+        for p in self.processes:
+            self.df[p] = self.df[p].Define(var, expr)
+
     def applyTauSF(self, weight_name):
         """
         TODO: seperate data from the processes. So far it's ok since tauSF and weight are 1 for data
@@ -306,12 +310,12 @@ class AnaTTbarTrueFake(AnaBase):
         self.samples = {
             "data": {"data"},
             "ttbar": {"ttbarIncl"},
-            "others": {"ttH", "VHbb", "stop", "diboson", "Zee",
-                       "Ztautau", "Zmumu", "Wmunu", "Wenu", "Wtaunu",
-                       "Htautau"},
-            # "stop": {"stop"},
-            # "Wjets": {"Wmunu", "Wenu", "Wtaunu"},
-            # "others": {"ttH", "VHbb", "diboson", "Zee", "Ztautau", "Zmumu", "Htautau"},
+            # "others": {"ttH", "VHbb", "stop", "diboson", "Zee",
+            #            "Ztautau", "Zmumu", "Wmunu", "Wenu", "Wtaunu",
+            #            "Htautau"},
+            "stop": {"stop"},
+            "Wjets": {"Wmunu", "Wenu", "Wtaunu"},
+            "others": {"ttH", "VHbb", "diboson", "Zee", "Ztautau", "Zmumu", "Htautau"},
         }
 
         for label, pros in self.samples.items():

@@ -20,6 +20,8 @@ var_list = {
     ("lept_1_pt", 100, 0, 250, "Tau1Pt"),
     ("bjet_0_pt", 200, 0, 250, "pTB0"),
     ("bjet_1_pt", 200, 0, 250, "pTB1"),
+    ("ht", 50, 0, 1000, "HT"),
+    ("st", 70, 0, 1400, "sTAll"),
 }
 
 def reader_hist_name(var):
@@ -33,9 +35,10 @@ def reader_hist_name(var):
     return "_".join(["ttbarFromZCR", "2tag2pjet_0ptv_LL_OS", var])
 
 bbll = AnaBBLL(rewrite="1", 
-               path="/publicfs/atlas/atlasnew/higgs/hh2X/zhangbw/ntuple/bbll_mva_210409/ZllCR/")
+               path="/publicfs/atlas/atlasnew/higgs/hh2X/zhangbw/ntuple/bbll_mva_210409/ZllCR_v2/")
 
 ttbar = bbll.df["ttbarIncl"]
+ttbar = ttbar.Define("st", "ht + lept_0_pt + lept_1_pt + met_met")
 
 f = R.TFile("bbll_output/hist-ttbar-bbll-{}.root".format(region), "recreate")
 d = f.mkdir("Preselection")
